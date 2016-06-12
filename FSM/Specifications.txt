@@ -1,0 +1,42 @@
+FSM:
+	- Only 1 state can be run at the same time
+	- May be of 2 types:
+		+ Sequential
+		+ Cyclic
+	- Both may be reset in their first state by an external event
+	- Both may be stopped in a specific state
+	- Both should be able to be dumped for debugging purpose
+	- Both should prevent from errors (defensive implementation)
+	- Both should return a status of their state (working good/error/and so on)
+	- Both should have several states
+	- Both should have one or more transition by state pointing to the next state when conditions are all true (transitions have priorities)
+	- When calling the FSM, it can't make more than one state working
+		+-------+---------------------------------------+
+		| Call	| Current state	| Next state calculated |
+		+-------+---------------------------------------+
+		| 0		|	A			|	A					|
+		| 1		|	A			|	B					|
+		| 2		|	B			|	B					|
+		| 3		|	B			|	A					|
+		+-----------------------------------------------+
+
+Sequential FSM:
+	- FSM has at least 1 final state
+	- FSM will need to be reset to work again
+
+Cyclic FSM:
+	- FSM has no final state
+	- may be reset by an external event (could be stopped in a task)
+
+State :
+	- may initialize itself when FSM is entering it
+	- should do something (which represent the state)
+	- may do things when the FSM is leaving it
+	- may have transitions with priorities between each others
+	- may have references to data that are observed or modified
+
+Transition :
+	- may be affected to one or more state
+	- should be called one of the affected state is running
+	- should point to only one state
+
