@@ -1,4 +1,5 @@
 #include "FightFSMTransition.hpp"
+#include "IParty.hpp"
 
 
 namespace fight
@@ -6,46 +7,52 @@ namespace fight
 	namespace transition
 	{
 
-		CharacterTransition::CharacterTransition()
-			:m_target_characters()
+		PartyTransition::PartyTransition()
+			:m_target_parties()
 		{
 			/** Nothing **/
 		}
 		
-		CharacterTransition::~CharacterTransition()
+		PartyTransition::~PartyTransition()
 		{
 			/** Nothing **/
 		}
 
-		bool CharacterTransition::reset(void)
+		bool PartyTransition::reset(void)
 		{
-			m_target_characters.resize(0);
 			return true;
 		}
 
-		fsm::IState* CharactersDead::check(fsm::IState* current_state)
+		fsm::IState* PartyDead::check(fsm::IState* current_state)
 		{
-			std::vector<ICharacter*>::iterator it;
 			fsm::IState* l_ret(current_state);
-			for (it = m_target_characters.begin(); (it != m_target_characters.end()) && (l_ret == current_state); it++)
+
+			for (auto& party : m_target_parties)
 			{
-				if ((*it)->isDead())
+				for (auto& party_member : party->getMembers())
 				{
-					l_ret = m_target_state;
+					if (party_member->isDead())
+					{
+						l_ret = m_target_state;
+					}
 				}
 			}
+
 			return l_ret;
 		}
 
-		fsm::IState* CharactersAlive::check(fsm::IState* current_state)
+		fsm::IState* PartyAlive::check(fsm::IState* current_state)
 		{
-			std::vector<ICharacter*>::iterator it;
 			fsm::IState* l_ret(m_target_state);
-			for (it = m_target_characters.begin(); (it != m_target_characters.end()) && (l_ret == m_target_state); it++)
+
+			for (auto& party : m_target_parties)
 			{
-				if ((*it)->isDead())
+				for (auto& party_member : party->getMembers())
 				{
-					l_ret = current_state;
+					if (!party_member->isDead())
+					{
+						l_ret = m_target_state;
+					}
 				}
 			}
 			return l_ret;

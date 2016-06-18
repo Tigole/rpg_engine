@@ -3,6 +3,7 @@
 
 #include "Character/ICharacter.hpp"
 #include "Character/DBG_Character.hpp"
+#include "FightEngine\Party.hpp"
 
 #include "FightEngine\FightFSM.hpp"
 
@@ -18,18 +19,31 @@ enum Fight_States
 	FS_Done
 };
 void uut_Fight(ICharacter& hero, ICharacter& ennemy);
-void uut_Fight(const std::vector<ICharacter*>& fighters);
+void uut_Fight(IParty& hero, std::vector<IParty*>& ennemies);
 
 int main(int argc, char** argv)
 {
 	DBG_Character hero("JaJa", 10), ennemy("Tigole", 5);
 	std::vector<ICharacter*> fighters;
+	Party hero_party, ennemy_party;
+	std::vector<IParty*> ennemies_party;
 
 	fighters.push_back(&hero);
 	fighters.push_back(&ennemy);
 
+	hero_party.addMember(&hero);
+	ennemy_party.addMember(&ennemy);
+	ennemies_party.push_back(&ennemy_party);
+
+	hero_party.setEnnemies(ennemies_party);
+	ennemy_party.setEnnemies(std::vector<IParty*>(1, &hero_party));
+
+	cout << "STD FSM\n";
 	uut_Fight(hero, ennemy);
-	uut_Fight(fighters);
+	hero.m_hp = 50;
+	ennemy.m_hp = 5;
+	cout << "Object FSM\n";
+	uut_Fight(hero_party, ennemies_party);
 
 	system("PAUSE");
 	return 0;
@@ -55,7 +69,7 @@ void uut_Fight(ICharacter& hero, ICharacter& ennemy)
 			break;
 		case FS_Use_Skill:
 			/** Act **/
-			source_character->useSkill(*target_character);
+			source_character->useSkill();
 			if (!target_character->isDead())
 			{
 				std::swap(source_character, target_character);
@@ -97,9 +111,9 @@ void uut_Fight(ICharacter& hero, ICharacter& ennemy)
 
 }
 
-void uut_Fight(const std::vector<ICharacter*>& fighters)
+void uut_Fight(IParty& hero, std::vector<IParty*>& ennemies)
 {
-	fight::FightFSM fsm(fighters);
+	fight::FightFSM fsm(hero, ennemies);
 	int status;
 
 	do
@@ -107,5 +121,5 @@ void uut_Fight(const std::vector<ICharacter*>& fighters)
 		status = fsm.process();
 	} while (status == fsm::StatusHandlerFSM::STATUS_FSM_RUNNING);
 
-	std::cout << fsm.formatStatus(status) << "\n";
+	std::cout << "fsm ended with status : " << fsm.formatStatus(status) << "\n";
 }

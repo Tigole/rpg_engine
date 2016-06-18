@@ -33,10 +33,10 @@ namespace fsm
 		State();
 		virtual ~State();
 		IState* callProcess(void);
+		std::vector<std::pair<ITransition*, bool>> m_arr_transitions;
 	protected:
 		virtual bool process(void) = 0;
 
-		std::vector<std::pair<ITransition*, bool>> m_arr_transitions;
 	};
 
 	/** 

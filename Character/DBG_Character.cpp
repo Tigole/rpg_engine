@@ -4,7 +4,8 @@
 
 DBG_Character::DBG_Character(const char * name, int hp_max)
 	:m_hp(hp_max),
-	m_name(name)
+	m_name(name),
+	m_target(nullptr)
 {
 	std::cout << "<" << m_name << ">Hello ! My name is " << m_name << "\n";
 }
@@ -19,15 +20,17 @@ bool DBG_Character::isDead(void) const
 	return (m_hp <= 0);
 }
 
-void DBG_Character::selectSkill(void) const
+void DBG_Character::selectSkill(void)
 {
 	std::cout << m_name << "::selectSkill\n";
+	m_target = m_ennemies.front();
 }
 
-void DBG_Character::useSkill(ICharacter & target)
+void DBG_Character::useSkill(void)
 {
 	std::cout << m_name << "::useSkill\n";
-	target.setDamages(1);
+	if (m_target != nullptr && !m_target->isDead())
+		m_target->setDamages(1);
 }
 
 int DBG_Character::setDamages(int hp_damages)
@@ -37,4 +40,9 @@ int DBG_Character::setDamages(int hp_damages)
 	m_hp -= hp_damages;
 	std::cout << "\t" << m_hp << " hp remaining\n";
 	return m_hp;
+}
+
+void DBG_Character::setEnnemies(const std::vector<ICharacter*>& ennemies)
+{
+	m_ennemies = ennemies;
 }

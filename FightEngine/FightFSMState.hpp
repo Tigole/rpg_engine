@@ -1,5 +1,5 @@
-#ifndef _FIGHT_FSM_STATE_H
-#define _FIGHT_FSM_STATE_H 1
+#ifndef _FIGHT_FSM_STATE_HPP
+#define _FIGHT_FSM_STATE_HPP 1
 
 #include "FSM\FSM.hpp"
 #include "Character\ICharacter.hpp"
@@ -18,7 +18,7 @@ namespace fight
 			virtual ~FightState();
 			bool reset(void);
 
-			std::vector<ICharacter*> m_characters;
+			std::vector<ICharacter*>* m_characters;
 		};
 
 		class SelectSkill : public FightState
@@ -37,11 +37,11 @@ namespace fight
 		protected:
 			bool process(void);
 		private:
-			transition::CharactersDead m_trans_hero_dead;
-			transition::CharactersDead m_trans_ennemy_dead;
+			transition::PartyDead m_trans_hero_dead;
+			transition::PartyDead m_trans_ennemy_dead;
 		};
 	}
 }
 
 
-#endif // !_FIGHT_FSM_STATE_H
+#endif // !_FIGHT_FSM_STATE_HPP

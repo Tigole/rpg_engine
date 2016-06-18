@@ -1,32 +1,34 @@
-#ifndef _FIGHT_FSM_TRANSITION_H
-#define _FIGHT_FSM_TRANSITION_H 1
+#ifndef _FIGHT_FSM_TRANSITION_HPP
+#define _FIGHT_FSM_TRANSITION_HPP 1
 
 #include "FSM\FSMTransition.hpp"
 #include "Character\ICharacter.hpp"
 
 #include <vector>
 
+class IParty;
+
 namespace fight
 {
 	namespace transition
 	{
-		class CharacterTransition : public fsm::Transition
+		class PartyTransition : public fsm::Transition
 		{
 		public:
-			CharacterTransition();
-			virtual ~CharacterTransition();
+			PartyTransition();
+			virtual ~PartyTransition();
 			bool reset(void);
 
-			std::vector<ICharacter*> m_target_characters;
+			std::vector<IParty*> m_target_parties;
 
 		};
-		class CharactersDead : public CharacterTransition
+		class PartyDead : public PartyTransition
 		{
 		public:
 			fsm::IState* check(fsm::IState* current_state);
 		};
 
-		class CharactersAlive : public CharacterTransition
+		class PartyAlive : public PartyTransition
 		{
 		public:
 			fsm::IState* check(fsm::IState* current_state);
@@ -34,4 +36,4 @@ namespace fight
 	}
 }
 
-#endif // !_FIGHT_FSM_TRANSITION_H
+#endif // !_FIGHT_FSM_TRANSITION_HPP

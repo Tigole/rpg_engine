@@ -1,10 +1,12 @@
-#ifndef _FIGHT_FSM_H
-#define _FIGHT_FSM_H 1
+#ifndef _FIGHT_FSM_HPP
+#define _FIGHT_FSM_HPP 1
 
-#include "FSM/FSM.hpp"
+#include "FSM\FSM.hpp"
 #include "FSM\FSMState.hpp"
 #include "FSM\FSMTransition.hpp"
-#include "Character\ICharacter.hpp"
+
+class IParty;
+class ICharacter;
 
 namespace fight
 {
@@ -12,7 +14,7 @@ namespace fight
 	class FightFSM : public fsm::SequentialFSM
 	{
 	public:
-		FightFSM(const std::vector<ICharacter*>& fighters);
+		FightFSM(IParty& hero, std::vector<IParty*>& ennemies);
 		void initialize(void);
 		bool reset(void);
 
@@ -22,4 +24,4 @@ namespace fight
 }
 
 
-#endif // !_FIGHT_FSM_H
+#endif // !_FIGHT_FSM_HPP

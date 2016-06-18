@@ -6,7 +6,7 @@ namespace fight
 	namespace states
 	{
 		FightState::FightState()
-			:m_characters()
+			:m_characters(nullptr)
 		{}
 
 		FightState::~FightState()
@@ -14,32 +14,47 @@ namespace fight
 
 		bool FightState::reset(void) 
 		{
-			m_characters.resize(0);
 			return true;
 		}
 
 		SelectSkill::SelectSkill() 
 		{
-			m_arr_transitions.push_back(std::make_pair(new fsm::TrueTransition(), true));
+			/** Nothing **/
 		}
 
 		bool SelectSkill::process(void) 
 		{
-			//
+			bool l_b_ret(false);
+
+			if (m_characters != nullptr)
+			{
+				l_b_ret = true;
+				for (auto& it : *m_characters)
+				{
+					it->selectSkill();
+				}
+			}
 
 			return true;
 		}
 
 		UseSkill::UseSkill() 
 		{
-			m_arr_transitions.push_back(std::make_pair(new transition::CharactersDead(), true));
-			m_arr_transitions.push_back(std::make_pair(new transition::CharactersDead(), true));
-			m_arr_transitions.push_back(std::make_pair(new transition::CharactersAlive(), true));
+			/** Nothing **/
 		}
 
 		bool UseSkill::process(void) 
 		{
-			return true;
+			bool l_b_ret(false);
+			if (m_characters != nullptr)
+			{
+				l_b_ret = true;
+				for (auto& a : *m_characters)
+				{
+					a->useSkill();
+				}
+			}
+			return l_b_ret;
 		}
 	}
 }
