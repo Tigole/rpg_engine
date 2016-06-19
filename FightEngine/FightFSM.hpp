@@ -14,10 +14,11 @@ namespace fight
 	class FightFSM : public fsm::SequentialFSM
 	{
 	public:
-		FightFSM(IParty& hero, std::vector<IParty*>& ennemies);
-		void initialize(void);
-		bool reset(void);
+		FightFSM();
+		void initialize(IParty& hero, std::vector<IParty*>& ennemies);
 
+	protected:
+		bool reset(void);
 	private:
 		std::vector<ICharacter*> m_fighters;
 	};

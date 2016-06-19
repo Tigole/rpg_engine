@@ -28,7 +28,6 @@ class IFSM : public misc::Resetable
 public:
 	virtual ~IFSM(){}
 
-	virtual void initialize(void) = 0;
 	virtual int process(void) = 0;
 	virtual const char* formatStatus(int status) const = 0;
 };

@@ -15,6 +15,8 @@ public:
 	BasicFSM();
 	virtual ~BasicFSM();
 
+	bool reset(void);
+
 protected:
 	IState* m_current_state;
 	std::vector<std::pair<IState*, bool>> m_arr_states;

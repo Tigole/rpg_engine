@@ -11,14 +11,7 @@ State::State()
 
 State::~State()
 {
-	for (auto& t : m_arr_transitions)
-	{
-		if (t.second)
-		{
-			delete t.first;
-		}
-	}
-	/** Nothing **/
+	reset();
 }
 
 IState* State::callProcess(void)
@@ -36,6 +29,15 @@ IState* State::callProcess(void)
 	}
 
 	return l_p_ret;
+}
+
+
+bool State::reset(void)
+{
+	for (auto& t : m_arr_transitions)
+		if (t.second)
+			delete t.first;
+	return true;
 }
 
 EntryExitState::EntryExitState()

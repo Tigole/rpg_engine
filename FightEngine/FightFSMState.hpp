@@ -14,17 +14,17 @@ namespace fight
 		class FightState : public fsm::State
 		{
 		public:
-			FightState();
+			FightState(std::vector<ICharacter*>& characters);
 			virtual ~FightState();
 			bool reset(void);
 
-			std::vector<ICharacter*>* m_characters;
+			std::vector<ICharacter*>& m_characters;
 		};
 
 		class SelectSkill : public FightState
 		{
 		public:
-			SelectSkill();
+			SelectSkill(std::vector<ICharacter*>& characters);
 		protected:
 			bool process(void);
 		private:
@@ -33,7 +33,7 @@ namespace fight
 		class UseSkill : public FightState
 		{
 		public:
-			UseSkill();
+			UseSkill(std::vector<ICharacter*>& characters);
 		protected:
 			bool process(void);
 		private:

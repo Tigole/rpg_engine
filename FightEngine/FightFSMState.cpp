@@ -5,8 +5,8 @@ namespace fight
 {
 	namespace states
 	{
-		FightState::FightState()
-			:m_characters(nullptr)
+		FightState::FightState(std::vector<ICharacter*>& characters)
+			:m_characters(characters)
 		{}
 
 		FightState::~FightState()
@@ -14,46 +14,42 @@ namespace fight
 
 		bool FightState::reset(void) 
 		{
-			return true;
+			return fsm::State::reset();
 		}
 
-		SelectSkill::SelectSkill() 
+		SelectSkill::SelectSkill(std::vector<ICharacter*>& characters)
+			:FightState(characters)
 		{
 			/** Nothing **/
 		}
 
 		bool SelectSkill::process(void) 
 		{
-			bool l_b_ret(false);
+			bool l_b_ret(true);
 
-			if (m_characters != nullptr)
+			for (auto& it : m_characters)
 			{
-				l_b_ret = true;
-				for (auto& it : *m_characters)
-				{
-					it->selectSkill();
-				}
+				it->selectSkill();
 			}
 
 			return true;
 		}
 
-		UseSkill::UseSkill() 
+		UseSkill::UseSkill(std::vector<ICharacter*>& characters)
+			:FightState(characters)
 		{
 			/** Nothing **/
 		}
 
 		bool UseSkill::process(void) 
 		{
-			bool l_b_ret(false);
-			if (m_characters != nullptr)
+			bool l_b_ret(true);
+
+			for (auto& a : m_characters)
 			{
-				l_b_ret = true;
-				for (auto& a : *m_characters)
-				{
-					a->useSkill();
-				}
+				a->useSkill();
 			}
+
 			return l_b_ret;
 		}
 	}

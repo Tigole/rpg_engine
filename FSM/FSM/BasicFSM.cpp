@@ -13,7 +13,16 @@ BasicFSM::BasicFSM()
 
 BasicFSM::~BasicFSM()
 {
-	/** Nothing **/
+	reset();
+}
+
+bool BasicFSM::reset(void)
+{
+	for (auto& a : m_arr_states)
+		if (a.second)
+			delete a.first;
+
+	return true;
 }
 
 }

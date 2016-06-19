@@ -33,6 +33,7 @@ namespace fsm
 		State();
 		virtual ~State();
 		IState* callProcess(void);
+		bool reset(void);
 		std::vector<std::pair<ITransition*, bool>> m_arr_transitions;
 	protected:
 		virtual bool process(void) = 0;
@@ -73,7 +74,7 @@ namespace fsm
 		EntryExitState();
 		virtual ~EntryExitState();
 		IState* callProcess(void);
-		bool reset(void);
+		virtual bool reset(void);
 
 	protected:
 		virtual bool onEntry(void);
