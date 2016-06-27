@@ -4,6 +4,8 @@
 #include "ICharacter.hpp"
 #include "BasicCharacter.hpp"
 
+class SkillManager;
+
 class DBG_Character : public BasicCharacter
 {
 public:
@@ -13,6 +15,12 @@ public:
 	virtual void selectSkill(void);
 	virtual void useSkill(void);
 	virtual void setDamages(int hp_damages);
+	virtual int getBaseAttack(void) const;
+
+	bool loadSkills(const SkillManager& sm);
+
+private:
+	int m_skill_index;
 };
 
 #endif // !_DBG_CHARACTER_HPP

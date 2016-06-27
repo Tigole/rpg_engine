@@ -1,6 +1,16 @@
 #include "Party.hpp"
-#include "Character\ICharacter.hpp"
+#include "Character/ICharacter.hpp"
 
+Party::Party()
+	:m_members()
+{
+	/** Nothing **/
+}
+
+Party::~Party()
+{
+	/** Nothing **/
+}
 
 void Party::setEnnemies(const std::vector<IParty*>& ennemies_parties)
 {

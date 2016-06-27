@@ -1,6 +1,13 @@
 #ifndef _RESETABLE_HPP
 #define _RESETABLE_HPP 1
 
+#include <string>
+#include <sstream>
+#include <tinyxml.h>
+
+#define FUNCTION_NAME __FUNCTION__
+#define UNUSED_PARAMETER(x) (void)(x)
+
 namespace misc
 {
 
@@ -35,7 +42,6 @@ namespace misc
 		virtual Clonable* clone(void) const = 0;
 	};
 
-
 	template<typename T>
 	struct Gauge
 	{
@@ -53,12 +59,12 @@ namespace misc
 	};
 
 	template<typename T>
-	Gauge<T>& operator+=(Gauge<T>& g, const T& t) 
+	Gauge<T>& operator+=(Gauge<T>& g, const T& t)
 	{
 		g.m_actual_value += t;
 		if (g.m_actual_value > g.m_max_value)
 			g.m_actual_value = g.m_max_value;
-		return g; 
+		return g;
 	}
 
 	template<typename T>
@@ -68,6 +74,35 @@ namespace misc
 		if (g.m_actual_value > g.m_max_value)
 			g.m_actual_value = g.m_max_value;
 		return g;
+	}
+
+	template<typename T>
+	std::string numberToString(T number)
+	{
+		std::stringstream ss;
+		ss << number;
+		return ss.str();
+	}
+
+	std::string numberToString(unsigned char c);
+	std::string numberToString(char c);
+
+	template<typename T>
+	std::string numberToHexDec(T number)
+	{
+		std::stringstream ss;
+		std::string ret("[");
+
+		ss << number;
+		ret += ss.str();
+		ss.str("");
+		ss << number;
+		ss << std::hex;
+		ret += " | 0x" + ss.str();
+
+		ret += "]";
+
+		return ret;
 	}
 
 }

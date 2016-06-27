@@ -12,36 +12,39 @@ namespace fight
 		FightState::~FightState()
 		{}
 
-		bool FightState::reset(void) 
+		bool FightState::reset(void)
 		{
 			return fsm::State::reset();
 		}
 
 		SelectSkill::SelectSkill(std::vector<ICharacter*>& characters)
-			:FightState(characters)
+			:FightState(characters),
+			m_trans_true()
 		{
 			/** Nothing **/
 		}
 
-		bool SelectSkill::process(void) 
+		bool SelectSkill::process(void)
 		{
-			bool l_b_ret(true);
+			bool l_ret(true);
 
 			for (auto& it : m_characters)
 			{
 				it->selectSkill();
 			}
 
-			return true;
+			return l_ret;
 		}
 
 		UseSkill::UseSkill(std::vector<ICharacter*>& characters)
-			:FightState(characters)
+			:FightState(characters),
+			m_trans_hero_dead(),
+			m_trans_ennemy_dead()
 		{
 			/** Nothing **/
 		}
 
-		bool UseSkill::process(void) 
+		bool UseSkill::process(void)
 		{
 			bool l_b_ret(true);
 

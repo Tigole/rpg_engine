@@ -20,7 +20,7 @@ class TrueTransition : public Transition
 public:
 	TrueTransition(){}
 
-	IState* check(IState* p_current_state) {return m_target_state;}
+	IState* check(IState* current_state) {UNUSED_PARAMETER(current_state); return m_target_state;}
 	bool reset(void) { return true; }
 };
 

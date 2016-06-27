@@ -6,6 +6,8 @@
 class Party : public IParty
 {
 public:
+	Party();
+	virtual ~Party();
 	virtual void setEnnemies(const std::vector<IParty*>& ennemies);
 
 	virtual std::vector<ICharacter*>& getMembers(void);

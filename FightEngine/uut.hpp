@@ -19,6 +19,7 @@ namespace uut
 
 	void uut_Fight_std(void);
 	void uut_Fight_obj(void);
+	void uut_TestLoadingSkills(void);
 }
 
 

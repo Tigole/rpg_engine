@@ -1,10 +1,11 @@
 #include "BasicSkill.hpp"
 
-#include "FSM\FSM.hpp"
+#include "FSM/FSM.hpp"
 
 
 BasicSkill::BasicSkill(const std::string& name)
-	:m_name(name)
+	:m_owner(nullptr),
+	m_name(name)
 {
 	//
 }
@@ -14,7 +15,18 @@ BasicSkill::~BasicSkill()
 	//
 }
 
-int BasicSkill::use(const std::vector<ICharacter*>& targets)
+void BasicSkill::use(const std::vector<ICharacter*>& targets)
 {
-	return fsm::StatusHandlerFSM::STATUS_FSM_ERROR;
+	for (auto& target : targets)
+	{
+		do
+		{
+			affectCharacter(*target);
+		} while (false);
+	};
+}
+
+void BasicSkill::setOwner(ICharacter& owner)
+{
+	m_owner = &owner;
 }
