@@ -3,7 +3,7 @@
 
 #include "FSM\FSM.hpp"
 #include "Character\ICharacter.hpp"
-#include "FightFSMTransition.hpp"
+#include "FightEngine/Transitions/FightFSMTransition.hpp"
 #include "FSM\FSMState.hpp"
 #include <vector>
 

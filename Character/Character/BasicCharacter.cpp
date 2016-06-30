@@ -1,6 +1,6 @@
 #include "BasicCharacter.hpp"
 
-#include "FightEngine/ISkill.hpp"
+#include "Skill/ISkill.hpp"
 
 BasicCharacter::BasicCharacter(const std::string& name, const misc::Gauge<int>& hp)
 	:m_hp(hp),

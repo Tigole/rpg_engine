@@ -5,7 +5,13 @@
 #include <sstream>
 #include <tinyxml.h>
 
-#define FUNCTION_NAME __FUNCTION__
+
+#ifdef _MSC_VER
+#define FUNCTION_NAME __FUNCSIG__
+#else
+#define FUNCTION_NAME __PRETTY_FUNCTION__
+#endif // _MSC_VER
+
 #define UNUSED_PARAMETER(x) (void)(x)
 
 namespace misc

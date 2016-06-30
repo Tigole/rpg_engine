@@ -1,22 +1,22 @@
 #include "DBG_Character.hpp"
 #include "Logger/ILogger.h"
 
-#include "FightEngine/DamageSkill.hpp"
+#include "Skill/Skill/DamageSkill.hpp"
 
-#include "FightEngine/SkillManager.hpp"
-#include "FightEngine/ISkill.hpp"
+#include "Skill/SkillManager.hpp"
+#include "Skill/ISkill.hpp"
 
 DBG_Character::DBG_Character(const char * name, int hp_max)
 	:BasicCharacter(name, misc::Gauge<int>(hp_max)),
 	m_skill_index(0)
 {
 	m_skills.resize(6);
-	m_skills[0].reset(new DamageSkill("test attack ADD", 1, DamageSkill::DSO_ADD));
+	/*m_skills[0].reset(new DamageSkill("test attack ADD", 1, DamageSkill::DSO_ADD));
 	m_skills[1].reset(new DamageSkill("test attack MINUS", 1, DamageSkill::DSO_MINUS));
 	m_skills[2].reset(new DamageSkill("test attack MULTIPLY", 2, DamageSkill::DSO_MULTIPLY));
 	m_skills[3].reset(new DamageSkill("test attack DIVIDE", 1, DamageSkill::DSO_DIVIDE));
 	m_skills[4].reset(new DamageSkill("test attack PERCENT", 50, DamageSkill::DSO_PERCENT));
-	m_skills[5].reset(new DamageSkill("test attack RAW", 1, DamageSkill::DSO_RAW));
+	m_skills[5].reset(new DamageSkill("test attack RAW", 1, DamageSkill::DSO_RAW));*/
 }
 
 DBG_Character::~DBG_Character()

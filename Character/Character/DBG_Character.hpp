@@ -1,7 +1,7 @@
 #ifndef _DBG_CHARACTER_HPP
 #define _DBG_CHARACTER_HPP 1
 
-#include "ICharacter.hpp"
+#include "Character/ICharacter.hpp"
 #include "BasicCharacter.hpp"
 
 class SkillManager;

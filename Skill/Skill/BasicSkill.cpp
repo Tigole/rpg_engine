@@ -3,7 +3,7 @@
 #include "FSM/FSM.hpp"
 
 
-BasicSkill::BasicSkill(const std::string& name)
+BasicSkill::BasicSkill(const sf::String& name)
 	:m_owner(nullptr),
 	m_name(name)
 {

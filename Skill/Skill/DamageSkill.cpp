@@ -7,10 +7,10 @@
 
 std::map<DamageSkill::DamageSkillOperator, int (DamageSkill::*)(int, int)> DamageSkill::m_operator_map;
 
-DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const std::string & op)
+DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const sf::String & op)
 {
-	std::map<std::string, DamageSkillOperator> l_map;
-	std::map<std::string, DamageSkillOperator>::iterator l_map_it;
+	std::map<sf::String, DamageSkillOperator> l_map;
+	std::map<sf::String, DamageSkillOperator>::iterator l_map_it;
 
 	l_map["DSO_ADD"] = DSO_ADD;
 	l_map["DSO_MINUS"] = DSO_MINUS;
@@ -26,7 +26,7 @@ DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const std::string
 	return l_map_it->second;
 }
 
-DamageSkill::DamageSkill(const std::string& name, int damages, DamageSkillOperator op)
+DamageSkill::DamageSkill(const sf::String& name, int damages, DamageSkillOperator op)
 	:BasicSkill(name),
 	m_damages(damages),
 	m_operator(op)
@@ -49,7 +49,7 @@ DamageSkill::~DamageSkill()
 
 DamageSkill* DamageSkill::clone(void) const
 {
-	return new DamageSkill(*this);
+	return nullptr;// new DamageSkill(*this);
 }
 
 int DamageSkill::affectCharacter(ICharacter& target)
@@ -61,7 +61,7 @@ int DamageSkill::affectCharacter(ICharacter& target)
 
 	assert(it != m_operator_map.end());
 
-	log() << "name : " << m_name << "\n";
+	log() << "name : " << m_name.toAnsiString() << "\n";
 	log() << "m_owner.getBaseAttack() : " << m_owner->getBaseAttack() << "\n";
 	log() << "m_damages : " << m_damages << "\n";
 

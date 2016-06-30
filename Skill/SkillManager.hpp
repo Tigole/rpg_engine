@@ -26,7 +26,7 @@ class SkillManager
 public:
     SkillManager();
 
-	bool load(const std::string& file_path, const std::vector<SkillManagerLoader>& loading_functions);
+	bool load(const std::string& file_path, const std::vector<SkillManagerLoader*>& loading_functions);
 
 	std::unique_ptr<ISkill> getSkill(const std::string& skill_name, ICharacter& skill_owner) const;
 

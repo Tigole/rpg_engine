@@ -1,5 +1,5 @@
 #include "SkillManager.hpp"
-#include "FightEngine/ISkill.hpp"
+#include "Skill/ISkill.hpp"
 #include "Logger/ILogger.h"
 
 #include <algorithm>
@@ -30,19 +30,20 @@ bool operator==(const SkillManagerLoader& a, const SkillManagerLoader &b)
 	return a.m_element_name == b.m_element_name;
 }
 
-bool SkillManager::load(const std::string& file_path, const std::vector<SkillManagerLoader>& loading_functions)
+bool SkillManager::load(const std::string& file_path, const std::vector<SkillManagerLoader*>& loading_functions)
 {
 	bool l_ret(false);
 	TiXmlDocument l_doc;
 	TiXmlElement* l_element(nullptr);
 	TiXmlAttribute* l_attribute(nullptr);
-	std::vector<SkillManagerLoader>::const_iterator l_it(loading_functions.end());
+	std::vector<SkillManagerLoader*>::const_iterator l_it(loading_functions.end());
 	ISkill* l_tmp_skill(nullptr);
 
 	/** Testing functions pointer to provide segfault **/
 	for (auto& lf : loading_functions)
 	{
-		assert(lf.m_loading_function != nullptr);
+		assert(lf != nullptr);
+		assert(lf->m_loading_function != nullptr);
 	}
 
 	l_ret = l_doc.LoadFile(file_path);
@@ -56,11 +57,11 @@ bool SkillManager::load(const std::string& file_path, const std::vector<SkillMan
 		{
 			l_attribute = l_element->FirstAttribute();
 
-			l_it = std::find(loading_functions.begin(), loading_functions.end(), SkillManagerLoader(l_element->Value()));
+			//l_it = std::find(loading_functions.begin(), loading_functions.end(), SkillManagerLoader(l_element->Value()));
 
 			assert(l_it != loading_functions.end());
 
-			l_tmp_skill = l_it->m_loading_function(*l_element);
+			l_tmp_skill = (*l_it)->m_loading_function(*l_element);
 
 			if (l_tmp_skill != nullptr)
 			{

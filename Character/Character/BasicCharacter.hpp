@@ -1,7 +1,7 @@
 #ifndef _BASIC_CHARACTER_HPP
 #define _BASIC_CHARACTER_HPP 1
 
-#include "ICharacter.hpp"
+#include "Character/ICharacter.hpp"
 #include "Miscellaneous.hpp"
 #include <string>
 #include <memory>

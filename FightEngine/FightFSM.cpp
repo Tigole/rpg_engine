@@ -1,7 +1,7 @@
 #include "FightFSM.hpp"
-#include "FightFSMState.hpp"
+#include "States/FightFSMState.hpp"
 
-#include "IParty.hpp"
+#include "Party/IParty.hpp"
 
 namespace fight
 {

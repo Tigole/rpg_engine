@@ -1,13 +1,15 @@
 #include "uut.hpp"
 
-#include "Character/DBG_Character.hpp"
-#include "FightEngine/Party.hpp"
-#include "FightFSM.hpp"
+#include "Character/Character/DBG_Character.hpp"
+#include "Party/Party.hpp"
+#include "FightEngine/FightFSM.hpp"
 #include "Logger/ILogger.h"
-#include "FightEngine/SkillManager.hpp"
-#include "FightEngine/ISkill.hpp"
+#include "Skill/SkillManager.hpp"
+#include "Skill/ISkill.hpp"
 
-#include "FightEngine/DamageSkill.hpp"
+#include "Skill/Skill/DamageSkill.hpp"
+
+#include <SFML\Graphics.hpp>
 
 #include <iostream>
 
@@ -30,7 +32,7 @@ ISkill* createDamageSkill(const TiXmlElement& element)
 	if (l_fn_returned == TIXML_SUCCESS) l_skill_operator = DamageSkill::stringToOperator(l_tmp);
 
 	/** new object **/
-	if (l_fn_returned == TIXML_SUCCESS) l_ret = new DamageSkill(l_skill_name, l_skill_damages, l_skill_operator);
+	//if (l_fn_returned == TIXML_SUCCESS) l_ret = new DamageSkill(l_skill_name, l_skill_damages, l_skill_operator);
 	
 	return l_ret;
 }
@@ -154,7 +156,7 @@ namespace uut
 
 		loaders.push_back(SkillManagerLoader("DamageSkill", createDamageSkill));
 
-		log() << sm.load(file_path, loaders) << "\n";
+		//log() << sm.load(file_path, loaders) << "\n";
 
 		log().startBlock("testing getting skills");
 
@@ -169,5 +171,52 @@ namespace uut
 		log().endBlock();
 
 		log().exitFunction();
+	}
+
+	void uut_Test_Sf_String(void)
+	{
+		std::string title("ééé");
+		sf::Font font;
+		sf::Text text;
+		sf::RenderWindow window(sf::VideoMode(640, 480), "ààà");
+		bool font_loaded;
+		std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
+
+		font_loaded = font.loadFromFile(res_path + "Font/firestarter/FIRESTARTER.ttf");
+		font_loaded = font.loadFromFile(res_path + "Font/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");
+
+		//window.setTitle(title.c_str());
+
+		// choix de la police à utiliser
+		if (font_loaded)
+			text.setFont(font); // font est un sf::Font
+
+		// choix de la chaîne de caractères à afficher
+		text.setString("Hello world éàè@");
+
+		// choix de la taille des caractères
+		text.setCharacterSize(24); // exprimée en pixels, pas en points !
+
+		// choix de la couleur du texte
+		text.setColor(sf::Color::Red);
+
+		// choix du style du texte
+		text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+
+			window.clear(sf::Color::Green);
+			// puis, dans la boucle de dessin, entre window.clear() et window.display()
+			window.draw(text);
+			window.display();
+		}
+
 	}
 }

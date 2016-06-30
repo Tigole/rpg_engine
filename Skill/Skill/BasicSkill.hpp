@@ -1,14 +1,14 @@
 #ifndef _BASIC_SKILL_HPP
 #define _BASIC_SKILL_HPP 1
 
-#include "ISkill.hpp"
+#include "Skill/ISkill.hpp"
 
-#include <string>
+#include <SFML\System\String.hpp>
 
 class BasicSkill : public ISkill
 {
 public:
-	BasicSkill(const std::string& name);
+	BasicSkill(const sf::String& name);
 	virtual ~BasicSkill();
 
 	virtual void use(const std::vector<ICharacter*>& targets);
@@ -19,7 +19,7 @@ protected:
 	virtual int affectCharacter(ICharacter& target) = 0;
 
 	ICharacter* m_owner;
-	std::string m_name;
+	sf::String m_name;
 };
 
 #endif // !_BASIC_SKILL_HPP

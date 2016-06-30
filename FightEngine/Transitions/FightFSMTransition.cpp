@@ -1,5 +1,5 @@
 #include "FightFSMTransition.hpp"
-#include "IParty.hpp"
+#include "Party/IParty.hpp"
 
 
 namespace fight
