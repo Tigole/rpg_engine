@@ -2,7 +2,8 @@
 
 
 Character::Character(const std::string& name, int hp)
-	:BasicCharacter(name, misc::Gauge<int>(hp))
+ :	BasicCharacter(name, misc::Gauge<int>(hp)),
+	m_fighters()
 {
 	/** Nothing **/
 }

@@ -1,7 +1,7 @@
 #ifndef _FSM_TRANSITION_HPP
 #define _FSM_TRANSITION_HPP 1
 
-#include "FSM\Transition\Transition.hpp"
+#include "FSM/Transition/Transition.hpp"
 
 namespace fsm
 {

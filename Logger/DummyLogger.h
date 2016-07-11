@@ -6,14 +6,14 @@
 class DummyLogger : public ILogger
 {
 public:
-    virtual bool estValide(void);
-    virtual void entreeFonction(const char* nom_fonction);
-    virtual void sortieFonction(void);
-    virtual void debutEvenement(const char* nom_evenement);
-    virtual void finEvenement(void);
-    virtual void commencerBlock(const char* nom_block);
-    virtual void terminerBlock(void);
-    virtual void stopperLog(void);
+	virtual bool isValid(void);
+    virtual void entranceFunction(const char* function_name);
+    virtual void exitFunction(void);
+    virtual void onEvent(const char* event_name);
+    virtual void stopEvent(void);
+    virtual void startBlock(const char* block_name);
+    virtual void endBlock(void);
+    virtual void stopLog(void);
     virtual ILogger& log(const std::string& msg);
 
 // Documentation

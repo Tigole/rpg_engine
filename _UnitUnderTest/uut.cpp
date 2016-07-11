@@ -1,6 +1,7 @@
 #include "uut.hpp"
 
 #include "Character/Character/DBG_Character.hpp"
+#include "Character/Loader/DBG_CharacterLoader.hpp"
 #include "Party/Party.hpp"
 #include "FightEngine/FightFSM.hpp"
 #include "Logger/ILogger.h"
@@ -9,33 +10,14 @@
 
 #include "Skill/Skill/DamageSkill.hpp"
 
-#include <SFML\Graphics.hpp>
+#include "Skill/Loader/SkillLoader.hpp"
+#include "Skill/Loader/DBG_DamageSkillLoader.hpp"
+
+#include "Character/CharacterManager.hpp"
+
+#include <SFML/Graphics.hpp>
 
 #include <iostream>
-
-ISkill* createDamageSkill(const TiXmlElement& element)
-{
-	ISkill* l_ret(nullptr);
-	std::string l_skill_name, l_tmp;
-	int l_skill_damages;
-	int l_fn_returned(TIXML_SUCCESS);
-	DamageSkill::DamageSkillOperator l_skill_operator;
-	
-	/** name **/
-	if (l_fn_returned == TIXML_SUCCESS)	l_fn_returned = element.QueryStringAttribute("name", &l_skill_name);
-
-	/** damages **/
-	if (l_fn_returned == TIXML_SUCCESS) l_fn_returned = element.QueryIntAttribute("damages", &l_skill_damages);
-
-	/** operator **/
-	if (l_fn_returned == TIXML_SUCCESS) l_fn_returned = element.QueryStringAttribute("operator", &l_tmp);
-	if (l_fn_returned == TIXML_SUCCESS) l_skill_operator = DamageSkill::stringToOperator(l_tmp);
-
-	/** new object **/
-	//if (l_fn_returned == TIXML_SUCCESS) l_ret = new DamageSkill(l_skill_name, l_skill_damages, l_skill_operator);
-	
-	return l_ret;
-}
 
 namespace uut
 {
@@ -137,68 +119,75 @@ namespace uut
 		log() << "fsm ended with status : " << fsm.formatStatus(status) << "\n";
 		log().exitFunction();
 	}
+
 	void uut_TestLoadingSkills(void)
 	{
 		SkillManager sm;
-		std::vector<SkillManagerLoader> loaders;
-		std::string file_path("C:/Users/Janniere Sylvain/Documents/Visual Studio 2015/Projects/projeay/Skills.xml");
+		std::vector<SkillLoader*> loaders;
+		std::string file_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Data/Skills.xml");
 		std::vector<std::string> skills_names;
 		DBG_Character c("JaJa", 50);
 
 		log().entranceFunction(FUNCTION_NAME);
 
-		skills_names.push_back("skill test ADD");
-		skills_names.push_back("skill test MINUS");
-		skills_names.push_back("skill test MULTIPLY");
-		skills_names.push_back("skill test DIVIDE");
-		skills_names.push_back("skill test PERCENT");
-		skills_names.push_back("skill test RAW");
+		skills_names.push_back("Attack +1");
+		skills_names.push_back("Attack -1");
+		skills_names.push_back("Attack *2");
+		skills_names.push_back("Attack /2");
+		skills_names.push_back("Attack %75");
+		skills_names.push_back("Attack 5");
 
-		loaders.push_back(SkillManagerLoader("DamageSkill", createDamageSkill));
+		loaders.push_back(new DBG_DamageSkillLoader("DBG_DamageSkill"));
 
-		//log() << sm.load(file_path, loaders) << "\n";
+		log() << sm.load(file_path, loaders) << "\n";
 
 		log().startBlock("testing getting skills");
 
 		for (auto& skill_name : skills_names)
 		{
 			std::unique_ptr<ISkill> skill;
-			log() << "getting " << skill_name << "\n";
+			log() << "getting " << skill_name << " : \t";
 			skill = std::move(sm.getSkill(skill_name, c));
 			log() << skill.get() << "\n";
 		}
 
 		log().endBlock();
 
+		for (auto& a : loaders)
+			delete a;
+
 		log().exitFunction();
 	}
 
 	void uut_Test_Sf_String(void)
 	{
-		std::string title("ééé");
+		std::string title("Ã©Ã©Ã©");
 		sf::Font font;
 		sf::Text text;
-		sf::RenderWindow window(sf::VideoMode(640, 480), "ààà");
+		sf::RenderWindow window(sf::VideoMode(640, 480), "Ã Ã Ã ");
 		bool font_loaded;
 		std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
 
-		font_loaded = font.loadFromFile(res_path + "Font/firestarter/FIRESTARTER.ttf");
+		log().entranceFunction(FUNCTION_NAME);
+
+		//font_loaded = font.loadFromFile(res_path + "Font/firestarter/FIRESTARTER.ttf");
 		font_loaded = font.loadFromFile(res_path + "Font/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");
 
-		//window.setTitle(title.c_str());
+		window.setTitle(title.c_str());
 
-		// choix de la police à utiliser
+		// choix de la police Ã  utiliser
 		if (font_loaded)
 			text.setFont(font); // font est un sf::Font
 
-		// choix de la chaîne de caractères à afficher
-		text.setString("Hello world éàè@");
+		// choix de la chaÃ®ne de caractÃ¨res Ã  afficher
+		text.setString(sf::String("Hello world Ã©Ã Ã¨@"));
 
-		// choix de la taille des caractères
-		text.setCharacterSize(24); // exprimée en pixels, pas en points !
+		// choix de la taille des caractÃ¨res
+		text.setCharacterSize(24); // exprimÃ©e en pixels, pas en points !
 
 		// choix de la couleur du texte
-		text.setColor(sf::Color::Red);
+		text.setColor(sf::Color(0, 100, 0));
+		text.setScale(2.0f, 2.0f);
 
 		// choix du style du texte
 		text.setStyle(sf::Text::Bold | sf::Text::Underlined);
@@ -217,6 +206,44 @@ namespace uut
 			window.draw(text);
 			window.display();
 		}
+		log().exitFunction();
+	}
 
+	void uut_Loading_Characters(void)
+	{
+		std::unique_ptr<ICharacter> character;
+		CharacterManager cm;
+		SkillManager sm;
+		std::vector<SkillLoader*> skill_loaders;
+		std::vector<CharacterLoader*> char_loaders;
+		std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/"),
+					skills_file("Data/Skills.xml"),
+					characters_file("Data/Mobs.xml"),
+					character_to_get("Toto");
+
+		log().entranceFunction(FUNCTION_NAME);
+
+		skill_loaders.push_back(new DBG_DamageSkillLoader("DBG_DamageSkill"));
+		char_loaders.push_back(new DBG_CharacterLoader("DBG_Character"));
+
+		if (sm.load(res_path + skills_file, skill_loaders))
+		{
+			if (cm.load(res_path + characters_file, char_loaders, sm))
+			{
+				character = cm.getCharacter(character_to_get);
+				character->dump(log());
+			}
+			else
+				log() << "failed loading characters\n";
+		}
+		else
+			log() << "failed loading skills\n";
+
+		for (auto& a : skill_loaders)
+			delete a;
+		for (auto& a : char_loaders)
+			delete a;
+
+		log().exitFunction();
 	}
 }

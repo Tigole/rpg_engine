@@ -6,14 +6,14 @@
 
 class ICharacter;
 
-class ISkill : public misc::Clonable
+class ISkill : public misc::Clonable<ISkill>
 {
 public:
 	virtual ~ISkill(){}
 
 	virtual void use(const std::vector<ICharacter*>& targets) = 0;
 	virtual void setOwner(ICharacter& owner) = 0;
-	virtual ISkill* clone(void) const = 0;
+	virtual const std::string& getName(void) const = 0	;
 };
 
 #endif // !_ISKILL_HPP

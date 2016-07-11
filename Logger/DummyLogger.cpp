@@ -1,47 +1,49 @@
 #include "DummyLogger.h"
 
+#define DUMMY_LOGGER_UNUSED_PARAMETER(X) (void)(X)
 
-bool DummyLogger::estValide(void)
+bool DummyLogger::isValid(void)
 {
     return true;
 }
 
-void DummyLogger::entreeFonction(const char* nom_fonction)
+void DummyLogger::entranceFunction(const char* function_name)
 {
-    //
+	DUMMY_LOGGER_UNUSED_PARAMETER(function_name);
 }
 
-void DummyLogger::sortieFonction(void)
+void DummyLogger::exitFunction(void)
 {
-    //
+	/** *Nothing **/
 }
 
-void DummyLogger::debutEvenement(const char* nom_evenement)
+void DummyLogger::onEvent(const char* event_name)
 {
-    //
+	DUMMY_LOGGER_UNUSED_PARAMETER(event_name);
 }
 
-void DummyLogger::finEvenement(void)
+void DummyLogger::stopEvent(void)
 {
-    //
+	/** Nothing **/
 }
 
-void DummyLogger::commencerBlock(const char* nom_block)
+void DummyLogger::startBlock(const char* block_name)
 {
-    //
+	DUMMY_LOGGER_UNUSED_PARAMETER(block_name);
 }
 
-void DummyLogger::terminerBlock(void)
+void DummyLogger::endBlock(void)
 {
-    //
+	/** Nothing **/
 }
 
-void DummyLogger::stopperLog(void)
+void DummyLogger::stopLog(void)
 {
-    //
+	/** Nothing **/
 }
 
 ILogger& DummyLogger::log(const std::string& msg)
 {
+	DUMMY_LOGGER_UNUSED_PARAMETER(msg);
     return *this;
 }

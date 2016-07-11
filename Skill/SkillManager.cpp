@@ -4,18 +4,7 @@
 
 #include <algorithm>
 
-SkillManagerLoader::SkillManagerLoader(const std::string& element_name)
-	: m_element_name(element_name), m_loading_function(nullptr)
-{
-	/** Nothing **/
-}
-
-SkillManagerLoader::SkillManagerLoader(const std::string& element_name, ISkill* (*loading_function)(const TiXmlElement&))
-	: m_element_name(element_name),
-	m_loading_function(loading_function)
-{
-	/** Nothing **/
-}
+#include "Loader/SkillLoader.hpp"
 
 SkillManager::SkillManager()
  :  m_skills()
@@ -25,51 +14,65 @@ SkillManager::SkillManager()
 	log().exitFunction();
 }
 
-bool operator==(const SkillManagerLoader& a, const SkillManagerLoader &b)
-{
-	return a.m_element_name == b.m_element_name;
-}
-
-bool SkillManager::load(const std::string& file_path, const std::vector<SkillManagerLoader*>& loading_functions)
+bool SkillManager::load(const std::string& file_path, const std::vector<SkillLoader*>& loaders)
 {
 	bool l_ret(false);
 	TiXmlDocument l_doc;
 	TiXmlElement* l_element(nullptr);
 	TiXmlAttribute* l_attribute(nullptr);
-	std::vector<SkillManagerLoader*>::const_iterator l_it(loading_functions.end());
+	std::vector<SkillLoader*>::const_iterator l_it(loaders.end());
 	ISkill* l_tmp_skill(nullptr);
 
-	/** Testing functions pointer to provide segfault **/
-	for (auto& lf : loading_functions)
-	{
-		assert(lf != nullptr);
-		assert(lf->m_loading_function != nullptr);
-	}
+	log().entranceFunction(FUNCTION_NAME);
 
 	l_ret = l_doc.LoadFile(file_path);
 
 	if (l_ret)
 		l_ret = validate(l_doc);
+	else
+		log() << "Can't read file : \"" << file_path << "\"\n";
 
 	if (l_ret)
 	{
-		for (l_element = l_doc.FirstChild()->NextSibling()->FirstChild()->ToElement(); l_element != nullptr; l_element = l_element->NextSiblingElement())
+		for (l_element = l_doc.FirstChild()->NextSibling()->FirstChild()->ToElement();(l_ret) && (l_element != nullptr); l_element = l_element->NextSiblingElement())
 		{
+			l_it = std::find_if(loaders.begin(), loaders.end(), [l_element](SkillLoader* sl){return l_element->Value() == sl->getElementName();});
 			l_attribute = l_element->FirstAttribute();
 
-			//l_it = std::find(loading_functions.begin(), loading_functions.end(), SkillManagerLoader(l_element->Value()));
-
-			assert(l_it != loading_functions.end());
-
-			l_tmp_skill = (*l_it)->m_loading_function(*l_element);
-
-			if (l_tmp_skill != nullptr)
+			if (l_it == loaders.end())
 			{
-				m_skills[l_attribute->ValueStr()] = std::unique_ptr<ISkill>(l_tmp_skill);
+				log() << "Can't find loader for skill : \"" << l_element->Value() << "\"\n";
+				l_ret = false;
+			}
+			else
+			{
+				l_tmp_skill = (*l_it)->load(*l_element);
+
+				if (l_tmp_skill != nullptr)
+				{
+					m_skills[l_attribute->ValueStr()] = std::unique_ptr<ISkill>(l_tmp_skill);
+				}
+				else
+				{
+					log() << "Skill loading failed : \"" << l_element->Value() << "\"\n";
+					l_ret = false;
+				}
 			}
 		}
 
+		log().startBlock("Loaded skills");
+		log() << "Number of skills : " << m_skills.size() << "\n";
+		for (auto& skill : m_skills)
+		{
+			log() << "Loaded skill : \"" << skill.second->getName() << "\"\n";
+		}
+		log().endBlock();
+
 	}
+	else
+		log() << "File is not valid : \"" << file_path << "\"\n";
+
+	log().exitFunction();
 
 	return l_ret;
 }
@@ -81,9 +84,7 @@ std::unique_ptr<ISkill> SkillManager::getSkill(const std::string& skill_name, IC
 
 	assert(l_it != m_skills.end());
 
-	l_ret.reset(l_it->second->clone());
-
-	assert(l_ret != nullptr);
+	l_ret = std::move(l_it->second->clone());
 
 	l_ret->setOwner(skill_owner);
 

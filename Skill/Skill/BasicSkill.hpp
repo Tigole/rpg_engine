@@ -3,23 +3,26 @@
 
 #include "Skill/ISkill.hpp"
 
-#include <SFML\System\String.hpp>
+#include <string>
 
 class BasicSkill : public ISkill
 {
 public:
-	BasicSkill(const sf::String& name);
+	BasicSkill(const std::string& name);
+	BasicSkill(const BasicSkill& bs);
 	virtual ~BasicSkill();
+	BasicSkill& operator=(const BasicSkill& bs);
 
 	virtual void use(const std::vector<ICharacter*>& targets);
 	virtual void setOwner(ICharacter& owner);
+	virtual const std::string& getName(void) const;
 
 protected:
 
 	virtual int affectCharacter(ICharacter& target) = 0;
 
 	ICharacter* m_owner;
-	sf::String m_name;
+	std::string m_name;
 };
 
 #endif // !_BASIC_SKILL_HPP

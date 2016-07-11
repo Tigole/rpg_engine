@@ -1,8 +1,8 @@
 #ifndef _FIGHT_FSM_TRANSITION_HPP
 #define _FIGHT_FSM_TRANSITION_HPP 1
 
-#include "FSM\FSMTransition.hpp"
-#include "Character\ICharacter.hpp"
+#include "FSM/FSMTransition.hpp"
+#include "Character/ICharacter.hpp"
 
 #include <vector>
 

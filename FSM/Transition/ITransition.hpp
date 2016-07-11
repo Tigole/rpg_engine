@@ -2,7 +2,7 @@
 #define _ITRANSITION_HPP 1
 
 #include "Miscellaneous.hpp"
-#include "FSM\State\IState.hpp"
+#include "FSM/State/IState.hpp"
 
 namespace fsm
 {

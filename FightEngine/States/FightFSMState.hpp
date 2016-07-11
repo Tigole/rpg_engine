@@ -1,10 +1,10 @@
 #ifndef _FIGHT_FSM_STATE_HPP
 #define _FIGHT_FSM_STATE_HPP 1
 
-#include "FSM\FSM.hpp"
-#include "Character\ICharacter.hpp"
+#include "FSM/FSM.hpp"
+#include "Character/ICharacter.hpp"
 #include "FightEngine/Transitions/FightFSMTransition.hpp"
-#include "FSM\FSMState.hpp"
+#include "FSM/FSMState.hpp"
 #include <vector>
 
 namespace fight

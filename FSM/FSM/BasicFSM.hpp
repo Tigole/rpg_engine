@@ -13,6 +13,8 @@ class BasicFSM : public StatusHandlerFSM
 {
 public:
 	BasicFSM();
+	BasicFSM(const BasicFSM& b_fsm);
+	BasicFSM& operator=(const BasicFSM& b_fsm);
 	virtual ~BasicFSM();
 
 	bool reset(void);

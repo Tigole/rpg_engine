@@ -3,9 +3,11 @@
 #include "XMLLogger.h"
 #include "DummyLogger.h"
 
+#define STRINGIZE(X)	#X
+
 
 #if LOG_XML == 1
-static XMLLogger gs_logger(LOG_FILE, "projeay");
+static XMLLogger gs_logger(STRINGIZE(LOG_FILE), "rpg_engine");
 #else
 static DummyLogger gs_logger(LOG_FILE);
 #endif
@@ -28,6 +30,11 @@ ILogger& ILogger::log(bool b)
     return *this;
 }
 ILogger& ILogger::log(const char* msg)
+{
+    log(std::string(msg));
+    return *this;
+}
+ILogger& ILogger::log(char* msg)
 {
     log(std::string(msg));
     return *this;

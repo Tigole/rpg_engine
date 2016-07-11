@@ -19,6 +19,8 @@ class Transition : public ITransition
 {
 public:
 	Transition():m_target_state(nullptr){}
+	Transition(const Transition& t):m_target_state(nullptr){(void)(t);}
+	Transition& operator=(const Transition& t){(void)(t); m_target_state = nullptr; return *this;}
 	virtual ~Transition(){}
 	IState* m_target_state;
 };

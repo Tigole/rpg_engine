@@ -4,6 +4,8 @@
 #include <string>
 #include <sstream>
 #include <tinyxml.h>
+#include <vector>
+#include <memory>
 
 
 #ifdef _MSC_VER
@@ -14,9 +16,17 @@
 
 #define UNUSED_PARAMETER(x) (void)(x)
 
+class TiXmlElement;
+class ILogger;
+
 namespace misc
 {
-
+	class Dumpable
+	{
+	public:
+		virtual ~Dumpable(){ /** Nothing **/ }
+		virtual void dump(ILogger& l) = 0;
+	};
 	/** \class Resetable
 		\brief Base class for objects that can be reset by an external event
 
@@ -36,28 +46,29 @@ namespace misc
 	/** \class Clonable
 		\brief Base class for objects that need to be cloned
 
-		\fn Clonable* clone(void) const
+		\fn T* clone(void) const
 		\brief Method used to clone the object
 		\return A copy of the object itself dynamically created
 	**/
+	template<typename T>
 	class Clonable
 	{
 	public:
 		virtual ~Clonable(){}
 
-		virtual Clonable* clone(void) const = 0;
+		virtual std::unique_ptr<T> clone(void) const = 0;
 	};
 
 	template<typename T>
 	struct Gauge
 	{
-		Gauge(const T& actual_value, const T& max_value) : m_actual_value(actual_value), m_max_value(max_value){}
-		Gauge(const T& values) : m_actual_value(values), m_max_value(values){}
-		Gauge(const Gauge<T>& copy) : m_actual_value(copy.m_actual_value), m_max_value(copy.m_max_value){}
-		Gauge();
+		Gauge(const T& actual_value, const T& max_value) : m_actual_value(actual_value), m_max_value(max_value){ /** Nothing **/ }
+		Gauge(const T& values) : m_actual_value(values), m_max_value(values){ /** Nothing **/ }
+		Gauge(const Gauge<T>& copy) : m_actual_value(copy.m_actual_value), m_max_value(copy.m_max_value){ /** Nothing **/ }
+		Gauge() : m_actual_value(), m_max_value() { /** Nothing **/ }
 
 		void restore(void) { m_actual_value = m_max_value; }
-		bool isEmpty(void) const { return m_actual_value <= 0; }
+		bool isEmpty(void) const { return m_actual_value <= (T)0; }
 		bool isFull(void) const { return m_actual_value == m_max_value; }
 
 		T m_actual_value;
@@ -111,6 +122,25 @@ namespace misc
 		return ret;
 	}
 
+	class ILoader
+	{
+	public:
+		ILoader();
+		virtual ~ILoader();
+	protected:
+		bool checkAttributes(const TiXmlElement& element, const std::vector<std::string>& attributes);
+	};
+
+	class Loader : public ILoader
+	{
+	public:
+		Loader(const std::string& element_name);
+		virtual ~Loader();
+
+		const std::string& getElementName(void) const;
+	protected:
+		std::string m_element_name;
+	};
 }
 
 

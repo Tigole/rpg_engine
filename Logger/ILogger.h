@@ -29,6 +29,7 @@ public:
     virtual ILogger& log(const std::string& msg) = 0;
     ILogger& log(bool b);
     ILogger& log(const char* msg);
+    ILogger& log(char* msg);
     template<typename T>
     ILogger& log(const T& nombre)
     {

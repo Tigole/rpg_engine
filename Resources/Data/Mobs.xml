@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mobs>
+	<DBG_Character name="Toto" hp="50">
+		<Skills>
+			<Skill name="Attack +1"/>
+		</Skills>
+	</DBG_Character>
+</Mobs>

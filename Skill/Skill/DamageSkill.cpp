@@ -7,10 +7,11 @@
 
 std::map<DamageSkill::DamageSkillOperator, int (DamageSkill::*)(int, int)> DamageSkill::m_operator_map;
 
-DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const sf::String & op)
+DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const std::string& op)
 {
-	std::map<sf::String, DamageSkillOperator> l_map;
-	std::map<sf::String, DamageSkillOperator>::iterator l_map_it;
+	DamageSkill::DamageSkillOperator l_ret(DSO_ERROR);
+	std::map<std::string, DamageSkillOperator> l_map;
+	std::map<std::string, DamageSkillOperator>::iterator l_map_it;
 
 	l_map["DSO_ADD"] = DSO_ADD;
 	l_map["DSO_MINUS"] = DSO_MINUS;
@@ -20,13 +21,13 @@ DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const sf::String 
 	l_map["DSO_RAW"] = DSO_RAW;
 
 	l_map_it = l_map.find(op);
+	if (l_map_it != l_map.end())
+		l_ret = l_map_it->second;
 
-	assert(l_map_it != l_map.end());
-
-	return l_map_it->second;
+	return l_ret;
 }
 
-DamageSkill::DamageSkill(const sf::String& name, int damages, DamageSkillOperator op)
+DamageSkill::DamageSkill(const std::string& name, int damages, DamageSkillOperator op)
 	:BasicSkill(name),
 	m_damages(damages),
 	m_operator(op)
@@ -47,11 +48,6 @@ DamageSkill::~DamageSkill()
 	/** Nothing **/
 }
 
-DamageSkill* DamageSkill::clone(void) const
-{
-	return nullptr;// new DamageSkill(*this);
-}
-
 int DamageSkill::affectCharacter(ICharacter& target)
 {
 	int damages;
@@ -61,7 +57,7 @@ int DamageSkill::affectCharacter(ICharacter& target)
 
 	assert(it != m_operator_map.end());
 
-	log() << "name : " << m_name.toAnsiString() << "\n";
+	log() << "name : " << m_name << "\n";
 	log() << "m_owner.getBaseAttack() : " << m_owner->getBaseAttack() << "\n";
 	log() << "m_damages : " << m_damages << "\n";
 
@@ -74,36 +70,4 @@ int DamageSkill::affectCharacter(ICharacter& target)
 	log().exitFunction();
 
 	return damages;
-}
-
-int DamageSkill::manage_DSO_ADD(int owner_base_damages, int skill_damages)
-{
-	return owner_base_damages + skill_damages;
-}
-
-int DamageSkill::manage_DSO_MINUS(int owner_base_damages, int skill_damages)
-{
-	return owner_base_damages - skill_damages;
-}
-
-int DamageSkill::manage_DSO_PERCENT(int owner_base_damages, int skill_damages)
-{
-	return (owner_base_damages * skill_damages) / 100;
-}
-
-int DamageSkill::manage_DSO_RAW(int owner_base_damages, int skill_damages)
-{
-    UNUSED_PARAMETER(owner_base_damages);
-	return skill_damages;
-}
-
-int DamageSkill::manage_DSO_MULTIPLY(int owner_base_damages, int skill_damages)
-{
-	return owner_base_damages * skill_damages;
-}
-
-int DamageSkill::manage_DSO_DIVIDE(int owner_base_damages, int skill_damages)
-{
-	assert(skill_damages != 0);
-	return owner_base_damages / skill_damages;
 }

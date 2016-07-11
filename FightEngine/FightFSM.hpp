@@ -1,9 +1,9 @@
 #ifndef _FIGHT_FSM_HPP
 #define _FIGHT_FSM_HPP 1
 
-#include "FSM\FSM.hpp"
-#include "FSM\FSMState.hpp"
-#include "FSM\FSMTransition.hpp"
+#include "FSM/FSM.hpp"
+#include "FSM/FSMState.hpp"
+#include "FSM/FSMTransition.hpp"
 
 class IParty;
 class ICharacter;

@@ -2,14 +2,16 @@
 #define _ICHARACTER_HPP 1
 
 #include <vector>
+#include <string>
 
-class ICharacter
+#include "Miscellaneous.hpp"
+
+class SkillManager;
+
+class ICharacter : public misc::Clonable<ICharacter>, public misc::Dumpable
 {
 public:
 	virtual ~ICharacter() {}
-
-	virtual int getBaseAttack(void) const = 0;
-	virtual void setDamages(int hp_damages) = 0;
 
 	/** Init methods **/
 	virtual void setEnnemies(const std::vector<ICharacter*>& ennemies) = 0;
@@ -17,9 +19,15 @@ public:
 	/** Fight methods **/
 	virtual void selectSkill(void) = 0;
 	virtual void useSkill(void) = 0;
+	virtual int getBaseAttack(void) const = 0;
+	virtual void setDamages(int hp_damages) = 0;
 
 	/** States methods **/
+	virtual const std::string& getName(void) = 0;
 	virtual bool isDead(void) const = 0;
+
+	/** Other **/
+	virtual void addSkill(const std::string& skill_name, const SkillManager& sm) = 0;
 };
 
 #endif // !_ICHARACTER_HPP

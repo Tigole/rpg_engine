@@ -1,6 +1,5 @@
 
 #include "XMLLogger.h"
-//#include "../BoiteAOutils.h"
 #include <map>
 #include <iostream>
 
@@ -25,8 +24,8 @@ XMLLogger::~XMLLogger()
 
 void XMLLogger::stopLog(void)
 {
-    onEvent("Fermeture");
-    log("Fermeture du m_log.\n");
+    onEvent("Closing");
+    log("Closing log file.\n");
     stopEvent();
 	unstackEntriesForStopLog();
     m_file << "</" << m_root << ">\n";
@@ -50,6 +49,8 @@ ILogger& XMLLogger::log(const std::string& msg)
     }*/
     if (msg.back() == '\n')
         m_write_tab = true;
+
+	m_file << std::flush;
 
     return *this;
 }
@@ -80,22 +81,22 @@ void XMLLogger::writeTab(void)
 
 void XMLLogger::FormatEntranceFunction(const char* nom_fonction)
 {
-    startMark("fonction", nom_fonction);
+    startMark("function", nom_fonction);
 }
 
 void XMLLogger::FormatExiteFunction(const char* nom_fonction)
 {
-    endMark("fonction", nom_fonction);
+    endMark("function", nom_fonction);
 }
 
 void XMLLogger::FormatOnEvenement(const char* nom_evenement)
 {
-    startMark("evenement", nom_evenement);
+    startMark("event", nom_evenement);
 }
 
 void XMLLogger::FormatStopEvenement(const char* nom_evenement)
 {
-    endMark("evenement", nom_evenement);
+    endMark("event", nom_evenement);
 }
 
 void XMLLogger::FormatStartBlock(const char* nom_block)
@@ -114,7 +115,7 @@ void XMLLogger::startMark(const char* balise, const char* nom)
     m_file << "<";
     for (auto c : std::string(balise))
         writeCharactere(c);
-    m_file << " nom=\"";
+    m_file << " name=\"";
     for (auto c : std::string(nom))
         writeCharactere(c);
     m_file << "\">\n";

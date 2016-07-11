@@ -10,23 +10,14 @@
 
 class ISkill;
 class ICharacter;
-
-struct SkillManagerLoader
-{
-	SkillManagerLoader(const std::string& element_name);
-	SkillManagerLoader(const std::string& element_name, ISkill* (*loading_function)(const TiXmlElement&));
-	std::string m_element_name;
-	ISkill* (*m_loading_function)(const TiXmlElement&);
-};
-
-bool operator==(const SkillManagerLoader& a, const SkillManagerLoader& b);
+class SkillLoader;
 
 class SkillManager
 {
 public:
     SkillManager();
 
-	bool load(const std::string& file_path, const std::vector<SkillManagerLoader*>& loading_functions);
+	bool load(const std::string& file_path, const std::vector<SkillLoader*>& loaders);
 
 	std::unique_ptr<ISkill> getSkill(const std::string& skill_name, ICharacter& skill_owner) const;
 

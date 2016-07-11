@@ -6,21 +6,16 @@
 #include "Skill/SkillManager.hpp"
 #include "Skill/ISkill.hpp"
 
-DBG_Character::DBG_Character(const char * name, int hp_max)
+DBG_Character::DBG_Character(const std::string& name, int hp_max)
 	:BasicCharacter(name, misc::Gauge<int>(hp_max)),
 	m_skill_index(0)
 {
-	m_skills.resize(6);
-	/*m_skills[0].reset(new DamageSkill("test attack ADD", 1, DamageSkill::DSO_ADD));
-	m_skills[1].reset(new DamageSkill("test attack MINUS", 1, DamageSkill::DSO_MINUS));
-	m_skills[2].reset(new DamageSkill("test attack MULTIPLY", 2, DamageSkill::DSO_MULTIPLY));
-	m_skills[3].reset(new DamageSkill("test attack DIVIDE", 1, DamageSkill::DSO_DIVIDE));
-	m_skills[4].reset(new DamageSkill("test attack PERCENT", 50, DamageSkill::DSO_PERCENT));
-	m_skills[5].reset(new DamageSkill("test attack RAW", 1, DamageSkill::DSO_RAW));*/
+	/** Nothing **/
 }
 
 DBG_Character::~DBG_Character()
 {
+	/** Nothing **/
 }
 
 void DBG_Character::selectSkill(void)
@@ -52,17 +47,6 @@ int DBG_Character::getBaseAttack(void) const
 	return 5;
 }
 
-bool DBG_Character::loadSkills(const SkillManager& sm)
-{
-	bool l_ret(false);
-
-	m_skills.resize(0);
-
-	//m_skills[0].reset(sm.getSkill("skill test ADD", *this));
-
-	return l_ret;
-}
-
 void DBG_Character::setDamages(int hp_damages)
 {
 	log().entranceFunction(FUNCTION_NAME);
@@ -73,3 +57,7 @@ void DBG_Character::setDamages(int hp_damages)
 	log().exitFunction();
 }
 
+std::unique_ptr<ICharacter> DBG_Character::clone(void) const
+{
+	return std::unique_ptr<ICharacter>(new DBG_Character(*this));
+}

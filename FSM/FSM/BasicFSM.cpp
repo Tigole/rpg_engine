@@ -6,7 +6,8 @@ namespace fsm
 
 BasicFSM::BasicFSM()
  :	StatusHandlerFSM(),
-	m_current_state(nullptr)
+	m_current_state(nullptr),
+	m_arr_states()
 {
 	/** Nothing **/
 }

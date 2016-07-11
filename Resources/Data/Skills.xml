@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skills>
+	<DBG_DamageSkill name="Attack +1" damages="1" operator="DSO_ADD"/>
+	<DBG_DamageSkill name="Attack -1" damages="1" operator="DSO_MINUS"/>
+	<DBG_DamageSkill name="Attack *2" damages="2" operator="DSO_MULTIPLY"/>
+	<DBG_DamageSkill name="Attack /2" damages="2" operator="DSO_DIVIDE"/>
+	<DBG_DamageSkill name="Attack %75" damages="75" operator="DSO_PERCENT"/>
+	<DBG_DamageSkill name="Attack 5" damages="5" operator="DSO_RAW"/>
+	<DBG_DamageSkill name="Nom avec des accents éàçè" damages="0" operator="DSO_ADD"/>
+</Skills>

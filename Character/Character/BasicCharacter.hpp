@@ -12,10 +12,17 @@ class BasicCharacter : public ICharacter
 {
 public:
 	BasicCharacter(const std::string& name, const misc::Gauge<int>& hp);
+	BasicCharacter(const BasicCharacter& bc);
+	BasicCharacter& operator=(const BasicCharacter& bc);
 	~BasicCharacter();
+	virtual const std::string& getName(void);
 	virtual bool isDead(void) const;
 	virtual void setDamages(int hp_damages);
 	virtual void setEnnemies(const std::vector<ICharacter*>& ennemies);
+
+	virtual void addSkill(const std::string& skill_name, const SkillManager& sm);
+
+	virtual void dump(ILogger& l);
 protected:
 
 	/*void selectSkill(void);

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Data>
+	<Animations>
+		<Animation path="Animations.xml"/>
+	</Animations>
+	<Skills>
+		<Skill path="Skills.xml"/>
+	</Skills>
+	<Mobs>
+		<Mob path="Mobs.xml"/>
+	</Mobs>
+</Data>

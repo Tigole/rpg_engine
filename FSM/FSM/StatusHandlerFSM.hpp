@@ -60,6 +60,8 @@ public:
 	};
 
 	StatusHandlerFSM(const char* status_unknown = "UNKNOWN STATUS");
+	StatusHandlerFSM(const StatusHandlerFSM& sh);
+	StatusHandlerFSM& operator=(const StatusHandlerFSM& sh);
 	virtual ~StatusHandlerFSM();
 
 	virtual const char* formatStatus(int status) const;

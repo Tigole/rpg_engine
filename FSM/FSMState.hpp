@@ -1,12 +1,12 @@
 #ifndef _FSMSTATE_H
 #define _FSMSTATE_H 1
 
-#include "FSM\State\States.hpp"
+#include "FSM/State/States.hpp"
 
 namespace fsm
 {
 
-/** 
+/**
 	\class EmptyState
 	\brief represent a state that doesn't do anything. Could be used as final state
 **/

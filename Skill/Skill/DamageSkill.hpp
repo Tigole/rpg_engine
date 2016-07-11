@@ -15,15 +15,14 @@ public:
 		DSO_MULTIPLY,
 		DSO_DIVIDE,
 		DSO_PERCENT,
-		DSO_RAW
+		DSO_RAW,
+		DSO_ERROR
 	};
 
-	static DamageSkillOperator stringToOperator(const sf::String& op);
+	static DamageSkillOperator stringToOperator(const std::string& op);
 
-	DamageSkill(const sf::String& name, int damages, DamageSkillOperator op);
+	DamageSkill(const std::string& name, int damages, DamageSkillOperator op);
 	~DamageSkill();
-
-	DamageSkill* clone(void) const;
 
 protected:
 	int affectCharacter(ICharacter& target);

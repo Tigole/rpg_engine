@@ -9,7 +9,7 @@ class SkillManager;
 class DBG_Character : public BasicCharacter
 {
 public:
-	DBG_Character(const char* name, int hp_max);
+	DBG_Character(const std::string& name, int hp_max);
 	~DBG_Character();
 
 	virtual void selectSkill(void);
@@ -17,7 +17,7 @@ public:
 	virtual void setDamages(int hp_damages);
 	virtual int getBaseAttack(void) const;
 
-	bool loadSkills(const SkillManager& sm);
+	std::unique_ptr<ICharacter> clone() const;
 
 private:
 	int m_skill_index;
