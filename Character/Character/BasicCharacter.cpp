@@ -5,7 +5,7 @@
 #include "Logger/ILogger.h"
 
 BasicCharacter::BasicCharacter(const std::string& name, const misc::Gauge<int>& hp)
-	:m_hp(hp),
+	:m_attributes(),
 	m_name(name),
 	m_targets(),
 	m_ennemies(),
@@ -16,7 +16,7 @@ BasicCharacter::BasicCharacter(const std::string& name, const misc::Gauge<int>& 
 }
 
 BasicCharacter::BasicCharacter(const BasicCharacter& bc)
- :	m_hp(bc.m_hp),
+ : m_attributes(bc.m_attributes),
 	m_name(bc.m_name),
 	m_targets(),
 	m_ennemies(),
@@ -37,14 +37,38 @@ const std::string& BasicCharacter::getName(void)
 	return m_name;
 }
 
-bool BasicCharacter::isDead(void) const
+bool BasicCharacter::getAttribute(const std::string& attribute_id, int& attribute_value) const
 {
-	return m_hp.isEmpty();
+	bool l_ret(false);
+	auto l_it(m_attributes.find(attribute_id));
+
+	if (l_it != m_attributes.end())
+		attribute_value = l_it->second;
+
+
+	return (l_it != m_attributes.end());
 }
 
-void BasicCharacter::setDamages(int hp_damages)
+bool BasicCharacter::getAttribute(const std::string& attribute_id, int& attribute_value)
 {
-	m_hp -= hp_damages;
+	auto l_it(m_attributes.find(attribute_id));
+
+	if (l_it != m_attributes.end())
+		attribute_value = l_it->second;
+
+
+	return (l_it != m_attributes.end());
+}
+
+bool BasicCharacter::setAttribute(const std::string& attribute_id, int attribute_value)
+{
+	auto l_it(m_attributes.find(attribute_id));
+
+	if (l_it != m_attributes.end())
+		l_it->second = attribute_value;
+
+
+	return (l_it != m_attributes.end());
 }
 
 void BasicCharacter::setEnnemies(const std::vector<ICharacter*>& ennemies)
@@ -75,7 +99,10 @@ void BasicCharacter::dump(ILogger& l)
 	l.entranceFunction(FUNCTION_NAME);
 
 	l << "name : " << m_name << "\n";
-	l << "hp : " << m_hp.m_actual_value << " / " << m_hp.m_max_value << "\n";
+	l.startBlock("attributes");
+	for (auto& a : m_attributes)
+		l << "\"" << a.first << "\" : " << a.second << "\n";
+	l.endBlock();
 	l.startBlock("skills");
 	l << "number of skills : " << m_skills.size() << "\n";
 	for (auto& skill : m_skills)

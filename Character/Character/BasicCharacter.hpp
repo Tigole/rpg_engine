@@ -5,6 +5,7 @@
 #include "Miscellaneous.hpp"
 #include <string>
 #include <memory>
+#include <map>
 
 class ISkill;
 
@@ -16,9 +17,10 @@ public:
 	BasicCharacter& operator=(const BasicCharacter& bc);
 	~BasicCharacter();
 	virtual const std::string& getName(void);
-	virtual bool isDead(void) const;
-	virtual void setDamages(int hp_damages);
 	virtual void setEnnemies(const std::vector<ICharacter*>& ennemies);
+	virtual bool getAttribute(const std::string& attribute_id, int& attribute_value) const;
+	virtual bool getAttribute(const std::string& attribute_id, int& attribute_value);
+	virtual bool setAttribute(const std::string& attribute_id, int attribute_value);
 
 	virtual void addSkill(const std::string& skill_name, const SkillManager& sm);
 
@@ -28,7 +30,7 @@ protected:
 	/*void selectSkill(void);
 	void selectTarget(void);*/
 
-	misc::Gauge<int> m_hp;
+	std::map<std::string, int> m_attributes;
 	std::string m_name;
 	std::vector<ICharacter*> m_targets;
 	std::vector<ICharacter*> m_ennemies;

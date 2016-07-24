@@ -21,26 +21,28 @@ using namespace uut;
 int main(int argc, char** argv)
 {
 	vector<void(*)(void)> uut_functions;
-	std::string old_local;
+	//std::string old_local;
 
 	log().entranceFunction(FUNCTION_NAME);
 
 	//std::locale::global(std::locale("fr-FR"));
 
-	old_local = setlocale(LC_ALL, nullptr);
+	//old_local = setlocale(LC_ALL, nullptr);
 
-	cout << "local : " << old_local << "\n";
+	//cout << "local : " << old_local << "\n";
 	//log() << "local : " << old_local << "\n";
 
-	setlocale(LC_ALL, "windows-1252");
+	//setlocale(LC_ALL, "windows-1252");
 
 	//log() << "local : " << setlocale(LC_ALL, nullptr) << "\n";
 
 	//uut_functions.push_back(uut_Fight_std);
 	//uut_functions.push_back(uut_Fight_obj);
+	/*
 	uut_functions.push_back(uut_TestLoadingSkills);
 	uut_functions.push_back(uut_Test_Sf_String);
-	uut_functions.push_back(uut_Loading_Characters);
+	uut_functions.push_back(uut_Loading_Characters);*/
+	uut_functions.push_back(uut_ExpressionParser);
 
 	for (auto& a : uut_functions)
 	{
@@ -54,7 +56,7 @@ int main(int argc, char** argv)
 	system("PAUSE");
 #endif // __WIN32
 
-	setlocale(LC_ALL, old_local.c_str());
+	//setlocale(LC_ALL, old_local.c_str());
 
 	log().exitFunction();
 

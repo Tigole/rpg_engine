@@ -47,4 +47,16 @@ namespace misc
 	{
 		return m_element_name;
 	}
+
+
+
+	/*std::string numberToString(unsigned char c)
+	{
+		return numberToString((unsigned int)c);
+	}
+
+	std::string numberToString(char c)
+	{
+		return numberToString((int)c);
+	}*/
 }

@@ -14,8 +14,7 @@ public:
 
 	virtual void selectSkill(void);
 	virtual void useSkill(void);
-	virtual void setDamages(int hp_damages);
-	virtual int getBaseAttack(void) const;
+	virtual bool isDead(void) const;
 
 	std::unique_ptr<ICharacter> clone() const;
 

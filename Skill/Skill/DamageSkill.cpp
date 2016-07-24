@@ -51,21 +51,29 @@ DamageSkill::~DamageSkill()
 int DamageSkill::affectCharacter(ICharacter& target)
 {
 	int damages;
+	int tmp;
 	auto it(m_operator_map.find(m_operator));
 
 	log().entranceFunction(FUNCTION_NAME);
 
 	assert(it != m_operator_map.end());
 
+	assert(m_owner->getAttribute("attack", tmp) == true);
+
 	log() << "name : " << m_name << "\n";
-	log() << "m_owner.getBaseAttack() : " << m_owner->getBaseAttack() << "\n";
+	log() << "m_owner->getAttribute(\"attack\", tmp) : " << tmp << "\n";
 	log() << "m_damages : " << m_damages << "\n";
 
-	damages = (this->*(it->second))(m_owner->getBaseAttack(), m_damages);
+	damages = (this->*(it->second))(tmp, m_damages);
 
 	log() << "damages : " << damages << "\n";
 
-	target.setDamages(damages);
+	assert(target.getAttribute("hp", tmp) == true);
+
+	tmp -= damages;
+
+	assert(target.setAttribute("hp", tmp));
+
 
 	log().exitFunction();
 

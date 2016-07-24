@@ -33,7 +33,7 @@ public:
     template<typename T>
     ILogger& log(const T& nombre)
     {
-        return log(misc::numberToHexDec(nombre));
+        return log(misc::numberToString(nombre));
     }
 
 // Documentation

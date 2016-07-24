@@ -15,6 +15,8 @@
 
 #include "Character/CharacterManager.hpp"
 
+#include "Math/ExpressionParser.hpp"
+
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
@@ -243,6 +245,55 @@ namespace uut
 			delete a;
 		for (auto& a : char_loaders)
 			delete a;
+
+		log().exitFunction();
+	}
+	void uut_ExpressionParser(void)
+	{
+		int res;
+		bool parsed_succefull;
+		VariableList var_list;
+		std::vector<std::string> str_test;
+
+		ExpressionParser<int> parser;
+
+		str_test.push_back("35 + 5 - 6");
+		str_test.push_back("-6+35+5");
+		str_test.push_back("(1-2+3)*4");
+		str_test.push_back("24");
+		str_test.push_back("(a-b+c)*d");
+		str_test.push_back("owner.attack - target.defense");
+
+		var_list.setVariable("a", "1");
+		var_list.setVariable("b", "2");
+		var_list.setVariable("c", "3");
+		var_list.setVariable("d", "4");
+		var_list.setVariable("owner.attack", "10");
+		var_list.setVariable("target.defense", "5");
+
+		log().entranceFunction(FUNCTION_NAME);
+
+		for (auto& a : str_test)
+		{
+			log().startBlock(a.c_str());
+			log() << "Evaluating \"" << a << "\"\n";
+
+			parsed_succefull = parser.parse(a, var_list);
+			log() << "Parsing..." << parsed_succefull << "\n";
+			if (parsed_succefull == true)
+			{
+				if (parser.getResult(res) == true)
+					log() << "\"" << a << "\" = \"" << misc::numberToString(res) << "\"\n";
+				else
+					log() << "Error : " << parser.getError() << "\n";
+			}
+			else
+			{
+				log() << "Error : " << parser.getError() << "\n";
+			}
+
+			log().endBlock();
+		}		
 
 		log().exitFunction();
 	}

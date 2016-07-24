@@ -42,19 +42,18 @@ void DBG_Character::useSkill(void)
 	log().exitFunction();
 }
 
-int DBG_Character::getBaseAttack(void) const
+bool DBG_Character::isDead(void) const
 {
-	return 5;
-}
+	bool l_ret(false);
+	int hp;
 
-void DBG_Character::setDamages(int hp_damages)
-{
-	log().entranceFunction(FUNCTION_NAME);
-	log() << m_name << "::setDamages\n";
-	log() << "\t" << hp_damages << " hp lost\n";
-	m_hp -= hp_damages;
-	log() << "\t" << m_hp.m_actual_value << " hp remaining\n";
-	log().exitFunction();
+	l_ret = getAttribute("hp", hp);
+
+	assert(l_ret == true);
+
+	l_ret = (hp <= 0);
+
+	return l_ret;
 }
 
 std::unique_ptr<ICharacter> DBG_Character::clone(void) const

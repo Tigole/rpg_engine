@@ -19,8 +19,8 @@ public:
 	/** Fight methods **/
 	virtual void selectSkill(void) = 0;
 	virtual void useSkill(void) = 0;
-	virtual int getBaseAttack(void) const = 0;
-	virtual void setDamages(int hp_damages) = 0;
+	virtual bool getAttribute(const std::string& attribute_id, int& attribute_value) = 0;
+	virtual bool setAttribute(const std::string& attribute_id, int attribute_value) = 0;
 
 	/** States methods **/
 	virtual const std::string& getName(void) = 0;
