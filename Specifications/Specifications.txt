@@ -6,7 +6,7 @@ Each resource should handled by an object ("Resource"Manager) and the program ca
 
 Loading resources:
 Each resource known by a "ResourceManager" should be loadable using an external file.
-For each class created representing a resource, a spefic class for loading a object of this type should be provided in the aim to load the resource at the begining.
+For each class created representing a resource, a spefic class for loading a object of this type should be provided in the aim to load the resource at the beginning.
 
 
 Kind of resources:

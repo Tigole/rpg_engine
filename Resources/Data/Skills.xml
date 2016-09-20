@@ -7,5 +7,9 @@
 	<DBG_DamageSkill name="Attack %75" damages="75" operator="DSO_PERCENT"/>
 	<DBG_DamageSkill name="Attack 5" damages="5" operator="DSO_RAW"/>
 	<DBG_DamageSkill name="Nom avec des accents éàçè" damages="0" operator="DSO_ADD"/>
-	<BasicSkill name="Some Skill" damages="5" formula="owner.attack - skill.damages"/>
+	<BasicSkill name="Some Skill" target_attribute="hp" formula="(owner.attack - skill.damages) * skill.damages">
+		<AttributeList>
+			<BasicAttribute name="damages" value="5"/>
+		</AttributeList>
+	</BasicSkill>
 </Skills>

@@ -5,4 +5,17 @@
 			<Skill name="Attack +1"/>
 		</Skills>
 	</DBG_Character>
+	<BasicCharacter name="">
+		<SkillList>
+			<Skill id=""/>
+		</SkillList>
+		<AttributeList>
+			<CharacterGaugedAttribute name="hp" value="50">
+			<CharacterGaugedAttribute name="mp" value="50">
+			<BasicAttribute name="xp" value="10"/>
+			<CompositeAttribute name="">
+				<BasicAttribute name="" value=""/>
+			</CompositeAttribute>
+		</Attributes>
+	</BasicCharacter>
 </Mobs>

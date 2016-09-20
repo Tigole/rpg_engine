@@ -14,7 +14,7 @@ public:
 protected:
 	bool isValid(const TiXmlElement& element);
 	bool checkSkills(const TiXmlElement& skills);
-	ICharacter* loadCharacter(const TiXmlElement& element, SkillManager& sm);
+	std::unique_ptr<ICharacter> loadCharacter(const TiXmlElement& element, SkillManager& sm);
 	std::vector<std::string> loadSkills(const TiXmlElement& skills_element);
 };
 

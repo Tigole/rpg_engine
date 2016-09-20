@@ -34,9 +34,9 @@ bool DBG_DamageSkillLoader::isValid(const TiXmlElement& element) const
 	return l_ret;
 }
 
-ISkill* DBG_DamageSkillLoader::loadElement(const TiXmlElement& element)
+std::unique_ptr<ISkill> DBG_DamageSkillLoader::loadElement(const TiXmlElement& element)
 {
-	DBG_DamageSkill* l_ret(nullptr);
+	std::unique_ptr<DBG_DamageSkill> l_ret(nullptr);
 	int l_query_return(TIXML_SUCCESS);
 	std::string skill_name;
 	std::string skill_operator_str;
@@ -64,7 +64,7 @@ ISkill* DBG_DamageSkillLoader::loadElement(const TiXmlElement& element)
 		log() << "no \"operator\"\n";
 
 	if (skill_operator != DamageSkill::DSO_ERROR)
-		l_ret = new DBG_DamageSkill(skill_name, skill_damages, skill_operator);
+		l_ret.reset(new DBG_DamageSkill(skill_name, skill_damages, skill_operator));
 	else
 		log() << "operator not found : \"" << skill_operator_str << "\"\n";
 

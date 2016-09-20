@@ -3,6 +3,11 @@
 
 #include "DamageSkill.hpp"
 
+extern "C"
+{
+	void deleteDBG_DamageSkill(ISkill* obj);
+}
+
 class DBG_DamageSkill : public DamageSkill
 {
 public:

@@ -1,0 +1,9 @@
+Specifications:
+
+Resources handling:
+Each resource should handled by an object ("Resource"Manager) and the program can access resources by queriing some resources by theire name (eg: a skill is called "MySkill" so the "SkillManager" should know the skill named "MySkill" and SkillManager::get("MySkill") should return a copy of the skill "MySkill")
+
+
+Loading resources:
+Each resource known by a "ResourceManager" should be loadable using an external file.
+For each class created representing a resource, a spefic class for loading a object of this type should be provided in the aim to load the resource at the begining.

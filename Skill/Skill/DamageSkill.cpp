@@ -28,7 +28,7 @@ DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const std::string
 }
 
 DamageSkill::DamageSkill(const std::string& name, int damages, DamageSkillOperator op)
-	:BasicSkill(name),
+	:BasicSkill(name, "", ""),
 	m_damages(damages),
 	m_operator(op)
 {
@@ -53,12 +53,16 @@ int DamageSkill::affectCharacter(ICharacter& target)
 	int damages;
 	int tmp;
 	auto it(m_operator_map.find(m_operator));
+	ICharacterAttribute* attribute(nullptr);
 
 	log().entranceFunction(FUNCTION_NAME);
 
 	assert(it != m_operator_map.end());
 
-	assert(m_owner->getAttribute("attack", tmp) == true);
+	attribute = m_owner->getAttribute("attack");
+
+	assert(attribute != nullptr);
+	assert(attribute->getValue("attack", tmp) == true);
 
 	log() << "name : " << m_name << "\n";
 	log() << "m_owner->getAttribute(\"attack\", tmp) : " << tmp << "\n";
@@ -68,11 +72,15 @@ int DamageSkill::affectCharacter(ICharacter& target)
 
 	log() << "damages : " << damages << "\n";
 
-	assert(target.getAttribute("hp", tmp) == true);
+	attribute = target.getAttribute("hp");
+	assert(attribute != nullptr);
+	assert(attribute->getValue("hp", tmp) == true);
 
 	tmp -= damages;
 
-	assert(target.setAttribute("hp", tmp));
+	attribute = target.getAttribute("hp");
+	assert(attribute != nullptr);
+	assert(attribute->getValue("hp", tmp));
 
 
 	log().exitFunction();

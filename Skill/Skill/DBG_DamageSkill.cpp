@@ -1,5 +1,10 @@
 #include "DBG_DamageSkill.hpp"
 
+void deleteDBG_DamageSkill(ISkill* obj)
+{
+	delete obj;
+}
+
 DBG_DamageSkill::DBG_DamageSkill(const std::string& name, int damages, DamageSkill::DamageSkillOperator op)
  :	DamageSkill(name, damages, op)
 {

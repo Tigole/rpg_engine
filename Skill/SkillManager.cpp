@@ -14,14 +14,14 @@ SkillManager::SkillManager()
 	log().exitFunction();
 }
 
-bool SkillManager::load(const std::string& file_path, const std::vector<SkillLoader*>& loaders)
+bool SkillManager::load(const std::string& file_path, const std::vector<std::unique_ptr<SkillLoader>>& loaders)
 {
 	bool l_ret(false);
 	TiXmlDocument l_doc;
 	TiXmlElement* l_element(nullptr);
 	TiXmlAttribute* l_attribute(nullptr);
-	std::vector<SkillLoader*>::const_iterator l_it(loaders.end());
-	ISkill* l_tmp_skill(nullptr);
+	std::vector<std::unique_ptr<SkillLoader>>::const_iterator l_it(loaders.end());
+	std::unique_ptr<ISkill> l_tmp_skill(nullptr);
 
 	log().entranceFunction(FUNCTION_NAME);
 
@@ -36,7 +36,7 @@ bool SkillManager::load(const std::string& file_path, const std::vector<SkillLoa
 	{
 		for (l_element = l_doc.FirstChild()->NextSibling()->FirstChild()->ToElement();(l_ret) && (l_element != nullptr); l_element = l_element->NextSiblingElement())
 		{
-			l_it = std::find_if(loaders.begin(), loaders.end(), [l_element](SkillLoader* sl){return l_element->Value() == sl->getElementName();});
+			l_it = std::find_if(loaders.begin(), loaders.end(), [l_element](const std::unique_ptr<SkillLoader>& sl){return l_element->Value() == sl->getElementName();});
 			l_attribute = l_element->FirstAttribute();
 
 			if (l_it == loaders.end())
@@ -50,7 +50,7 @@ bool SkillManager::load(const std::string& file_path, const std::vector<SkillLoa
 
 				if (l_tmp_skill != nullptr)
 				{
-					m_skills[l_attribute->ValueStr()] = std::unique_ptr<ISkill>(l_tmp_skill);
+					m_skills[l_attribute->ValueStr()] = std::move(l_tmp_skill);
 				}
 				else
 				{
@@ -79,7 +79,7 @@ bool SkillManager::load(const std::string& file_path, const std::vector<SkillLoa
 
 std::unique_ptr<ISkill> SkillManager::getSkill(const std::string& skill_name, ICharacter& skill_owner) const
 {
-	std::unique_ptr<ISkill> l_ret;
+	std::unique_ptr<ISkill> l_ret(nullptr);
 	std::map<std::string, std::unique_ptr<ISkill>>::const_iterator l_it(m_skills.find(skill_name));
 
 	assert(l_it != m_skills.end());

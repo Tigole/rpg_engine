@@ -93,14 +93,14 @@ bool DBG_CharacterLoader::checkSkills(const TiXmlElement& skills)
 	return l_b_ret;
 }
 
-ICharacter* DBG_CharacterLoader::loadCharacter(const TiXmlElement& element, SkillManager& sm)
+std::unique_ptr<ICharacter> DBG_CharacterLoader::loadCharacter(const TiXmlElement& element, SkillManager& sm)
 {
-	DBG_Character* l_ret(nullptr);
+	std::unique_ptr<ICharacter> l_ret(nullptr);
 	std::string character_name;
 	int character_hp;
 	std::vector<std::string> character_skills;
 	std::string skill_name;
-	std::unique_ptr<ISkill> character_skill;
+	std::unique_ptr<ISkill> character_skill(nullptr);
 
 	element.QueryStringAttribute("name", &character_name);
 
@@ -117,7 +117,7 @@ ICharacter* DBG_CharacterLoader::loadCharacter(const TiXmlElement& element, Skil
 		}
 	}
 
-	l_ret = new DBG_Character(character_name, character_hp);
+	l_ret = std::unique_ptr<ICharacter>(new DBG_Character(character_name, character_hp));
 
 	if (l_ret != nullptr)
 	{

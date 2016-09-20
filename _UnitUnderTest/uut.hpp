@@ -23,6 +23,9 @@ namespace uut
 	void uut_Test_Sf_String(void);
 	void uut_Loading_Characters(void);
 	void uut_ExpressionParser(void);
+	void uut_AttributeLoading(void);
+	void uut_SkillLoading(void);
+	void uut_CharacterLoading(void);
 }
 
 

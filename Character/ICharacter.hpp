@@ -5,10 +5,12 @@
 #include <string>
 
 #include "Miscellaneous.hpp"
+#include "Attribute/Characterised.hpp"
+#include "Attribute/Attribute/ICharacterAttribute.hpp"
 
 class SkillManager;
 
-class ICharacter : public misc::Clonable<ICharacter>, public misc::Dumpable
+class ICharacter : public misc::Clonable<ICharacter>, public misc::Dumpable, public Characterised<ICharacterAttribute>
 {
 public:
 	virtual ~ICharacter() {}
@@ -17,10 +19,12 @@ public:
 	virtual void setEnnemies(const std::vector<ICharacter*>& ennemies) = 0;
 
 	/** Fight methods **/
+	virtual void startTurn(void) = 0;
+	virtual void endTurn(void) = 0;
 	virtual void selectSkill(void) = 0;
 	virtual void useSkill(void) = 0;
-	virtual bool getAttribute(const std::string& attribute_id, int& attribute_value) = 0;
-	virtual bool setAttribute(const std::string& attribute_id, int attribute_value) = 0;
+	//virtual bool getAttribute(const std::string& attribute_id, int& attribute_value) = 0;
+	//virtual bool setAttribute(const std::string& attribute_id, int attribute_value) = 0;
 
 	/** States methods **/
 	virtual const std::string& getName(void) = 0;

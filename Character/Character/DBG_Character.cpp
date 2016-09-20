@@ -6,14 +6,29 @@
 #include "Skill/SkillManager.hpp"
 #include "Skill/ISkill.hpp"
 
+void deleteDBG_Character(ICharacter* obj)
+{
+	delete obj;
+}
+
 DBG_Character::DBG_Character(const std::string& name, int hp_max)
-	:BasicCharacter(name, misc::Gauge<int>(hp_max)),
+	:BasicCharacter(name),
 	m_skill_index(0)
 {
 	/** Nothing **/
 }
 
 DBG_Character::~DBG_Character()
+{
+	/** Nothing **/
+}
+
+void DBG_Character::startTurn(void)
+{
+	/** Nothing **/
+}
+
+void DBG_Character::endTurn(void)
 {
 	/** Nothing **/
 }
@@ -36,7 +51,7 @@ void DBG_Character::useSkill(void)
 
 	if (!isDead())
 	{
-		m_current_skill->use(m_targets);
+		//m_current_skill->use(m_targets);
 	}
 	m_targets.resize(0);
 	log().exitFunction();
@@ -58,5 +73,5 @@ bool DBG_Character::isDead(void) const
 
 std::unique_ptr<ICharacter> DBG_Character::clone(void) const
 {
-	return std::unique_ptr<ICharacter>(new DBG_Character(*this));
+	return std::unique_ptr<ICharacter>(new DBG_Character(m_name, 5));
 }

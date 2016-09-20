@@ -14,12 +14,12 @@ CharacterManager::CharacterManager()
 	/** Nothing **/
 }
 
-bool CharacterManager::load(const std::string& file_path, const std::vector<CharacterLoader*>& loaders, SkillManager& sm)
+bool CharacterManager::load(const std::string& file_path, const std::vector<std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm)
 {
 	bool l_ret(false);
 	TiXmlDocument document;
-	std::vector<CharacterLoader*>::const_iterator l_it;
-	ICharacter* l_tmp_char(nullptr);
+	std::vector<std::unique_ptr<CharacterLoader>>::const_iterator l_it;
+	std::unique_ptr<ICharacter> l_tmp_char(nullptr);
 
 	l_ret = document.LoadFile(file_path);
 
@@ -38,7 +38,7 @@ bool CharacterManager::load(const std::string& file_path, const std::vector<Char
 
 			if (l_element != nullptr)
 			{
-				l_it = std::find_if(loaders.begin(), loaders.end(), [l_element](CharacterLoader* cl){ return cl->getElementName() == l_element->ValueStr(); });
+				l_it = std::find_if(loaders.begin(), loaders.end(), [l_element](const std::unique_ptr<CharacterLoader>& cl){ return cl->getElementName() == l_element->ValueStr(); });
 
 				if (l_it != loaders.end())
 				{
@@ -46,7 +46,7 @@ bool CharacterManager::load(const std::string& file_path, const std::vector<Char
 
 					if (l_tmp_char != nullptr)
 					{
-						m_characters[l_tmp_char->getName()] = std::unique_ptr<ICharacter>(l_tmp_char);
+						m_characters[l_tmp_char->getName()] = std::move(l_tmp_char);
 					}
 					else
 					{
@@ -67,7 +67,7 @@ bool CharacterManager::load(const std::string& file_path, const std::vector<Char
 
 std::unique_ptr<ICharacter> CharacterManager::getCharacter(const std::string& character_name)
 {
-	std::unique_ptr<ICharacter> l_ret;
+	std::unique_ptr<ICharacter> l_ret(nullptr);
 	auto l_it(m_characters.find(character_name));
 
 	if (l_it != m_characters.end())

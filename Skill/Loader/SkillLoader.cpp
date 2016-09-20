@@ -14,9 +14,9 @@ SkillLoader::~SkillLoader()
 	/** Nothing **/
 }
 
-ISkill* SkillLoader::load(const TiXmlElement& element)
+std::unique_ptr<ISkill> SkillLoader::load(const TiXmlElement& element)
 {
-	ISkill* l_ret(nullptr);
+	std::unique_ptr<ISkill> l_ret(nullptr);
 
 	log().entranceFunction(FUNCTION_NAME);
 

@@ -6,12 +6,19 @@
 
 class SkillManager;
 
+extern "C"
+{
+	void deleteDBG_Character(ICharacter* obj);
+}
+
 class DBG_Character : public BasicCharacter
 {
 public:
 	DBG_Character(const std::string& name, int hp_max);
 	~DBG_Character();
 
+	virtual void startTurn(void);
+	virtual void endTurn(void);
 	virtual void selectSkill(void);
 	virtual void useSkill(void);
 	virtual bool isDead(void) const;

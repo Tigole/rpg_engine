@@ -2,6 +2,9 @@
 #define _EXPRESSION_PARSER_HPP 1
 
 #include <string>
+#include <cmath>
+#include <algorithm>
+#include <cctype>
 #include "VariableList.hpp"
 
 template<typename T>
@@ -40,7 +43,7 @@ bool evaluateDivide(T a, T b, T& res)
 template<typename T>
 bool evaluatePower(T a, T b, T& res)
 {
-	res = std::pow((double)a, (double)b);
+	res = (T)std::pow((double)a, (double)b);
 	return true;
 }
 
@@ -56,14 +59,18 @@ class ExpressionParser
 {
 public:
 	ExpressionParser()
+	 :	m_error(),
+		m_postfix_expression(),
+		m_operators(),
+		m_result()
 	{
-		m_operators['+'] = Operator<T>('+', 1, OP_AS_LEFT, 0, &evaluatePlus);
-		m_operators['-'] = Operator<T>('-', 1, OP_AS_LEFT, 0, &evaluateMinus);
-		m_operators['*'] = Operator<T>('*', 2, OP_AS_LEFT, 1, &evaluateMultiply);
-		m_operators['/'] = Operator<T>('/', 2, OP_AS_LEFT, 1, &evaluateDivide);
-		m_operators['^'] = Operator<T>('^', 3, OP_AS_RIGHT, 1, &evaluatePower);
-		m_operators['%'] = Operator<T>('%', 3, OP_AS_LEFT, 1, &evaluateModulo);
-		m_operators['('] = Operator<T>('(', 0, OP_AS_LEFT, 0, nullptr);
+		m_operators['+'] = Operator<T>('+', 1, 0, &evaluatePlus);
+		m_operators['-'] = Operator<T>('-', 1, 0, &evaluateMinus);
+		m_operators['*'] = Operator<T>('*', 2, 1, &evaluateMultiply);
+		m_operators['/'] = Operator<T>('/', 2, 1, &evaluateDivide);
+		m_operators['^'] = Operator<T>('^', 3, 1, &evaluatePower);
+		m_operators['%'] = Operator<T>('%', 3, 1, &evaluateModulo);
+		m_operators['('] = Operator<T>('(', 0, 0, nullptr);
 	}
 
 	bool parse(const std::string& expression, const VariableList& var_list)
@@ -129,7 +136,7 @@ public:
 		bool l_ret(true);
 		std::stack<Operator<int>> stack;
 		unsigned int i(0);
-		std::map<char, Operator<int>>::iterator it;
+		typename std::map<char, Operator<int>>::iterator it;
 
 
 		log().entranceFunction(FUNCTION_NAME);
@@ -160,7 +167,7 @@ public:
 				log() << "expression[i] : " << expression[i] << "\n";*/
 				if (isWhiteSpace(expression[i]) == false)
 				{
-					if (std::isdigit(expression[i], std::locale()))
+					if (std::isdigit(expression[i]))
 						m_postfix_expression.back() += expression[i];
 					else
 					{
@@ -231,11 +238,11 @@ public:
 			m_postfix_expression.push_back("");
 		}
 
-		for (auto it = m_postfix_expression.begin(); it != m_postfix_expression.end(); it++)
+		for (auto l_it = m_postfix_expression.begin(); l_it != m_postfix_expression.end(); l_it++)
 		{
-			if (it->size() == 0)
+			if (l_it->size() == 0)
 			{
-				it = m_postfix_expression.erase(it) - 1;
+				l_it = m_postfix_expression.erase(l_it) - 1;
 			}
 		}
 
@@ -252,7 +259,6 @@ public:
 	bool getResult(T& res)
 	{
 		std::stack<std::string> operands;
-		auto it(m_operators.end());
 		std::string str_a, str_b;
 		T t_a, t_b;
 		bool l_ret(true);
@@ -319,22 +325,23 @@ private:
 		return l_ret;
 	}
 
-	enum OperatorAssociativity
-	{
-		OP_AS_LEFT,
-		OP_AS_RIGHT
-	};
-
-	template<typename T>
+	template<typename Type>
 	struct Operator
 	{
-		Operator() : m_char('\0'), m_priority(-1), m_associativity(OP_AS_LEFT){}
-		Operator(char op, int priority, OperatorAssociativity associativity, T null_element, bool(*evaluate)(T a, T b, T& res)) : m_char(op), m_priority(priority), m_associativity(associativity), m_null_element(null_element), m_evaluate(evaluate){}
+		Operator() : m_char('\0'), m_priority(-1), m_null_element(), m_evaluate(nullptr){}
+		Operator(	char op,
+					int priority,
+					Type null_element,
+					bool(*evaluate)(Type a, Type b, Type& res))
+			: 	m_char(op),
+				m_priority(priority),
+				m_null_element(null_element),
+				m_evaluate(evaluate)
+		{}
 		char m_char;
 		int m_priority;
-		T m_null_element;
-		OperatorAssociativity m_associativity;
-		bool(*m_evaluate)(T a, T b, T& res);
+		Type m_null_element;
+		bool(*m_evaluate)(Type a, Type b, Type& res);
 	};
 
 	bool isOperator(char c) const

@@ -3,8 +3,8 @@
 
 #include <string>
 #include <map>
-#include <memory>
 #include <vector>
+#include "Miscellaneous.hpp"
 
 class ICharacter;
 class CharacterLoader;
@@ -16,7 +16,7 @@ class CharacterManager
 public:
 	CharacterManager();
 
-	bool load(const std::string& file_path, const std::vector<CharacterLoader*>& loaders, SkillManager& sm);
+	bool load(const std::string& file_path, const std::vector<std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm);
 
 	std::unique_ptr<ICharacter> getCharacter(const std::string& character_name);
 

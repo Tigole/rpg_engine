@@ -53,7 +53,121 @@ namespace misc
 
 		virtual bool reset(void) = 0;
 	};
+	
+	template<typename T>
+	class PointerCollection
+	{
+	public:
+		PointerCollection();
 
+	};
+
+	/*template<typename T>
+	class DLL_Pointer
+	{
+	public:
+		typedef void(*Deleter)(T*);
+		DLL_Pointer() :	m_object(nullptr), m_deleter(nullptr){}
+		DLL_Pointer(T* obj, void(*deleter)(T*)) : m_object(object), m_deleter(deleter){}
+		DLL_Pointer(const DLL_Pointer<T>& other) : m_object(other.m_object), m_deleter(other.m_deleter){}
+		DLL_Pointer& operator=(const DLL_Pointer<T>& other)
+		{
+			m_object = other.m_object;
+			m_deleter = other.m_deleter;
+			return *this;
+		}
+
+		T* get(void) const
+		{
+			return m_object;
+		}
+
+		Deleter getDeleter(void) const
+		{
+			return m_deleter;
+		}
+
+		/*void release(void)
+		{
+			m_object = nullptr;
+		}*/
+
+		/*void destroy(void)
+		{
+			m_deleter(m_object);
+		}* /
+
+	private:
+		T* m_object;
+		void(*m_deleter)(T*);
+	};
+
+	template<typename T>
+	class DLL_SmartPointer
+	{
+	public:
+		DLL_SmartPointer() : m_object(nullptr), m_deleter(nullptr) {}
+		DLL_SmartPointer(T* object, void(*deleter)(T*)) : m_object(object), m_deleter(deleter) {}
+		DLL_SmartPointer(const DLL_SmartPointer& other) = delete;/* : m_object(nullptr), m_deleter(other.m_deleter)
+		{
+			if (other.m_object != nullptr)
+				m_object = other.m_object->clone();
+		}* /
+		~DLL_SmartPointer()
+		{
+			destroy();
+		}
+		/*DLL_SmartPointer<T>& operator=(const DLL_SmartPointer<T>& other)
+		{
+			m_deleter = other.m_deleter;
+			if (other.m_object != nullptr)
+				m_object = other.m_object->clone();
+			return *this;
+		}* /
+		DLL_SmartPointer<T>& operator=(DLL_SmartPointer<T>& other)
+		{
+			from(other);
+			return *this;
+		}
+		void from(DLL_SmartPointer<T>& other)
+		{
+			destroy();
+			m_object = other.m_object;
+			m_deleter = other.m_deleter;
+			other.m_object = nullptr;
+		}
+		T* operator->(void) const
+		{
+			return m_object;
+		}
+		T* operator->(void)
+		{
+			return m_object;
+		}
+		T& operator*(void) const
+		{
+			return *m_object;
+		}
+		T& operator*(void)
+		{
+			return *m_object;
+		}
+		bool isValid(void)
+		{
+			return (m_object != nullptr);
+		}
+	private:
+		void destroy(void)
+		{
+			if ((m_deleter != nullptr) && (m_object != nullptr))
+				m_deleter(m_object);
+		}
+		T* m_object;
+		void(*m_deleter)(T*);
+	};*/
+
+	/*template<typename T>
+	using DLL_UniquePointer = std::unique_ptr<T, void(*)(T*)>;*/
 
 	/** \class Clonable
 		\brief Base class for objects that need to be cloned
@@ -69,6 +183,7 @@ namespace misc
 		virtual ~Clonable(){}
 
 		virtual std::unique_ptr<T> clone(void) const = 0;
+
 	};
 
 	template<typename T>
@@ -154,7 +269,7 @@ namespace misc
 		std::string m_element_name;
 	};
 
-	template <typename FunctionPointer>
+	
 	class DLL_Loader
 	{
 	public:
@@ -169,11 +284,12 @@ namespace misc
 #endif
 			}
 		}
+		template <typename FunctionPointer>
 		FunctionPointer getFunction(const std::string& dll_name, const std::string& function_name)
 		{
 			FunctionPointer ret(nullptr);
 			NativeHandleType dll_handle(nullptr);
-			std::map<std::string, NativeHandleType>::iterator it(m_dll.find(dll_name));
+			std::map<std::string, NativeDllHandleType>::iterator it(m_dll.find(dll_name));
 
 			if (it != m_dll.end())
 				dll_handle = it->second;
@@ -204,12 +320,12 @@ namespace misc
 
 	protected:
 #if PLATFORM == PLATFORM_WINDOWS
-		typedef HINSTANCE NativeHandleType;
+		typedef HINSTANCE NativeDllHandleType;
 #elif PLATFORM == PLATFORM_LINUX
 		typedef void* NativeHandleType;
 #endif
 
-		std::map<std::string, NativeHandleType> m_dll;
+		std::map<std::string, NativeDllHandleType> m_dll;
 	};
 }
 

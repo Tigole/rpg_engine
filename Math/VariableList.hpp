@@ -3,12 +3,17 @@
 
 #include <string>
 #include <map>
+#include <vector>
+#include <utility>
 
 class VariableList
 {
 public:
-	void setVariable(const std::string& var_name, std::string var_value);
+	VariableList();
+	VariableList(const std::vector<std::pair<std::string, std::string>>& var_list);
+	VariableList(const std::string& var_name, const std::string& var_value);
 
+	void setVariable(const std::string& var_name, std::string var_value);
 	bool getVariable(const std::string& var_name, std::string& var_value) const;
 
 private:

@@ -8,6 +8,8 @@
 
 #include <tinyxml.h>
 
+#include "Miscellaneous.hpp"
+
 class ISkill;
 class ICharacter;
 class SkillLoader;
@@ -17,7 +19,7 @@ class SkillManager
 public:
     SkillManager();
 
-	bool load(const std::string& file_path, const std::vector<SkillLoader*>& loaders);
+	bool load(const std::string& file_path, const std::vector<std::unique_ptr<SkillLoader>>& loaders);
 
 	std::unique_ptr<ISkill> getSkill(const std::string& skill_name, ICharacter& skill_owner) const;
 

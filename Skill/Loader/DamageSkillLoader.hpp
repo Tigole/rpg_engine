@@ -12,7 +12,7 @@ public:
 
 protected:
 	bool isValid(const TiXmlElement& element) const;
-	ISkill* loadElement(const TiXmlElement& element);
+	std::unique_ptr<ISkill> loadElement(const TiXmlElement& element);
 };
 
 #endif // !_DAMAGE_SKILL_LOADER_HPP

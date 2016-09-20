@@ -18,12 +18,18 @@
 using namespace std;
 using namespace uut;
 
+void delete_int(int* obj)
+{
+	delete obj;
+}
+
 int main(int argc, char** argv)
 {
 	vector<void(*)(void)> uut_functions;
 	//std::string old_local;
 
 	log().entranceFunction(FUNCTION_NAME);
+
 
 	//std::locale::global(std::locale("fr-FR"));
 
@@ -38,15 +44,25 @@ int main(int argc, char** argv)
 
 	//uut_functions.push_back(uut_Fight_std);
 	//uut_functions.push_back(uut_Fight_obj);
-	/*
+	
 	uut_functions.push_back(uut_TestLoadingSkills);
 	uut_functions.push_back(uut_Test_Sf_String);
-	uut_functions.push_back(uut_Loading_Characters);*/
+	uut_functions.push_back(uut_Loading_Characters);
 	uut_functions.push_back(uut_ExpressionParser);
+	uut_functions.push_back(uut_AttributeLoading);
+	uut_functions.push_back(uut_SkillLoading);
+	uut_functions.push_back(uut_CharacterLoading);
 
-	for (auto& a : uut_functions)
+	try
 	{
-		a();
+		for (auto& a : uut_functions)
+		{
+			a();
+		}
+	}
+	catch (std::exception& e)
+	{
+		cout << e.what() << "\n";
 	}
 
 	cout << "ééé@à" << "\n";
