@@ -13,10 +13,8 @@ public:
 	CompositeAttributeLoader();
 	~CompositeAttributeLoader();
 
+	std::unique_ptr<IAttribute> load(const TiXmlElement& element);
 protected:
-	bool isValid(const TiXmlElement& element);
-	std::unique_ptr<IAttribute> loadAttribute(const TiXmlElement& element);
-
 	BasicAttributeLoader m_basic_loader;
 };
 

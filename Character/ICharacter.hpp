@@ -27,11 +27,11 @@ public:
 	//virtual bool setAttribute(const std::string& attribute_id, int attribute_value) = 0;
 
 	/** States methods **/
-	virtual const std::string& getName(void) = 0;
+	virtual const std::string& getName(void) const = 0;
 	virtual bool isDead(void) const = 0;
 
 	/** Other **/
-	virtual void addSkill(const std::string& skill_name, const SkillManager& sm) = 0;
+	virtual void addSkill(const std::string& skill_id, const SkillManager& sm) = 0;
 };
 
 #endif // !_ICHARACTER_HPP

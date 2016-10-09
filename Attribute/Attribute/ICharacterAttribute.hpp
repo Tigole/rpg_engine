@@ -12,7 +12,7 @@ public:
 	virtual void endTurn(void) = 0;
 	virtual void endFight(void) = 0;
 
-	virtual const std::string& getName(void) = 0;
+	virtual const std::string& getName(void) const = 0;
 	virtual bool getValue(const std::string& attribute_name, int& value) const = 0;
 	virtual bool setValue(const std::string& attribute_name, int value) = 0;
 	virtual bool save(TiXmlElement& parent) const = 0;

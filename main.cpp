@@ -11,6 +11,8 @@
 #include "_UnitUnderTest/uut.hpp"
 #include "Logger/ILogger.h"
 
+#include "Exception\Exception.hpp"
+
 #include <cwchar>
 #include <locale>
 #include <locale.h>
@@ -25,11 +27,10 @@ void delete_int(int* obj)
 
 int main(int argc, char** argv)
 {
-	vector<void(*)(void)> uut_functions;
+	vector<pair<string,void(*)(void)>> uut_functions;
 	//std::string old_local;
 
 	log().entranceFunction(FUNCTION_NAME);
-
 
 	//std::locale::global(std::locale("fr-FR"));
 
@@ -45,25 +46,29 @@ int main(int argc, char** argv)
 	//uut_functions.push_back(uut_Fight_std);
 	//uut_functions.push_back(uut_Fight_obj);
 	
-	uut_functions.push_back(uut_TestLoadingSkills);
-	uut_functions.push_back(uut_Test_Sf_String);
-	uut_functions.push_back(uut_Loading_Characters);
-	uut_functions.push_back(uut_ExpressionParser);
-	uut_functions.push_back(uut_AttributeLoading);
-	uut_functions.push_back(uut_SkillLoading);
-	uut_functions.push_back(uut_CharacterLoading);
+	uut_functions.push_back(make_pair("uut_TestLoadingSkills", uut_TestLoadingSkills));
+	uut_functions.push_back(make_pair("uut_Test_Sf_String", uut_Test_Sf_String));
+	uut_functions.push_back(make_pair("uut_Loading_Characters", uut_Loading_Characters));
+	uut_functions.push_back(make_pair("uut_ExpressionParser", uut_ExpressionParser));
+	uut_functions.push_back(make_pair("uut_AttributeLoading", uut_AttributeLoading));
+	uut_functions.push_back(make_pair("uut_SkillLoading", uut_SkillLoading));
+	uut_functions.push_back(make_pair("uut_CharacterLoading", uut_CharacterLoading));
 
-	try
-	{
 		for (auto& a : uut_functions)
 		{
-			a();
+			try
+			{
+				a.second();
+			}
+			catch (std::exception& e)
+			{
+				cerr << "[" << a.first << "] : " << e.what() << "\n";
+			}
+			catch (const IException& e)
+			{
+				cerr << "[" << a.first << "] : " << e.what() << "\n";
+			}
 		}
-	}
-	catch (std::exception& e)
-	{
-		cout << e.what() << "\n";
-	}
 
 	cout << "ééé@à" << "\n";
 	log() << "ééé@à" << "\n";

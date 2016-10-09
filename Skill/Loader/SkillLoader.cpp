@@ -14,18 +14,3 @@ SkillLoader::~SkillLoader()
 	/** Nothing **/
 }
 
-std::unique_ptr<ISkill> SkillLoader::load(const TiXmlElement& element)
-{
-	std::unique_ptr<ISkill> l_ret(nullptr);
-
-	log().entranceFunction(FUNCTION_NAME);
-
-	if (isValid(element))
-		l_ret = loadElement(element);
-	else
-		log() << "Element is not valid : \"" << element.Value() << "\"\n";
-
-	log().exitFunction();
-
-	return l_ret;
-}

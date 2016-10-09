@@ -7,9 +7,8 @@ class DBG_DamageSkillLoader : public SkillLoader
 {
 public:
 	DBG_DamageSkillLoader(const std::string& element_name);
-protected:
-	bool isValid(const TiXmlElement& element) const;
-	std::unique_ptr<ISkill> loadElement(const TiXmlElement& element);
+
+	std::unique_ptr<ISkill> load(const TiXmlElement& element);
 };
 
 #endif // _DBG_DAMAGESKILLLOADER_HPP

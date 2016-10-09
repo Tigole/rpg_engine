@@ -93,7 +93,7 @@ bool DBG_CharacterLoader::checkSkills(const TiXmlElement& skills)
 	return l_b_ret;
 }
 
-std::unique_ptr<ICharacter> DBG_CharacterLoader::loadCharacter(const TiXmlElement& element, SkillManager& sm)
+std::unique_ptr<ICharacter> DBG_CharacterLoader::load(const TiXmlElement& element, SkillManager& sm)
 {
 	std::unique_ptr<ICharacter> l_ret(nullptr);
 	std::string character_name;

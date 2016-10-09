@@ -17,15 +17,15 @@ public:
 	CompositeAttribute(const std::string& base_name);
 	CompositeAttribute(const CompositeAttribute& cp);
 
-	bool addAttributes(std::unique_ptr<IAttribute>& lower_attribute);
-	virtual bool getValue(const std::string& attribute_name, int& value) const;
-	virtual bool setValue(const std::string& attribute_name, int value);
+	void addAttributes(std::unique_ptr<IAttribute>& lower_attribute);
+	virtual void getValue(const std::string& attribute_name, int& value) const;
+	virtual void setValue(const std::string& attribute_name, int value);
 	std::unique_ptr<IAttribute> clone(void) const;
-	bool save(TiXmlElement& parent) const;
+	void save(TiXmlElement& parent) const;
 	virtual void dump(ILogger& l);
 
 private:
-	bool splitAttributeName(const std::string& full_name, std::string& base_name, std::string& lower_name) const;
+	void splitAttributeName(const std::string& full_name, std::string& base_name, std::string& lower_name) const;
 	std::map<std::string, std::unique_ptr<IAttribute>> m_attributes;
 
 	/** \fn bool splitAttributeName(const std::string& full_name, std::string& base_name, std::string& lower_name) const

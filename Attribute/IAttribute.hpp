@@ -11,9 +11,9 @@ public:
 	virtual ~IAttribute(){}
 
 	virtual const std::string& getName(void) = 0;
-	virtual bool getValue(const std::string& attribute_name, int& value) const = 0;
-	virtual bool setValue(const std::string& attribute_name, int value) = 0;
-	virtual bool save(TiXmlElement& parent) const = 0;
+	virtual void getValue(const std::string& attribute_name, int& value) const = 0;
+	virtual void setValue(const std::string& attribute_name, int value) = 0;
+	virtual void save(TiXmlElement& parent) const = 0;
 	virtual void dump(ILogger& l) = 0;
 
 	/** \fn virtual const std::string& getName(void) = 0

@@ -21,11 +21,11 @@ public:
 	BasicCharacter(const BasicCharacter& bc) = delete;
 	BasicCharacter& operator=(const BasicCharacter& bc) = delete;
 	~BasicCharacter();
-	virtual const std::string& getName(void);
+	virtual const std::string& getName(void) const;
 	virtual void setEnnemies(const std::vector<ICharacter*>& ennemies);
-	virtual bool getAttribute(const std::string& attribute_id, int& attribute_value) const;
-	virtual bool getAttribute(const std::string& attribute_id, int& attribute_value);
-	virtual bool setAttribute(const std::string& attribute_id, int attribute_value);
+	virtual void getAttribute(const std::string& attribute_id, int& attribute_value) const;
+	virtual void getAttribute(const std::string& attribute_id, int& attribute_value);
+	virtual void setAttribute(const std::string& attribute_id, int attribute_value);
 
 
 	virtual void startTurn(void);

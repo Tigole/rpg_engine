@@ -1,6 +1,7 @@
 #include "BasicCharacterLoader.hpp"
 #include "Character\Character\BasicCharacter.hpp"
 #include "Skill\SkillManager.hpp"
+#include "Exception\Exception.hpp"
 
 #include <tinyxml.h>
 
@@ -15,98 +16,61 @@ void BasicCharacterLoader::setAttributeLoaderFactory(AttributeLoaderFactory* att
 	m_attribute_loader_factory = attribute_loader_factory;
 }
 
-
-bool BasicCharacterLoader::isValid(const TiXmlElement& element)
-{
-	bool l_ret(true);
-
-	return l_ret;
-}
-
-std::unique_ptr<ICharacter> BasicCharacterLoader::loadCharacter(const TiXmlElement& element, SkillManager& sm)
+std::unique_ptr<ICharacter> BasicCharacterLoader::load(const TiXmlElement& element, SkillManager& skill_manager)
 {
 	BasicCharacter* l_ret(nullptr);
 	bool b(false);
 	const TiXmlElement* l_element(nullptr);
-	std::vector<std::string> skill_id;
-	const char* character_name(nullptr);
+	std::vector<std::string> skill_ids;
+	std::string character_name;
 
-	character_name = element.Attribute("name");
-	if (character_name != nullptr)
+	if (element.QueryStringAttribute("name", &character_name) != TIXML_SUCCESS)
+		throw XMLLoadingExceptionAttributeMissing(element, "name");
+
+	l_ret = new BasicCharacter(character_name);
+
+	for (const TiXmlNode* l_node = element.FirstChild(); l_node != nullptr; l_node = l_node->NextSibling())
 	{
-		l_element = element.FirstChildElement("SkillList");
+		const TiXmlElement* l_element(l_node->ToElement());
+
 		if (l_element != nullptr)
 		{
-			b = loadSkillList(*l_element, skill_id);
-		}
-	}
-
-
-	if (b == true)
-	{
-		l_ret = new BasicCharacter(character_name);
-		if (l_ret != nullptr)
-		{
-			l_element = element.FirstChildElement("AttributeList");
-			if (l_element != nullptr)
+			if (l_element->ValueStr() == "SkillList")
 			{
-				b = loadAttributList(*l_element, *l_ret);
+				loadSkillList(*l_element, skill_ids);
+
+				for (auto& skill_id : skill_ids)
+					l_ret->addSkill(skill_id, skill_manager);
 			}
-			else
+			else if (l_element->ValueStr() == "AttributeList")
 			{
-				log().entranceFunction(FUNCTION_NAME);
-				log() << "No child \"AttributeList\"\n";
-				log().exitFunction();
+				loadAttributList(*l_element, *l_ret);
 			}
 		}
-		else
-		{
-			log().entranceFunction(FUNCTION_NAME);
-			log() << "Error while new\n";
-			log().exitFunction();
-		}
-	}
-	else
-	{
-		log().entranceFunction(FUNCTION_NAME);
-		log() << "No child \"SkillList\"\n";
-		log().exitFunction();
-	}
-
-	if (b == true)
-	{
-		for (auto& skill : skill_id)
-			l_ret->addSkill(skill, sm);
 	}
 
 	return std::unique_ptr<ICharacter>(l_ret);
 }
 
-bool BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vector<std::string>& skill_id)
+void BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vector<std::string>& skill_id)
 {
-	bool l_ret(true);
-	const char* tmp(nullptr);
+	std::string tmp;
 
-	for (const TiXmlNode* l_node = element.FirstChild(); (l_ret == true) && (l_node != nullptr); l_node = l_node->NextSibling())
+	if (element.NoChildren() == true)
+		throw XMLLoadingExceptionElementHasNoChild(element);
+
+
+	for (const TiXmlNode* l_node = element.FirstChild(); l_node != nullptr; l_node = l_node->NextSibling())
 	{
 		const TiXmlElement* l_element(l_node->ToElement());
 		if (l_element != nullptr)
 		{
-			l_ret = false;
 			if (l_element->ValueStr() == "Skill")
 			{
-				tmp = l_element->Attribute("id");
-				if (tmp != nullptr)
-				{
-					skill_id.push_back(tmp);
-					l_ret = true;
-				}
-				else
-				{
-					log().entranceFunction(FUNCTION_NAME);
-					log() << "No \"id\" in \"Skill\"\n";
-					log().exitFunction();
-				}
+				if (l_element->QueryStringAttribute("id", &tmp) != TIXML_SUCCESS)
+					throw XMLLoadingExceptionAttributeMissing(*l_element, "id");
+
+				skill_id.push_back(tmp);
 			}
 			else
 			{
@@ -116,13 +80,12 @@ bool BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vecto
 			}
 		}
 	}
-
-	return l_ret;
 }
 
-bool BasicCharacterLoader::loadAttributList(const TiXmlElement& element, BasicCharacter& character)
+void BasicCharacterLoader::loadAttributList(const TiXmlElement& element, BasicCharacter& character)
 {
-	bool l_ret(false);
+	if (element.NoChildren() == true)
+		throw XMLLoadingExceptionElementHasNoChild(element);
 
-	return l_ret;
+	throw UnimplementedFunction(FUNCTION_NAME);
 }

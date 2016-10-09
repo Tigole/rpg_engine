@@ -23,6 +23,8 @@
 #include "Attribute\Loader\AttributeListLoader.hpp"
 #include "Attribute\Loader\AttributeLoaderFactory.hpp"
 
+#include "Exception\Exception.hpp"
+
 #include <SFML/Graphics.hpp>
 
 #include <cstdio>
@@ -133,7 +135,7 @@ namespace uut
 	void uut_TestLoadingSkills(void)
 	{
 		SkillManager sm;
-		std::vector<std::unique_ptr<SkillLoader>> loaders;
+		std::map<std::string, std::unique_ptr<SkillLoader>> loaders;
 		std::string file_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Data/Skills.xml");
 		std::vector<std::string> skills_names;
 		DBG_Character c("JaJa", 50);
@@ -147,9 +149,9 @@ namespace uut
 		skills_names.push_back("Attack %75");
 		skills_names.push_back("Attack 5");
 
-		loaders.push_back(std::unique_ptr<SkillLoader>(new DBG_DamageSkillLoader("DBG_DamageSkill")));
+		loaders["DBG_DamageSkill"] = std::unique_ptr<SkillLoader>(new DBG_DamageSkillLoader("DBG_DamageSkill"));
 
-		log() << sm.load(file_path, loaders) << "\n";
+		sm.load(file_path, loaders);
 
 		log().startBlock("testing getting skills");
 
@@ -221,8 +223,8 @@ namespace uut
 		std::unique_ptr<ICharacter> character(nullptr);
 		CharacterManager cm;
 		SkillManager sm;
-		std::vector<std::unique_ptr<SkillLoader>> skill_loaders;
-		std::vector<std::unique_ptr<CharacterLoader>> char_loaders;
+		std::map<std::string, std::unique_ptr<SkillLoader>> skill_loaders;
+		std::map<std::string, std::unique_ptr<CharacterLoader>> char_loaders;
 		std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/"),
 					skills_file("Data/Skills.xml"),
 					characters_file("Data/Mobs.xml"),
@@ -230,22 +232,14 @@ namespace uut
 
 		log().entranceFunction(FUNCTION_NAME);
 
-		skill_loaders.push_back(std::unique_ptr<SkillLoader>(new DBG_DamageSkillLoader("DBG_DamageSkill")));
-		char_loaders.push_back(std::unique_ptr<CharacterLoader>(new DBG_CharacterLoader("DBG_Character")));
+		skill_loaders["DBG_DamageSkill"] = std::unique_ptr<SkillLoader>(new DBG_DamageSkillLoader("DBG_DamageSkill"));
+		char_loaders["DBG_Character"] = std::unique_ptr<CharacterLoader>(new DBG_CharacterLoader("DBG_Character"));
 
-		if (sm.load(res_path + skills_file, skill_loaders))
-		{
-			if (cm.load(res_path + characters_file, char_loaders, sm))
-			{
-				character = cm.getCharacter(character_to_get);
-				character->dump(log());
-			}
-			else
-				log() << "failed loading characters\n";
-		}
-		else
-			log() << "failed loading skills\n";
-
+		sm.load(res_path + skills_file, skill_loaders);
+		cm.load(res_path + characters_file, char_loaders, sm);
+		character = cm.getCharacter(character_to_get);
+		character->dump(log());
+		
 		log().exitFunction();
 	}
 	
@@ -313,49 +307,60 @@ namespace uut
 		log().entranceFunction(FUNCTION_NAME);
 		log().startBlock("BasicAttribute");
 		/** BasicAttribute **/
+		try
 		{
 			element.reset(new TiXmlElement(basic_attribute_loader.getElementName()));
 			element->SetAttribute("name", "hp");
 			element->SetAttribute("value", 10);
 			attribute = std::move(basic_attribute_loader.load(*element));
 
-			element->Print(stdout, -1);
+			//element->Print(stdout, -1);
 
 			assert(attribute != nullptr);
 			assert(attribute->getName() == "hp");
-			assert(attribute->getValue(attribute->getName(), attribute_value) == true);
+			attribute->getValue(attribute->getName(), attribute_value);
 			assert(attribute_value == 10);
+		}
+		catch (IException& e)
+		{
+			log() << e.what() << "\n";
 		}
 		log().endBlock();
 
 		log().startBlock("CompositAttribute");
 		/** CompositAttribute **/
+		try
 		{
 			element.reset(new TiXmlElement(composite_attribute_loader.getElementName()));
 			element->SetAttribute("name", "hp");
 			element->LinkEndChild(new TiXmlElement(basic_attribute_loader.getElementName()));
-			element->FirstChildElement()->SetAttribute("name", "current");
+			element->FirstChildElement()->SetAttribute("id", "current");
 			element->FirstChildElement()->SetAttribute("value", 10);
 			element->LinkEndChild(new TiXmlElement(basic_attribute_loader.getElementName()));
-			element->LastChild()->ToElement()->SetAttribute("name", "max");
+			element->LastChild()->ToElement()->SetAttribute("id", "max");
 			element->LastChild()->ToElement()->SetAttribute("value", 50);
 
-			element->Print(stdout, -1);
+			//element->Print(stdout, -1);
 
 			attribute = std::move(composite_attribute_loader.load(*element));
 			assert(attribute != nullptr);
 			assert(attribute->getName() == "hp");
-			assert(attribute->getValue("hp.current", attribute_value) == true);
+			attribute->getValue("hp.current", attribute_value);
 			assert(attribute_value == 10);
-			assert(attribute->getValue("hp.max", attribute_value) == true);
+			attribute->getValue("hp.max", attribute_value);
 			assert(attribute_value == 50);
-			assert(attribute->getValue("hp", attribute_value) == false);
+			attribute->getValue("hp", attribute_value);
 			assert(attribute_value == 50);
+		}
+		catch (IException& e)
+		{
+			log() << e.what() << "\n";
 		}
 		log().endBlock();
 
 		log().startBlock("AttributeList");
 		/** AttributeList **/
+		try
 		{
 			element.reset(new TiXmlElement(attribute_list_loader.getElementName()));
 			element->LinkEndChild(new TiXmlElement(composite_attribute_loader.getElementName()));
@@ -367,10 +372,14 @@ namespace uut
 			element->LastChild()->ToElement()->SetAttribute("name", "damages");
 			element->LastChild()->ToElement()->SetAttribute("value", 5);
 
-			element->Print(stdout, -1);
+			//element->Print(stdout, -1);
 
-			assert(attribute_list_loader.load(*element, attributes) == true);
+			attribute_list_loader.load(*element, attributes);
 			assert(attributes.size() == 2);
+		}
+		catch (IException& e)
+		{
+			log() << e.what() << "\n";
 		}
 		log().endBlock();
 
@@ -389,15 +398,15 @@ namespace uut
 		log().entranceFunction(FUNCTION_NAME);
 		
 		element.reset(new TiXmlElement("BasicSkill"));
-		element->SetAttribute("name", "fire_ball");
+		element->SetAttribute("id", "fire_ball");
 		element->SetAttribute("target_attribute", "hp.current");
 		element->SetAttribute("formula", "(owner.attack - target.defense)*skill.damages");
 		element->LinkEndChild(new TiXmlElement("AttributeList"));
 		element->FirstChildElement()->LinkEndChild(new TiXmlElement("BasicAttribute"));
-		element->FirstChildElement()->FirstChildElement()->SetAttribute("name", "damages");
+		element->FirstChildElement()->FirstChildElement()->SetAttribute("id", "damages");
 		element->FirstChildElement()->FirstChildElement()->SetAttribute("value", 5);
 
-		element->Print(stdout, -1);
+		//element->Print(stdout, -1);
 
 		basic_skill = std::move(basic_skill_loader.load(*element));
 		assert(basic_skill != nullptr);

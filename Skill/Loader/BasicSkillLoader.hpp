@@ -13,15 +13,14 @@ public:
 	BasicSkillLoader();
 
 	void setAttributeLoaderFactory(const AttributeLoaderFactory* attribute_loader_factory);
-protected:
-	bool isValid(const TiXmlElement& element) const;
-	std::unique_ptr<ISkill> loadElement(const TiXmlElement& element);
+	std::unique_ptr<ISkill> load(const TiXmlElement& element);
 
-	bool loadAttributes(const TiXmlElement& element, ISkill& skill) const;
+protected:
+	void loadAttributes(const TiXmlElement& element, ISkill& skill) const;
 
 	const AttributeLoaderFactory* m_attribute_loader_factory;
 	std::vector<std::string> m_attributes;
-	std::map<std::string, bool(BasicSkillLoader::*)(const TiXmlElement&, ISkill& skill)const> m_children;
+	std::map<std::string, void(BasicSkillLoader::*)(const TiXmlElement&, ISkill& skill)const> m_children;
 };
 
 #endif // !_BASIC_SKILL_LOADER_HPP

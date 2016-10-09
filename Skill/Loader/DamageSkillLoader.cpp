@@ -18,7 +18,7 @@ bool DamageSkillLoader::isValid(const TiXmlElement& element) const
 
 std::unique_ptr<ISkill> DamageSkillLoader::loadElement(const TiXmlElement& element)
 {
-	std::unique_ptr<DamageSkill> l_ret(nullptr);
+	std::unique_ptr<ISkill> l_ret(nullptr);
 	std::string l_skill_name, l_tmp;
 	int l_skill_damages;
 	DamageSkill::DamageSkillOperator l_skill_operator;
@@ -35,10 +35,6 @@ std::unique_ptr<ISkill> DamageSkillLoader::loadElement(const TiXmlElement& eleme
 
 	/** new object **/
 	//if (l_fn_returned == TIXML_SUCCESS) l_ret = new DamageSkill(l_skill_name, l_skill_damages, l_skill_operator);
-
-	return l_ret;
-
-
 
 	return l_ret;
 }

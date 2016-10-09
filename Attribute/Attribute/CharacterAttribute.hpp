@@ -9,7 +9,7 @@ public:
 	CharacterAttribute(const std::string& name);
 	virtual ~CharacterAttribute();
 
-	virtual const std::string& getName(void);
+	virtual const std::string& getName(void) const;
 	virtual void dump(ILogger& l);
 
 protected:

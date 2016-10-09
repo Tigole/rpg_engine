@@ -16,12 +16,11 @@ class CharacterManager
 public:
 	CharacterManager();
 
-	bool load(const std::string& file_path, const std::vector<std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm);
+	void load(const std::string& file_path, const std::map<std::string, std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm);
 
 	std::unique_ptr<ICharacter> getCharacter(const std::string& character_name);
 
 private:
-	bool isValid(const TiXmlDocument& document) const;
 
 	std::map<std::string, std::unique_ptr<ICharacter>> m_characters;
 };

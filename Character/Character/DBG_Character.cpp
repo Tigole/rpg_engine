@@ -62,7 +62,7 @@ bool DBG_Character::isDead(void) const
 	bool l_ret(false);
 	int hp;
 
-	l_ret = getAttribute("hp", hp);
+	getAttribute("hp", hp);
 
 	assert(l_ret == true);
 

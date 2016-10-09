@@ -12,7 +12,7 @@ CharacterAttribute::~CharacterAttribute()
 	/** Nothing **/
 }
 
-const std::string& CharacterAttribute::getName(void)
+const std::string& CharacterAttribute::getName(void) const
 {
 	return m_name;
 }

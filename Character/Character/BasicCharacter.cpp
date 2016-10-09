@@ -3,6 +3,7 @@
 #include "Skill/ISkill.hpp"
 #include "Skill/SkillManager.hpp"
 #include "Logger/ILogger.h"
+#include "Exception\Exception.hpp"
 
 void deleteBasiCharacter(ICharacter* obj)
 {
@@ -54,44 +55,37 @@ BasicCharacter::~BasicCharacter()
 	/** Nothing : for smart pointer **/
 }
 
-const std::string& BasicCharacter::getName(void)
+const std::string& BasicCharacter::getName(void) const
 {
 	return m_name;
 }
 
-bool BasicCharacter::getAttribute(const std::string& attribute_id, int& attribute_value) const
+void BasicCharacter::getAttribute(const std::string& attribute_id, int& attribute_value) const
 {
-	bool l_ret(false);
 	auto l_it(m_attributes.find(attribute_id));
 
-	if (l_it != m_attributes.end())
-		l_ret = l_it->second->getValue(attribute_id, attribute_value);
-
-
-	return l_ret;
+	if (l_it == m_attributes.end())
+		throw AttributeNotFound(attribute_id, "BasicCharacter", getName());
+	l_it->second->getValue(attribute_id, attribute_value);
 }
 
-bool BasicCharacter::getAttribute(const std::string& attribute_id, int& attribute_value)
+void BasicCharacter::getAttribute(const std::string& attribute_id, int& attribute_value)
 {
-	bool l_ret(false);
 	auto l_it(m_attributes.find(attribute_id));
 
-	if (l_it != m_attributes.end())
-		l_ret = l_it->second->getValue(attribute_id, attribute_value);
+	if (l_it == m_attributes.end())
+		throw AttributeNotFound(attribute_id, "BasicCharacter", getName());
 
-
-	return l_ret;
+	l_it->second->getValue(attribute_id, attribute_value);
 }
 
-bool BasicCharacter::setAttribute(const std::string& attribute_id, int attribute_value)
+void BasicCharacter::setAttribute(const std::string& attribute_id, int attribute_value)
 {
-	bool l_ret(false);
 	auto l_it(m_attributes.find(attribute_id));
 
-	if (l_it != m_attributes.end())
-		l_ret = l_it->second->setValue(attribute_id, attribute_value);
-
-	return l_ret;
+	if (l_it == m_attributes.end())
+		throw AttributeNotFound(attribute_id, "BasicCharacter", getName());
+	l_it->second->setValue(attribute_id, attribute_value);
 }
 
 void BasicCharacter::startTurn(void)
@@ -108,12 +102,12 @@ void BasicCharacter::endTurn(void)
 
 void BasicCharacter::selectSkill(void)
 {
-	//
+	throw UnimplementedFunction(FUNCTION_NAME);
 }
 
 void BasicCharacter::useSkill(void)
 {
-	//
+	throw UnimplementedFunction(FUNCTION_NAME);
 }
 
 bool BasicCharacter::isDead(void) const

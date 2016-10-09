@@ -12,13 +12,12 @@ public:
 	BasicCharacterLoader();
 
 	void setAttributeLoaderFactory(AttributeLoaderFactory* attribute_loader_factory);
+	virtual std::unique_ptr<ICharacter> load(const TiXmlElement& element, SkillManager& sm);
 
 protected:
-	virtual bool isValid(const TiXmlElement& element);
-	virtual std::unique_ptr<ICharacter> loadCharacter(const TiXmlElement& element, SkillManager& sm);
 
-	bool loadSkillList(const TiXmlElement& element, std::vector<std::string>& skill_id);
-	bool loadAttributList(const TiXmlElement& element, BasicCharacter& character);
+	void loadSkillList(const TiXmlElement& element, std::vector<std::string>& skill_id);
+	void loadAttributList(const TiXmlElement& element, BasicCharacter& character);
 
 	AttributeLoaderFactory* m_attribute_loader_factory;
 };

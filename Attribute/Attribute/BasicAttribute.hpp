@@ -14,10 +14,10 @@ public:
 	BasicAttribute(const std::string& name, int value);
 	BasicAttribute(const std::string& name);
 
-	virtual bool getValue(const std::string& attribute_name, int& value) const;
-	virtual bool setValue(const std::string& attribute_name, int value);
+	virtual void getValue(const std::string& attribute_name, int& value) const;
+	virtual void setValue(const std::string& attribute_name, int value);
 	std::unique_ptr<IAttribute> clone(void) const;
-	bool save(TiXmlElement& parent) const;
+	void save(TiXmlElement& parent) const;
 	virtual void dump(ILogger& l);
 
 protected:

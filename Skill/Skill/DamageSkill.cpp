@@ -28,7 +28,7 @@ DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const std::string
 }
 
 DamageSkill::DamageSkill(const std::string& name, int damages, DamageSkillOperator op)
-	:BasicSkill(name, "", ""),
+	:BasicSkill(name),
 	m_damages(damages),
 	m_operator(op)
 {
@@ -64,7 +64,7 @@ int DamageSkill::affectCharacter(ICharacter& target)
 	assert(attribute != nullptr);
 	assert(attribute->getValue("attack", tmp) == true);
 
-	log() << "name : " << m_name << "\n";
+	log() << "name : " << m_id << "\n";
 	log() << "m_owner->getAttribute(\"attack\", tmp) : " << tmp << "\n";
 	log() << "m_damages : " << m_damages << "\n";
 

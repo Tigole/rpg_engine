@@ -8,6 +8,7 @@
 #include "Logger/ILogger.h"
 #include "Math\ExpressionParser.hpp"
 #include "FightEngine\IBattleGroundWrapper.hpp"
+#include "Effect\IEffect.hpp"
 
 #include <algorithm>
 
@@ -16,21 +17,19 @@ void deleteBasicSkill(ISkill* obj)
 	delete obj;
 }
 
-BasicSkill::BasicSkill(const std::string & name, const std::string & target_attribute, const std::string & formula)
+BasicSkill::BasicSkill(const std::string & id)
 	:m_owner(nullptr),
-	m_name(name),
-	m_formula(formula),
-	m_target_attribute(target_attribute)
+	m_id(id)
 {
 	/** Nothing **/
 }
 
 BasicSkill::BasicSkill(const BasicSkill& bs)
  :	m_owner(nullptr),
-	m_name(bs.m_name),
-	m_formula(bs.m_formula)
+	m_id(bs.m_id)
 {
-	/** Nothing **/
+	for (auto& effect : bs.m_effects)
+		m_effects.push_back(effect->clone());
 }
 
 BasicSkill::~BasicSkill()
@@ -41,7 +40,7 @@ BasicSkill::~BasicSkill()
 BasicSkill& BasicSkill::operator=(const BasicSkill& bs)
 {
 	m_owner = bs.m_owner;
-	m_name = bs.m_name;
+	m_id = bs.m_id;
 	return *this;
 }
 
@@ -53,12 +52,14 @@ std::unique_ptr<ISkill> BasicSkill::clone(void) const
 void BasicSkill::use(const std::vector<IBattleGroundWrapper*>& targets)
 {
 	ICharacter* t(nullptr);
-	for (auto& target : targets)
-	{
-		t = target->getCharacter();
-		if (t != nullptr)
-			affectCharacter(*t);
-	};
+	if (m_owner != nullptr)
+		for (auto& target : targets)
+		{
+			t = target->getCharacter();
+			if (t != nullptr)
+				for (auto& effect : m_effects)
+					effect->affect(*this, *m_owner, *t);
+		};
 }
 
 void BasicSkill::setOwner(ICharacter& owner)
@@ -68,9 +69,15 @@ void BasicSkill::setOwner(ICharacter& owner)
 
 const std::string& BasicSkill::getName(void) const
 {
-	return m_name;
+	return m_id;
 }
 
+void BasicSkill::addEffect(const std::unique_ptr<IEffect>& effect)
+{
+	m_effects.push_back(effect->clone());
+}
+
+#if 0
 int BasicSkill::affectCharacter(ICharacter& target)
 {
 	int target_attribute_new_value(0);
@@ -288,3 +295,5 @@ bool BasicSkill::getVariablesFromFormula(ICharacter& target, VariableList& vars)
 
 	return l_ret;
 }
+
+#endif

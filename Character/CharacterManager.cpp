@@ -6,6 +6,8 @@
 #include "Logger/ILogger.h"
 #include "Character/Loader/CharacterLoader.hpp"
 
+#include "Exception\Exception.hpp"
+
 #include <algorithm>
 
 CharacterManager::CharacterManager()
@@ -14,71 +16,39 @@ CharacterManager::CharacterManager()
 	/** Nothing **/
 }
 
-bool CharacterManager::load(const std::string& file_path, const std::vector<std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm)
+void CharacterManager::load(const std::string& file_path, const std::map<std::string, std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm)
 {
-	bool l_ret(false);
 	TiXmlDocument document;
-	std::vector<std::unique_ptr<CharacterLoader>>::const_iterator l_it;
+	std::map<std::string, std::unique_ptr<CharacterLoader>>::const_iterator l_it;
 	std::unique_ptr<ICharacter> l_tmp_char(nullptr);
+	const TiXmlElement* root(nullptr);
 
-	l_ret = document.LoadFile(file_path);
+	if (document.LoadFile(file_path) == false)
+		throw Exception(std::string(FUNCTION_NAME) + " : \"document.LoadFile(" + file_path + ") == false\"");
 
-	log().entranceFunction(FUNCTION_NAME);
+	root = document.RootElement();
 
-	if (l_ret)
-		l_ret = isValid(document);
-	else
-		log() << "Can't load : \"" << file_path << "\"\n";
+	if (root->NoChildren() == true)
+		throw XMLLoadingExceptionElementHasNoChild(*root);
 
-	if (l_ret)
+	for (const TiXmlElement* l_element = root->FirstChildElement(); l_element != nullptr; l_element = l_element->NextSiblingElement())
 	{
-		for (const TiXmlNode* l_node = document.FirstChild()->NextSibling()->FirstChild(); (l_ret == true) && (l_node != nullptr); l_node = l_node->NextSibling())
-		{
-			const TiXmlElement* l_element(l_node->ToElement());
+		l_it = loaders.find(l_element->ValueStr());
 
-			if (l_element != nullptr)
-			{
-				l_it = std::find_if(loaders.begin(), loaders.end(), [l_element](const std::unique_ptr<CharacterLoader>& cl){ return cl->getElementName() == l_element->ValueStr(); });
+		if (l_it == loaders.end())
+			throw XMLLoadingExceptionNoLoader(l_element->ValueStr());
 
-				if (l_it != loaders.end())
-				{
-					l_tmp_char = (*l_it)->load(*l_element, sm);
-
-					if (l_tmp_char != nullptr)
-					{
-						m_characters[l_tmp_char->getName()] = std::move(l_tmp_char);
-					}
-					else
-					{
-						log() << "Character loading failed : \"" << l_element->Value() << "\"\n";
-						l_ret = false;
-					}
-				}
-			}
-		}
+		l_tmp_char = (l_it->second)->load(*l_element, sm);
+		m_characters[l_tmp_char->getName()] = std::move(l_tmp_char);
 	}
-	else
-		log() << "File is not valid : \"" << file_path << "\"\n";
-
-	log().exitFunction();
-
-	return l_ret;
 }
 
 std::unique_ptr<ICharacter> CharacterManager::getCharacter(const std::string& character_name)
 {
-	std::unique_ptr<ICharacter> l_ret(nullptr);
 	auto l_it(m_characters.find(character_name));
 
-	if (l_it != m_characters.end())
-		l_ret = std::move(l_it->second->clone());
+	if (l_it == m_characters.end())
+		throw ResourceDoesNotExists(character_name, FUNCTION_NAME);
 
-	return l_ret;
-}
-
-bool CharacterManager::isValid(const TiXmlDocument& document) const
-{
-	bool l_ret(true);
-
-	return l_ret;
+	return l_it->second->clone();
 }

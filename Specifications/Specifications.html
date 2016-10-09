@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Specification</title>
+<link rel="stylesheet" href="Specifications.css"/>
+</head>
+<body>
+<header>
+<h1>Specifications</h1>
+<p>The aim of this document is to detail the specification for the application</p>
+</header>
+<nav><h1>Navigation</h1>
+<ol>
+<li><a href="#application_goal_main">Application goal</a>
+	<ol>
+		<li><a href="#application_goal">Application goal</a></li>
+	</ol>
+</li>
+<li><a href="#resources_main">Resources</a>
+	<ol>
+		<li><a href="#resources">Resources</a></li>
+		<li><a href="#resources_handling">Resources handling</a></li>
+		<li><a href="#resource_loading">Loading resources</a></li>
+	</ol>
+</li>
+<li><a href="#fight_engine_main">Fight Engine</a>
+	<ol>
+		<li><a href="#fight_engine">FightEngine</a></li>
+		<li><a href="#i_battle_ground_wrapper">IBattleGroundWrapper</a></li>
+		<li><a href="#i_party">IParty</a></li>
+		<li><a href="#i_character">ICharacter</a></li>
+		<li><a href="#i_skill">ISkill</a></li>
+		<li><a href="#"></a></li>
+		<li><a href="#"></a></li>
+	</ol>
+</li>
+<li><a href="#"></a></li>
+<li><a href="#external_files">External files</a>
+	<ol>
+		<li><a href="#"></a></li>
+		<li><a href="#"></a></li>
+		<li><a href="#"></a></li>
+		<li><a href="#"></a></li>
+	</ol>
+</li>
+<li><a href="#"></a></li>
+<li><a href="#"></a></li>
+<li><a href="#"></a></li>
+</ol>
+</nav>
+<section><h1 id="application_goal_main">Application goal</h1>
+<article>
+	<h1 id="application_goal">Application goal</h1>
+	<p>
+		This application is a turned-base rpg engine.<br/>
+		The application shall be modable (external developpers shall be able to develop libraries for their games and those libraries shall be loaded by the application).
+	</p>
+</article>
+</section>
+<section><h1 id="resources_main">Resources</h1>
+<article><h1 id="resources">Resources</h1>
+<p>In this goal, the application is divided into "resources" such as:
+	<ul>
+		<li>Skills</li>
+		<li>Mobs</li>
+		<li>Animations</li>
+		<li>Parties</li>
+		<li>...</li>
+	</ul>
+	Those resources are defined in an external file loaded in the initialization of the application.
+	The external file is a XML formated file.
+</p>
+</article>
+<article><h1 id="resources_handling">Resources handling</h1>
+<p>Each resource shall be handled by an object ("Resource"Manager) and the program can access resources by queriing some resources by theire id (eg: a skill is called "MySkill" so the "SkillManager" should know the skill named "MySkill" and SkillManager::get("MySkill") should return a copy of the skill "MySkill")</p>
+</article>
+<article><h1 id="resource_loading">Loading resources</h1>
+<p>Each resource known by a "ResourceManager" shall be loadable using an external file.
+		For each class created representing a resource, a spefic class for loading an object of this type should be provided in the aim to load the resource at the beginning.
+		<table>
+		<caption>Consider the following structure</caption>
+		<tr>
+			<th>Class</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>IModule</td><td>Interface known by the program</td></tr>
+		<tr><td>Module</td><td>Contrete class for the program</td></tr>
+		<tr><td>IModuleLoader</td><td>Interface for loading module from external file</td></tr>
+		<tr><td>ModuleLoader</td><td>Concrete class to load a Module object</td></tr>
+		<tr><td>ModuleFactory</td><td>Factory that take data from external file and creating a IModule object from data</td></tr>
+		</table>
+
+		ModuleLoader must provide 2 functions (because of external library)
+		<ul>
+		<li>a creator function to create a dynamic object of IModuleLoader</li>
+		<li>a deleter function to delete a dynamic object of IModuleLoader</li>
+		</ul>
+
+		Data used to create resources are written in a XML file where an element represent a concrete class.<br/>
+		
+		Example:
+		&ltIModuleList&gt	&lt!-- Declaration of a list of object of IModule --&gt
+			&ltConcreteModule>	&lt!-- Element seen by the factory --&gt
+				&ltSomeData/&gt		&lt!-- Data seen by the loader of "ConcreteModule" --&gt
+			&lt/ConcreteModule&gt
+		&lt/IModuleList&gt
+		
+		When the factory meets an element, it will find the loader set for the element value and the current element will be send to the loader to create the concrete object.</p>
+</article>
+</section>
+<section><h1 id="fight_engine_main">Fight Engine</h1>
+<article><h1 id="fight_engine">FightEngine</h1>
+<p>It is a fsm.
+		<article><h1 id="">BasicFightEngine</h1>
+			<p>This class is the basic representation of a fight engine for the application.</p>
+		</article>
+</p>
+</article>
+<article><h1 id="i_battle_ground_wrapper">IBattleGroundWrapper</h1><p>
+		This represent a wrapper for targeting in the fight engine.</p>
+
+</article>
+<article><h1 id="i_party">IParty</h1><p>
+		A party contains multiple characters.</p>
+		
+</article>
+<article><h1 id="i_character">ICharacter</h1>
+		<p>An ICharacter represents a character for fight engine.</br>
+		It has multiple attributes that are changed from external composents (ISkill, IEffect...).
+		<article>
+		<h1 id="">BasicCharacter</h1>
+			<p>This class is the basic representation of a character for the application.</p>
+		</article></p>
+</article>
+<article><h1 id="i_skill">ISkill</h1>
+		<p>This class represents a skill for the fight engine.</br>
+		It may have an owner (the character that knows the skill). Note that each character may have his own copy of the skill.</br>
+		It is used on targets.
+		
+		<article><h1 id="">BasicSkill</h1>
+			<p>This class is the basic representation of a skill for the application.</br>
+			It shall have multiple IAttribute that define the object.</br>
+			It shall have multiple IEffect to affect either the target, the owner or the skill itself.</p>
+		</article></p>
+</article>
+</section>
+<section><h1 id="external_files">External files</h1>
+<article>
+<h1 id="input_file">Input file</h1><p>The file "Data.xml" must be present. This is the entry point of the application.</p>
+</article>
+<article>
+<h1 id="data_xml">Data.xml</h1><p>
+			This shall provide links to the other files the application will load.</br>
+			<table>
+			<caption>This file may have following elements</caption>
+			<tr><th>XML element name</th><th>XML element description</th></tr>
+			<tr><td><a href="#">Library</a></td><td>Link to the file that contains instruction for loading dynamic library (game specific resources)</td></tr>
+			<tr><td><a href="#">Animation</a></td><td></td></tr>
+			<tr><td><a href="#">  </a></td><td>  </td></tr>
+			<tr><td><a href="#">  </a></td><td>  </td></tr>
+			<tr><td><a href="#">  </a></td><td>  </td></tr>
+			<tr><td><a href="#">  </a></td><td>  </td></tr>
+			<tr><td><a href="#">  </a></td><td>  </td></tr>
+			</table>
+			Each of those elements shall have attribute "path" that specify the path of the file from the path of this file.<br/>
+			Example:
+			&ltLibrary path="Libray.xml"/&gt</p>
+</article>
+<article>
+<h1 id="library_xml">Library</h1><p></p>
+</article>
+<article>
+<h1 id="skill_xml">Skill</h1><p></p>
+</article>
+<article>
+<h1 id="animation_xml">Animation</h1><p></p>
+</article>
+<article>
+<h1 id="mob_xml">Mob</h1><p></p>
+</article>
+<article>
+<h1 id=""></h1><p></p>
+</article>
+</section>
+<footer>
+<section>
+<h1>Versions</h1>
+<p>Document:1.0<br/>
+Application:???</p>
+</section>
+<section>
+<h1>Foreword</h1>
+	<p>Don't forget to can "ctr+f" for better navigation in this document.</p>
+</section>
+</footer>
+</body>
+</html>

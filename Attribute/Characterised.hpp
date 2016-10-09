@@ -4,6 +4,7 @@
 #include "Attribute/ICharacterised.hpp"
 #include "Attribute/IAttribute.hpp"
 #include "Logger\ILogger.h"
+#include "Exception\Exception.hpp"
 
 template<class AttributeType>
 class Characterised : public ICharacterised<AttributeType>
@@ -21,39 +22,22 @@ public:
 
 	AttributeType* getAttribute(const std::string& attribute_name)
 	{
-		AttributeType* l_ret(nullptr);
 		auto it(m_attributes.find(attribute_name));
 
-		if (it != m_attributes.end())
-			l_ret = it->second.get();
-		else
-		{
-			log().entranceFunction(FUNCTION_NAME);
-			log() << "No attribute named \"" << attribute_name << "\"\n";
-			log().exitFunction();
-		}
+		if (it == m_attributes.end())
+			throw AttributeNotFound(attribute_name, "ICharacterised<AttributeType>");
 
-		return l_ret;
+		return it->second.get();
 	}
 
-	bool addAttribute(std::unique_ptr<AttributeType>& attribute)
+	void addAttribute(std::unique_ptr<AttributeType>& attribute)
 	{
-		bool l_ret(false);
 		auto it(m_attributes.find(attribute->getName()));
-		
-		if (it == m_attributes.end())
-		{
-			m_attributes[attribute->getName()] = std::move(attribute);
-			l_ret = true;
-		}
-		else
-		{
-			log().entranceFunction(FUNCTION_NAME);
-			log() << "Attribute \"" << attribute->getName() << "\" already exists\n";
-			log().exitFunction();
-		}
 
-		return l_ret;
+		if (it != m_attributes.end())
+			throw AttributeAlreadyExists(attribute->getName(), "ICharacterised<AttributeType>");
+		
+		m_attributes[attribute->getName()] = std::move(attribute);
 	}
 
 protected:
