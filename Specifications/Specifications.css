@@ -2,22 +2,23 @@ html
 {
 	text-align: justify;
 	background-color:#e0f0f0;
-	/*width:60%;*/
 	margin-left:250px;
 	margin-right:250px;
 }
 nav
 {
-	border: solid;
+	border-style: solid;
 	border-radius: 10px;
-	border-width: 1px;/*
+	border-width: 1px;
+	padding-left:10px;
+	padding-right:10px;/*
 	float: left;
 	margin-left:0px;
 	margin-right:0px;*/
 }
 section
 {
-	border: solid;
+	border-style: solid;
 	border-radius: 10px;
 	border-width: 1px;
 	padding-left:10px;
@@ -36,14 +37,23 @@ h1
 {
 	text-decoration: underline
 }
-p
+td, th
 {
+	border-width:1px;
+	border-style:solid;
+	padding-left:10px;
+	padding-right:10px;
 }
-
+aside
+{
+	/*padding:5px 5px 5px 5px;*/
+	/*float:right;*/
+}
 table
 {
-	border:solid;
+	border-style:double;
 	border-width: 1px;
 	margin-top:5px;
 	margin-bottom:5px;
+	border-collapse: collapse;
 }

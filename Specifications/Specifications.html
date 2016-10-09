@@ -9,7 +9,7 @@
 <h1>Specifications</h1>
 <p>The aim of this document is to detail the specification for the application</p>
 </header>
-<nav><h1>Navigation</h1>
+<nav><h1>Document overview</h1>
 <ol>
 <li><a href="#application_goal_main">Application goal</a>
 	<ol>
@@ -30,6 +30,9 @@
 		<li><a href="#i_party">IParty</a></li>
 		<li><a href="#i_character">ICharacter</a></li>
 		<li><a href="#i_skill">ISkill</a></li>
+		<li><a href="#i_attribute">IAttribute</a></li>
+		<li><a href="#i_effect">IEffect</a></li>
+		<li><a href="#"></a></li>
 		<li><a href="#"></a></li>
 		<li><a href="#"></a></li>
 	</ol>
@@ -83,28 +86,30 @@
 			<th>Class</th>
 			<th>Description</th>
 		</tr>
-		<tr><td>IModule</td><td>Interface known by the program</td></tr>
-		<tr><td>Module</td><td>Contrete class for the program</td></tr>
-		<tr><td>IModuleLoader</td><td>Interface for loading module from external file</td></tr>
-		<tr><td>ModuleLoader</td><td>Concrete class to load a Module object</td></tr>
-		<tr><td>ModuleFactory</td><td>Factory that take data from external file and creating a IModule object from data</td></tr>
+		<tr><td>IResource</td><td>Interface known by the program</td></tr>
+		<tr><td>Resource</td><td>Contrete class for the program</td></tr>
+		<tr><td>IResourceLoader</td><td>Interface for loading module from external file</td></tr>
+		<tr><td>ResourceLoader</td><td>Concrete class to load a Module object</td></tr>
+		<tr><td>ResourceFactory</td><td>Factory that take data from external file and creating a IModule object from data</td></tr>
 		</table>
 
-		ModuleLoader must provide 2 functions (because of external library)
+		ResourceLoader must provide 2 functions (because of external library)
 		<ul>
-		<li>a creator function to create a dynamic object of IModuleLoader</li>
-		<li>a deleter function to delete a dynamic object of IModuleLoader</li>
+		<li>a creator function to create a dynamic object of IResourceLoader</li>
+		<li>a deleter function to delete a dynamic object of IResourceLoader</li>
 		</ul>
 
 		Data used to create resources are written in a XML file where an element represent a concrete class.<br/>
 		
 		Example:
-		&ltIModuleList&gt	&lt!-- Declaration of a list of object of IModule --&gt
-			&ltConcreteModule>	&lt!-- Element seen by the factory --&gt
-				&ltSomeData/&gt		&lt!-- Data seen by the loader of "ConcreteModule" --&gt
-			&lt/ConcreteModule&gt
-		&lt/IModuleList&gt
-		
+		<p>
+		<code>
+		&ltIResourceList&gt	&lt!-- Declaration of a list of object of IModule --&gt <br/>
+			&ltConcreteResource&gt	&lt!-- Element seen by the factory --&gt <br/>
+				&ltSomeData/&gt		&lt!-- Data seen by the loader of "ConcreteModule" --&gt <br/>
+			&lt/ConcreteResource&gt <br/>
+		&lt/IResourceList&gt
+		</code> </p>
 		When the factory meets an element, it will find the loader set for the element value and the current element will be send to the loader to create the concrete object.</p>
 </article>
 </section>
@@ -133,15 +138,72 @@
 		</article></p>
 </article>
 <article><h1 id="i_skill">ISkill</h1>
-		<p>This class represents a skill for the fight engine.</br>
-		It may have an owner (the character that knows the skill). Note that each character may have his own copy of the skill.</br>
-		It is used on targets.
+	<p>This class represents a skill for the fight engine.</br>
+	It may have an owner (the character that knows the skill). Note that each character may have his own copy of the skill.</br>
+	It is used on targets.
+	
+	<table>
+	<caption>Methods</caption>
+	<tr><th>Name</th><th>Arguments</th><th>Description</th></tr>
+	<tr><td>use</td><td>Array of IBattleGroundWrapper</td><td>Method called when the skill is used</td></tr>
+	<tr><td>setOwner</td><td>ICharacter</td><td>Specify the owner of the skill</td></tr>
+	<tr><td>getName</td><td>Nothing</td><td>Retrieve the skill's name</td></tr>
+	</table>
+	
+	<article><h1 id="basic_skill">BasicSkill</h1>
+		<p>This class is the basic representation of a skill for the application.</br>
 		
-		<article><h1 id="">BasicSkill</h1>
-			<p>This class is the basic representation of a skill for the application.</br>
-			It shall have multiple IAttribute that define the object.</br>
-			It shall have multiple IEffect to affect either the target, the owner or the skill itself.</p>
-		</article></p>
+		<table>
+		<caption>This class is composed by</caption>
+		<tr><td>Id</td><td>The id of the skill (may be the name of the skill)</td></tr>
+		<tr><td>Multiple <a href="i_attribute">IAttribute</a></td><td>Attributes that define the object</td></tr>
+		<tr><td>Multiple <a href="i_effect">IEffect</a></td><td>Effects that happen when the skill is used</td></tr>
+		</table>
+		</p>
+		Here is the XML structure to delcare a BasiSkill.
+		<p><code>
+		&ltBasicSkill id="skill_id"&gt	&lt!-- Beginning of declaration of BasicSkill --&gt <br/>
+		&ltAttributeList&gt		&lt!-- Declaration of attributes of the skill (optionnal) --&gt <br/>
+		... <br/>
+		&lt/AttributeList&gt <br/>
+		&ltEffects&gt			&lt!-- Declaration of effects of the skill (optionnal) --&gt <br/>... <br/>
+		&lt/Effects&gt <br/>
+		&lt/BasicSkill&gt
+		</code></p>
+	</article>
+	</p>
+</article>
+<article><h1 id="i_attribute">IAttribute</h1>
+	<p>An IAttribute represents an attribute for several other classes.<br/>
+	<table>
+	<caption>Methods</caption>
+	<tr><th>Name</th><th>Arguments</th><th>Description</th></tr>
+	<tr><td>getValue</td><td><ul><li>Attribute name</li><li>Attribute value</li></ul></td><td>Get the value of the element</td></tr>
+	<tr><td>setValue</td><td><ul><li>Attribute name</li><li>Attribute value</li></ul></td><td>set the value of the element</td></tr>
+	<tr><td>getName</td><td>Nothing</td><td>Retrieve the attribute's name</td></tr>
+	</table>
+	<article><h1 id="basic_attribute">BasicAttribute</h1>
+		<p>This class is the basic representation of a signle attribute for the application.</p>
+		<p>Here is the XML structure to declare a BasicAttribute<br/><code>
+		&ltBasicAttribute id="some_attribute" value="0"&gt
+		</code></p>
+	</article>
+	<article><h1 id="composite_attribute">CompositeAttribute</h1>
+		<p>This class is the basic representation of a composition of attributes for the application.</p>
+		<p>Here is the XML structure to declare a CompositeAttribute.<br/><code>
+		&ltCompositeAttribute id="some_composite_attribute"&gt<br/>
+			&ltBasicAttribute id="sub_attribute_1" value="0"/&gt<br/>
+			&ltBasicAttribute id="sub_attribute_2" value="0"/&gt<br/>
+		&lt/CompositeAttribute&gt
+		</code></p>
+		<p>Note that there is no limite in the number of sub-attribute.<br/>
+		A sub-attribute shall be a IAttribute object (so it may be a CompositeAttribute).</br>
+		Accessing a sub-attribute is done by using <code>getValue( "some_composite_attribute.sub_attribute_1" )</code>
+		</p>
+	</article>
+	</p>
+</article>
+<article><h1 id="i_effect">IEffect</h1>
 </article>
 </section>
 <section><h1 id="external_files">External files</h1>
