@@ -2,154 +2,229 @@
 <html>
 <head>
 <title>Specification</title>
-<link rel="stylesheet" href="Specifications.css"/>
+<link rel="stylesheet" href="Specifications.css" type="text/css">
 </head>
 <body>
-<header>
-<h1>Specifications</h1>
-<p>The aim of this document is to detail the specification for the application</p>
-</header>
-<nav><h1>Document overview</h1>
-<ol>
-<li><a href="#application_goal_main">Application goal</a>
+<div class="menu">
+	<nav><h1>Document overview</h1>
 	<ol>
-		<li><a href="#application_goal">Application goal</a></li>
+	<li><a href="#application_goal_main">Application goal</a>
+		<ol>
+			<li><a href="#application_goal">Application goal</a></li>
+		</ol>
+	</li>
+	<li><a href="#resources_main">Resources</a>
+		<ol>
+			<li><a href="#resources">Resources</a></li>
+			<li><a href="#resources_handling">Resources handling</a></li>
+			<li><a href="#resource_loading">Loading resources</a></li>
+		</ol>
+	</li>
+	<li><a href="#fight_engine_main">Fight Engine</a>
+		<!--<ol>
+			<li><a href="#fight_engine">FightEngine</a></li>
+			<li><a href="#i_battle_ground_wrapper">IBattleGroundWrapper</a></li>
+			<li><a href="#i_party">IParty</a></li>
+			<li><a href="#i_character">ICharacter</a></li>
+			<li><a href="#i_skill">ISkill</a></li>
+			<li><a href="#i_attribute">IAttribute</a></li>
+			<li><a href="#i_effect">IEffect</a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+		</ol> -->
+	</li>
+	<li><a href="#battle_ground_engine">Battleground</a></li>
+	<li><a href="#party_engine">Parties</a></li>
+	<li><a href="#character_engine">Characters</a></li>
+	<li><a href="#skill_engine">Skills</a></li>
+	<li><a href="#attribute_engine">Attributes</a></li>
+	<li><a href="#effects_engine">Effects</a></li>
+	<li><a href="#fsm_engine">Finite State Machine Engine</a>
+	<!--<ol>
+		<li><a href="#fsm">FSM</a></li>
+	</ol> -->
+	</li>
+	<li><a href="#external_files">External files</a>
+		<!--<ol>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+		</ol>-->
+	</li>
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>
 	</ol>
-</li>
-<li><a href="#resources_main">Resources</a>
-	<ol>
-		<li><a href="#resources">Resources</a></li>
-		<li><a href="#resources_handling">Resources handling</a></li>
-		<li><a href="#resource_loading">Loading resources</a></li>
-	</ol>
-</li>
-<li><a href="#fight_engine_main">Fight Engine</a>
-	<ol>
-		<li><a href="#fight_engine">FightEngine</a></li>
-		<li><a href="#i_battle_ground_wrapper">IBattleGroundWrapper</a></li>
-		<li><a href="#i_party">IParty</a></li>
-		<li><a href="#i_character">ICharacter</a></li>
-		<li><a href="#i_skill">ISkill</a></li>
-		<li><a href="#i_attribute">IAttribute</a></li>
-		<li><a href="#i_effect">IEffect</a></li>
-		<li><a href="#"></a></li>
-		<li><a href="#"></a></li>
-		<li><a href="#"></a></li>
-	</ol>
-</li>
-<li><a href="#"></a></li>
-<li><a href="#external_files">External files</a>
-	<ol>
-		<li><a href="#"></a></li>
-		<li><a href="#"></a></li>
-		<li><a href="#"></a></li>
-		<li><a href="#"></a></li>
-	</ol>
-</li>
-<li><a href="#"></a></li>
-<li><a href="#"></a></li>
-<li><a href="#"></a></li>
-</ol>
-</nav>
+	</nav>
+</div>
+
+
+
+<div class="corps">
+	<header>
+	<h1>Specifications</h1>
+	<p>The aim of this document is to detail the specification for the application</p>
+	</header>
 <section><h1 id="application_goal_main">Application goal</h1>
-<article>
-	<h1 id="application_goal">Application goal</h1>
-	<p>
-		This application is a turned-base rpg engine.<br/>
-		The application shall be modable (external developpers shall be able to develop libraries for their games and those libraries shall be loaded by the application).
-	</p>
-</article>
-</section>
-<section><h1 id="resources_main">Resources</h1>
-<article><h1 id="resources">Resources</h1>
-<p>In this goal, the application is divided into "resources" such as:
-	<ul>
-		<li>Skills</li>
-		<li>Mobs</li>
-		<li>Animations</li>
-		<li>Parties</li>
-		<li>...</li>
-	</ul>
-	Those resources are defined in an external file loaded in the initialization of the application.
-	The external file is a XML formated file.
-</p>
-</article>
-<article><h1 id="resources_handling">Resources handling</h1>
-<p>Each resource shall be handled by an object ("Resource"Manager) and the program can access resources by queriing some resources by theire id (eg: a skill is called "MySkill" so the "SkillManager" should know the skill named "MySkill" and SkillManager::get("MySkill") should return a copy of the skill "MySkill")</p>
-</article>
-<article><h1 id="resource_loading">Loading resources</h1>
-<p>Each resource known by a "ResourceManager" shall be loadable using an external file.
-		For each class created representing a resource, a spefic class for loading an object of this type should be provided in the aim to load the resource at the beginning.
-		<table>
-		<caption>Consider the following structure</caption>
-		<tr>
-			<th>Class</th>
-			<th>Description</th>
-		</tr>
-		<tr><td>IResource</td><td>Interface known by the program</td></tr>
-		<tr><td>Resource</td><td>Contrete class for the program</td></tr>
-		<tr><td>IResourceLoader</td><td>Interface for loading module from external file</td></tr>
-		<tr><td>ResourceLoader</td><td>Concrete class to load a Module object</td></tr>
-		<tr><td>ResourceFactory</td><td>Factory that take data from external file and creating a IModule object from data</td></tr>
-		</table>
-
-		ResourceLoader must provide 2 functions (because of external library)
-		<ul>
-		<li>a creator function to create a dynamic object of IResourceLoader</li>
-		<li>a deleter function to delete a dynamic object of IResourceLoader</li>
-		</ul>
-
-		Data used to create resources are written in a XML file where an element represent a concrete class.<br/>
-		
-		Example:
+	<article>
+		<h1 id="application_goal">Application goal</h1>
 		<p>
-		<code>
-		&ltIResourceList&gt	&lt!-- Declaration of a list of object of IModule --&gt <br/>
-			&ltConcreteResource&gt	&lt!-- Element seen by the factory --&gt <br/>
-				&ltSomeData/&gt		&lt!-- Data seen by the loader of "ConcreteModule" --&gt <br/>
-			&lt/ConcreteResource&gt <br/>
-		&lt/IResourceList&gt
-		</code> </p>
-		When the factory meets an element, it will find the loader set for the element value and the current element will be send to the loader to create the concrete object.</p>
-</article>
-</section>
+			This application is a turned-base rpg engine.<br/>
+		This application is writtent in C++.<br/>
+		This application shall be portable.<br/>
+			The application shall be modable (external developpers shall be able to develop libraries for their games and those libraries shall be loaded by the application).
+		</p>
+	</article>
+	</section>
+<section><h1 id="resources_main">Resources</h1>
+	<article><h1 id="resources">Resources</h1>
+	<p>In this goal, the application is divided into "resources" such as:
+		<ul>
+			<li>Skills</li>
+			<li>Mobs</li>
+			<li>Animations</li>
+			<li>Parties</li>
+			<li>...</li>
+		</ul>
+		Those resources are defined in an external file loaded in the initialization of the application.
+		The external file is a XML formated file.
+	</p>
+	</article>
+	<article><h1 id="resources_handling">Resources handling</h1>
+	<p>Each resource shall be handled by an object ("Resource"Manager) and the program can access resources by queriing some resources by theire id (eg: a skill is called "MySkill" so the "SkillManager" should know the skill named "MySkill" and SkillManager::get("MySkill") should return a copy of the skill "MySkill")</p>
+	</article>
+	<article><h1 id="resource_loading">Loading resources</h1>
+	<p>Each resource known by a "ResourceManager" shall be loadable using an external file.
+			For each class created representing a resource, a spefic class for loading an object of this type should be provided in the aim to load the resource at the beginning.
+			<table>
+			<caption>Consider the following structure</caption>
+			<tr>
+				<th>Class</th>
+				<th>Description</th>
+			</tr>
+			<tr><td>IResource</td><td>Interface known by the program</td></tr>
+			<tr><td>Resource</td><td>Contrete class for the program</td></tr>
+			<tr><td>IResourceLoader</td><td>Interface for loading module from external file</td></tr>
+			<tr><td>ResourceLoader</td><td>Concrete class to load a Module object</td></tr>
+			<tr><td>ResourceFactory</td><td>Factory that take data from external file and creating a IModule object from data</td></tr>
+			</table>
+
+			ResourceLoader must provide 2 functions (because of external library)
+			<ul>
+			<li>a creator function to create a dynamic object of IResourceLoader</li>
+			<li>a deleter function to delete a dynamic object of IResourceLoader</li>
+			</ul>
+
+			Data used to create resources are written in a XML file where an element represent a concrete class.<br/>
+			
+			Example:
+			<p>
+			<code>
+			&ltIResourceList&gt	&lt!-- Declaration of a list of object of IResource --&gt <br/>
+				&ltConcreteResource&gt	&lt!-- Element seen by the factory --&gt <br/>
+					&ltSomeData/&gt		&lt!-- Data seen by the loader of "ConcreteResource" --&gt <br/>
+				&lt/ConcreteResource&gt <br/>
+			&lt/IResourceList&gt
+			</code> </p>
+			When the factory meets an element, it will find the loader set for the element value and the current element will be send to the loader to create the concrete object.</p>
+	</article>
+	</section>
 <section><h1 id="fight_engine_main">Fight Engine</h1>
-<article><h1 id="fight_engine">FightEngine</h1>
-<p>It is a fsm.
+	<article><h1 id="fight_engine">FightEngine</h1>
+		<p>This is the part of the application that manage the fight mechanism.
 		<article><h1 id="">BasicFightEngine</h1>
 			<p>This class is the basic representation of a fight engine for the application.</p>
+			<table>
+			<caption>This fsm is represented as follow</caption>
+			<tr><th>State Name</th><th>Description</th><th>On Entry Action</th><th>Action</th><th>On Exit Action</th><th>Transition With Priority</th><th>Next State Name</th></tr>
+			<tr><td>Error</td><td>Error state</td><td>Nothing</td><td>Throw an exception</td><td>Nothing</td><td>Nothing</td><td></td></tr>
+			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
+			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
+			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
+			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
+			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
+			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
+			</table>
 		</article>
-</p>
-</article>
-<article><h1 id="i_battle_ground_wrapper">IBattleGroundWrapper</h1><p>
-		This represent a wrapper for targeting in the fight engine.</p>
-
-</article>
-<article><h1 id="i_party">IParty</h1><p>
-		A party contains multiple characters.</p>
+		</p>
+	</article>	
+</section>
+<section><h1 id="battle_ground_engine">Battleground</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#battle_ground_spec">Specification</a></li>
+		<li><a href="#i_battle_ground_wrapper">IBattleGroundWrapper</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="battle_ground_spec">Specification</h1>
+	</article>
+	<article><h1 id="i_battle_ground_wrapper">IBattleGroundWrapper</h1>
+		<p>This represent a wrapper for targeting in the fight engine.</p>
+	</article>
+</section>
+<section><h1 id="party_engine">Parties</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#party_spec">Specification</a></li>
+		<li><a href="#i_party">IParty</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="party_spec">Specification</h1>
+	</article>
+	<article><h1 id="i_party">IParty</h1>
+		<p>A party contains multiple characters.</p>
+	</article>
+</section>
+<section><h1 id="character_engine">Characters</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#character_spec">Specification</a></li>
+		<li><a href="#i_character">ICharacter</a></li>
+		<li><a href="#basic_character">BasicCharacter</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="character_spec">Specification</h1>
+	</article>
+	<article><h1 id="i_character">ICharacter</h1>
+			<p>An ICharacter represents a character for fight engine.</br>
+			It has multiple attributes that are changed from external composents (ISkill, IEffect...).</p>
+	</article>
+	<article><h1 id="basic_character">BasicCharacter</h1>
+		<p>This class is the basic representation of a character for the application.</p>
+	</article>
+</section>
+<section><h1 id="skill_engine">Skills</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#skill_spec">Specification</a></li>
+		<li><a href="#i_skill">ISkill</a></li>
+		<li><a href="#basic_skill">BasicSkill</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="skill_spec">Specification</h1>
+	<p>This part represents a skill in the game engine.<br/>A skill is specified as follow:
+	<ol>
+		<li>Shall be used in a fight</li>
+		<li>Shall be used by one owner</li>
+		<li>Shall affect one or more targets</li>
+	</ol></p>
+	</article>
+	<article><h1 id="i_skill">ISkill</h1>
+		<p>This class represents a skill for the fight engine.</br>
+		It may have an owner (the character that knows the skill). Note that each character may have his own copy of the skill.</br>
+		It is used on targets.
 		
-</article>
-<article><h1 id="i_character">ICharacter</h1>
-		<p>An ICharacter represents a character for fight engine.</br>
-		It has multiple attributes that are changed from external composents (ISkill, IEffect...).
-		<article>
-		<h1 id="">BasicCharacter</h1>
-			<p>This class is the basic representation of a character for the application.</p>
-		</article></p>
-</article>
-<article><h1 id="i_skill">ISkill</h1>
-	<p>This class represents a skill for the fight engine.</br>
-	It may have an owner (the character that knows the skill). Note that each character may have his own copy of the skill.</br>
-	It is used on targets.
-	
-	<table>
-	<caption>Methods</caption>
-	<tr><th>Name</th><th>Arguments</th><th>Description</th></tr>
-	<tr><td>use</td><td>Array of IBattleGroundWrapper</td><td>Method called when the skill is used</td></tr>
-	<tr><td>setOwner</td><td>ICharacter</td><td>Specify the owner of the skill</td></tr>
-	<tr><td>getName</td><td>Nothing</td><td>Retrieve the skill's name</td></tr>
-	</table>
-	
+		<table>
+		<caption>Abstract methods</caption>
+		<tr><th>Name</th><th>Arguments</th><th>Description</th></tr>
+		<tr><td>use</td><td>Array of IBattleGroundWrapper</td><td>Method called when the skill is used</td></tr>
+		<tr><td>setOwner</td><td>ICharacter</td><td>Specify the owner of the skill</td></tr>
+		<tr><td>getName</td><td>Nothing</td><td>Retrieve the skill's name</td></tr>
+		</table>
+		</p>
+	</article>
 	<article><h1 id="basic_skill">BasicSkill</h1>
 		<p>This class is the basic representation of a skill for the application.</br>
 		
@@ -160,7 +235,7 @@
 		<tr><td>Multiple <a href="i_effect">IEffect</a></td><td>Effects that happen when the skill is used</td></tr>
 		</table>
 		</p>
-		Here is the XML structure to delcare a BasiSkill.
+		Here is the XML structure to delcare a BasicSkill.
 		<p><code>
 		&ltBasicSkill id="skill_id"&gt	&lt!-- Beginning of declaration of BasicSkill --&gt <br/>
 		&ltAttributeList&gt		&lt!-- Declaration of attributes of the skill (optionnal) --&gt <br/>
@@ -171,17 +246,29 @@
 		&lt/BasicSkill&gt
 		</code></p>
 	</article>
-	</p>
-</article>
-<article><h1 id="i_attribute">IAttribute</h1>
-	<p>An IAttribute represents an attribute for several other classes.<br/>
-	<table>
-	<caption>Methods</caption>
-	<tr><th>Name</th><th>Arguments</th><th>Description</th></tr>
-	<tr><td>getValue</td><td><ul><li>Attribute name</li><li>Attribute value</li></ul></td><td>Get the value of the element</td></tr>
-	<tr><td>setValue</td><td><ul><li>Attribute name</li><li>Attribute value</li></ul></td><td>set the value of the element</td></tr>
-	<tr><td>getName</td><td>Nothing</td><td>Retrieve the attribute's name</td></tr>
-	</table>
+</section>
+<section><h1 id="attribute_engine">Attributes</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#attribute_spec">Specification</a></li>
+		<li><a href="#i_attribute">IAttribute</a></li>
+		<li><a href="#basic_attribute">BasicAttribute</a></li>
+		<li><a href="#composite_attribute">CompositeAttribute</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="attribute_spec">Specification</h1>
+	</article>
+	<article><h1 id="i_attribute">IAttribute</h1>
+		<p>An IAttribute represents an attribute for several other classes.<br/>
+		<table>
+		<caption>Methods</caption>
+		<tr><th>Name</th><th>Arguments</th><th>Returned value</th><th>Description</th></tr>
+		<tr><td>getValue</td><td><ul><li>Attribute name</li><li>Attribute value</li></ul></td><td>Nothing</td><td>Get the value of the element</td></tr>
+		<tr><td>setValue</td><td><ul><li>Attribute name</li><li>Attribute value</li></ul></td><td>Nothing</td><td>set the value of the element</td></tr>
+		<tr><td>getName</td><td>Nothing</td><td>Nothing</td><td>Retrieve the attribute's name</td></tr>
+		</table>
+		</p>
+	</article>
 	<article><h1 id="basic_attribute">BasicAttribute</h1>
 		<p>This class is the basic representation of a signle attribute for the application.</p>
 		<p>Here is the XML structure to declare a BasicAttribute<br/><code>
@@ -201,17 +288,140 @@
 		Accessing a sub-attribute is done by using <code>getValue( "some_composite_attribute.sub_attribute_1" )</code>
 		</p>
 	</article>
-	</p>
-</article>
-<article><h1 id="i_effect">IEffect</h1>
-</article>
+</section>
+<section><h1 id="effects_engine">Effects</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#skill_spec">Specification</a></li>
+		<li><a href="#i_effect">IEffect</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="effects_spec">Specification</h1>
+	</article>
+	<article><h1 id="i_effect">IEffect</h1>
+	</article>
+</section>
+<section><h1 id="fsm_engine">Finite State Machine Engine</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#fsm_spec">Specification</a></li>
+		<li><a href="#fsm">FSM</a></li>
+		<li><a href="#i_state">IState</a></li>
+		<li><a href="#fsm_transition">Transition</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="fsm_spec">Specification</h1>
+		This part of the application shall provide generic FSM mecanism.
+		It is divided into 3 parts:
+		<ul>
+			<li>FSM</li>
+			<li>States</li>
+			<li>Transitions</li>
+		</ul>
+	</article>
+	<article><h1 id="fsm">FSM</h1>
+		<p>
+		A FSM is designed as follow
+		<ul>
+		<li>Shall run only 1 state at the same time</li>
+		<li>Shall be reset in it initialized state by an external event</li>
+		<li>Shall be stopped in a specific state</li>
+		<li>Shall be able to be dumped for debugging purpose</li>
+		<li>Shall prevent from errors (defensive implementation)</li>
+		<li>Shall return a status of their state (working good/error/and so on)</li>
+		<li>Shall manage several states</li>
+		<li>Shall manage transitions between states</li>
+		</ul>
+		</p>
+		<article><h1 id="fsm_seqential">Sequential FSM</h1>
+		<p>This FSM is one of the FSM type.
+		</p>
+		<ul>
+			<li>Shall have at least 1 final state</li>
+			<li>Shall need to be reset to work again</li>
+		</ul>
+		</article>
+		<article><h1 id="fsm_cyclic">Cyclic FSM</h1>
+		<ul>
+			<li>Shall have no final state</li>
+			<li>Shall may be reset by an external event</li>
+		</ul>
+		</article>
+	</article>
+	<article><h1 id="i_state">IState</h1>
+		An IState represent a state of a FSM and is designed as follow
+		<ul>
+			<li>Shall initialize itself when the FSM is entering it</li>
+			<li>Shall do something (that reprensent the action of the state)</li>
+			<li>Shall clean itself when FSM is living the state</li>
+			<li>Shall manage transitions with priorities</li>
+			<li>Shall have reference to data that are observed (design oriented requierement)</li>
+		</ul>
+		
+		<table>
+		<caption>Abstract methods</caption>
+		<tr><th>Name</th><th>Arguments</th><th>Returned value</th><th>Description</th></tr>
+		<tr><td>callProcess</td><td>Nothing</td><td>The next state to be activated</td><td>Method called when the state is active</td></tr>
+		<tr><td>reset</td><td>Nothing</td><td><ul><li>false on error</li><li>true otherwise</li></ul></td><td>Reset the state as if it was never activated</td></tr>
+		</table>
+		
+		<article><h1 id="empty_state">EmptyState</h1>
+		<p>Represent a state that does not do anything</p>
+		</article>
+		<article><h1 id="state">State</h1>
+		<p>State manages transitions</p>
+		<table>
+		<caption>Abstract methods</caption>
+		<tr><th>Name</th><th>Arguments</th><th>Returned value</th><th>Description</th></tr>
+		<tr><td>process</td><td>Nothing</td><td><ul><li>false on error</li><li>true otherwise</li></ul></td><td>Method called when the state is active</td></tr>
+		</table>
+		<p>callProcess function is defined for calling onEntry when the state is first entered, then calls process while the state is activated.<br/>When the FSM is leaving the state, onExit method is called.</p>
+		<article><h1 id="entry_exit_state">EntryExitState</h1>
+		<p>
+		This class provids mechanism for managing entering and living state.<br/>
+		The method callProcess is designed as follow
+		<ul>
+			<li>Shall call onEntry when entering the state</li>
+			<li>Shall call process everytime</li>
+			<li>Shall call onExit when leaving the state</li>
+		</ul>
+		If onEntry and/or onExit are redifined in subclasses, those methods shall be called.
+		<table>
+		<caption>Abstract methods</caption>
+		<tr><th>Name</th><th>Arguments</th><th>Returned value</th><th>Description</th></tr>
+		<tr><td>process</td><td>Nothing</td><td><ul><li>false on error</li><li>true otherwise</li></ul></td><td>Method called when the state is active</td></tr>
+		</table>
+		
+		
+		</p>
+		</article>
+		</article>
+		
+
+	</article>
+	<article><h1 id="fsm_transition">Transition</h1>
+		- may be affected to one or more state
+		- should be called one of the affected state is running
+		- should point to only one state
+	</article>
 </section>
 <section><h1 id="external_files">External files</h1>
-<article>
-<h1 id="input_file">Input file</h1><p>The file "Data.xml" must be present. This is the entry point of the application.</p>
-</article>
-<article>
-<h1 id="data_xml">Data.xml</h1><p>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#external_files_spec">Specification</a></li>
+		<li><a href="#data_xml">Data.xml</a></li>
+		<li><a href="#library_xml">Library</a></li>
+		<li><a href="#skill_xml">Skill</a></li>
+		<li><a href="#animation_xml">Animation</a></li>
+		<li><a href="#mob_xml">Mob</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="external_files_spec">Specification</h1>
+		<p>External files are used as inputs by the game engine.<br/>
+		The file "Data.xml" must be present. This is the entry point of the application.</p>
+	</article>
+	<article><h1 id="data_xml">Data.xml</h1>
+		<p>
 			This shall provide links to the other files the application will load.</br>
 			<table>
 			<caption>This file may have following elements</caption>
@@ -226,34 +436,59 @@
 			</table>
 			Each of those elements shall have attribute "path" that specify the path of the file from the path of this file.<br/>
 			Example:
-			&ltLibrary path="Libray.xml"/&gt</p>
-</article>
-<article>
-<h1 id="library_xml">Library</h1><p></p>
-</article>
-<article>
-<h1 id="skill_xml">Skill</h1><p></p>
-</article>
-<article>
-<h1 id="animation_xml">Animation</h1><p></p>
-</article>
-<article>
-<h1 id="mob_xml">Mob</h1><p></p>
-</article>
-<article>
-<h1 id=""></h1><p></p>
-</article>
+			&ltLibrary path="Libray.xml"/&gt 
+		</p>
+	</article>
+	<article><h1 id="library_xml">Library</h1>
+	<p></p>
+	</article>
+	<article><h1 id="skill_xml">Skill</h1>
+	<p></p>
+	</article>
+	<article><h1 id="animation_xml">Animation</h1>
+	<p></p>
+	</article>
+	<article><h1 id="mob_xml">Mob</h1>
+	<p></p>
+	</article>
+	<article><h1 id=""></h1>
+	<p></p>
+	</article>
 </section>
+
+
+<section><h1>Document Templates</h1>
+
+<section><h1>???</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#">Specification</a></li>
+		<li><a href="#"></a></li>
+	</ul>
+	</nav>
+	<article><h1 id="">Specification</h1>
+	</article>
+	<article><h1 id="">???</h1>
+	</article>
+</section>
+
+
+</section>
+
 <footer>
-<section>
-<h1>Versions</h1>
-<p>Document:1.0<br/>
-Application:???</p>
-</section>
-<section>
-<h1>Foreword</h1>
-	<p>Don't forget to can "ctr+f" for better navigation in this document.</p>
-</section>
+	<section>
+	<h1>Versions</h1>
+	<p>Document:1.0<br/>
+	Application:???</p>
+	</section>
+	<section>
+	<h1>Foreword</h1>
+		<p>Don't forget to can "ctr+f" for better navigation in this document.</p>
+	</section>
 </footer>
+</div>
 </body>
 </html>
+
+
+

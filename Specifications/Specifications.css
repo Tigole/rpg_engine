@@ -1,9 +1,16 @@
+.menu{
+	position: fixed;
+
+}
+
+.corps{
+	margin-left:250px;
+	margin-right:250px;
+}
 html
 {
 	text-align: justify;
 	background-color:#e0f0f0;
-	margin-left:250px;
-	margin-right:250px;
 }
 nav
 {
@@ -11,10 +18,7 @@ nav
 	border-radius: 10px;
 	border-width: 1px;
 	padding-left:10px;
-	padding-right:10px;/*
-	float: left;
-	margin-left:0px;
-	margin-right:0px;*/
+	padding-right:10px;
 }
 section
 {
@@ -43,11 +47,6 @@ td, th
 	border-style:solid;
 	padding-left:10px;
 	padding-right:10px;
-}
-aside
-{
-	/*padding:5px 5px 5px 5px;*/
-	/*float:right;*/
 }
 table
 {
