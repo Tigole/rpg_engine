@@ -41,10 +41,7 @@
 	<li><a href="#attribute_engine">Attributes</a></li>
 	<li><a href="#effects_engine">Effects</a></li>
 	<li><a href="#fsm_engine">Finite State Machine Engine</a>
-	<!--<ol>
-		<li><a href="#fsm">FSM</a></li>
-	</ol> -->
-	</li>
+	<li><a href="#rendering_engine">Rendering Engine</a></li>
 	<li><a href="#external_files">External files</a>
 		<!--<ol>
 			<li><a href="#"></a></li>
@@ -53,9 +50,7 @@
 			<li><a href="#"></a></li>
 		</ol>-->
 	</li>
-	<li><a href="#"></a></li>
-	<li><a href="#"></a></li>
-	<li><a href="#"></a></li>
+	<li><a href="#">???</a></li>
 	</ol>
 	</nav>
 </div>
@@ -159,9 +154,10 @@
 	</ul>
 	</nav>
 	<article><h1 id="battle_ground_spec">Specification</h1>
+		<p>This represent a wrapper for targeting in the fight engine.</p>
 	</article>
 	<article><h1 id="i_battle_ground_wrapper">IBattleGroundWrapper</h1>
-		<p>This represent a wrapper for targeting in the fight engine.</p>
+		<p></p>
 	</article>
 </section>
 <section><h1 id="party_engine">Parties</h1>
@@ -172,9 +168,10 @@
 	</ul>
 	</nav>
 	<article><h1 id="party_spec">Specification</h1>
+		<p>A party contains multiple characters.</p>
 	</article>
 	<article><h1 id="i_party">IParty</h1>
-		<p>A party contains multiple characters.</p>
+	<p></p>
 	</article>
 </section>
 <section><h1 id="character_engine">Characters</h1>
@@ -297,8 +294,10 @@
 	</ul>
 	</nav>
 	<article><h1 id="effects_spec">Specification</h1>
+	<p>This part represents effect done to characters</p>
 	</article>
 	<article><h1 id="i_effect">IEffect</h1>
+	<p></p>
 	</article>
 </section>
 <section><h1 id="fsm_engine">Finite State Machine Engine</h1>
@@ -323,12 +322,13 @@
 		<p>
 		A FSM is designed as follow
 		<ul>
+		<li>Shall be designed for a non preemtive use</li>
 		<li>Shall run only 1 state at the same time</li>
-		<li>Shall be reset in it initialized state by an external event</li>
+		<li>Shall be reset in its initialized state by an external event</li>
 		<li>Shall be stopped in a specific state</li>
 		<li>Shall be able to be dumped for debugging purpose</li>
-		<li>Shall prevent from errors (defensive implementation)</li>
-		<li>Shall return a status of their state (working good/error/and so on)</li>
+		<li>Shall prevent errors (defensive implementation)</li>
+		<li>Shall return a status of its state ("working good"/"error"/and so on)</li>
 		<li>Shall manage several states</li>
 		<li>Shall manage transitions between states</li>
 		</ul>
@@ -405,6 +405,99 @@
 		- should point to only one state
 	</article>
 </section>
+<section><h1 id="rendering_engine">Rendering Engine</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#rendering_engine_spec">Specification</a></li>
+		<li><a href="#"></a></li>
+	</ul>
+	</nav>
+	<article><h1 id="rendering_engine_spec">Specification</h1>
+	This part specify the rendering engine.
+	<ol>
+		<li>Shall provide pictures rendering
+			<ol>
+				<li>Shall manage different picture format loading
+					<ol>
+						<li>png</li>
+						<li>jpg</li>
+					</ol>
+				</li>
+				<li>Shall display images in a given position (top left)</li>
+			</ol>
+		</li>
+		<li>Shall provide text managing
+			<ol>
+				<li>Shall display different fonts</li>
+				<li>Shall display different font sizes</li>
+				<li>Shall display different text colors (one letter/word in a word/sentence could be in a different color than others)</li>
+				<li>Shall display different text decorations (one letter/word in a word/sentence could have a different decoration than others)
+					<ol>
+						<li>italic</li>
+						<li>bold</li>
+						<li>underlined</li>
+					</ol>
+				</li>
+				<li>Shall display text in different angles</li>
+			</ol>
+		</li>
+		<li>Shall provide dialog boxes rendering
+			<ol>
+				<li>Shall be displayed at a screen position (top left given)</li>
+				<li>Shall be displayed in a fixed size (x and y)</li>
+				<li>Shall accept text</li>
+				<li>Shall accept image</li>
+				<li>Shall order data (text and images) in lines, columns or both (grid/matrix)
+				<p>Example of ordering data in lines (black is the dialog box, red is text and blue is image)<br/><img src="dialog_boxes_0.png"/></p></li>
+				<li>Shall provide data (text and images) navigation (in case of more data are stored in the dialog than could be displayed becouse of the )
+				<p>Example of navigation (black is the daliog box, green is the dispalyed part of the dialog box)<br/><img src="dialog_boxes_1.png"/><br/>Arrows shows that displayed part of the dialog box should be moved up and down to show the rest of data.<br/>Note that in case of a larger dialog box left/right navigation is also required</p></li>
+				<li>Shall provide data (text and images) selection
+				<p>Example of selection (orange is the data selected)<br/><img src="dialog_boxes_2.png"/></p></li>
+			</ol>
+		</li>
+		<li>Shall provide animations on data (text and images)
+			<ol>
+				<li>Shall provide image appearance</li>
+				<li>Shall provide sprite management
+					<ol>
+						<li>An image is divided into several sub-images that are displayed the one after the other<p>Example of sprite<br/><img src="animations_1.bmp"/></p></li>
+					</ol>
+				</li>
+				<li>Shall provide images transformations
+					<ol>
+						<li>Position setting (top left)</li>
+						<li>Translation (dx dy)</li>
+						<li>Rotation (set angle or move by)</li>
+						<li>Resize (x and y)</li>
+						<li>Color changes</li>
+					</ol>
+				</li>
+				<li>Shall provide ligth effects
+					<ol>
+						<li>Dialog boxes shall not be affected</li>
+						<li>Global light effect (all over the screen)</li>
+						<li>Local light effect (a part of the screen)<p>Example of local light effect (black is screen layout, red is dialog box, grey is screen data [images/sprites...], green is light effect)<br/><img src="animations_0.png"/><br/></p></li>
+					</ol>
+				</li>
+				<li>Shall provide sound managing
+					<ol>
+						<li>Set/Change ambiant music</li>
+						<li>Play a sound
+							<ol>
+								<li>Single sound</li>
+								<li>Repeated sound</li>
+							</ol>
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+	</ol>
+	<p></p>
+	</article>
+	<article><h1 id="">???</h1>
+	</article>
+</section>
 <section><h1 id="external_files">External files</h1>
 	<nav><h1>Overview</h1>
 	<ul>
@@ -467,8 +560,10 @@
 	</ul>
 	</nav>
 	<article><h1 id="">Specification</h1>
+	<p></p>
 	</article>
 	<article><h1 id="">???</h1>
+	<p></p>
 	</article>
 </section>
 
