@@ -40,8 +40,12 @@
 	<li><a href="#skill_engine">Skills</a></li>
 	<li><a href="#attribute_engine">Attributes</a></li>
 	<li><a href="#effects_engine">Effects</a></li>
-	<li><a href="#fsm_engine">Finite State Machine Engine</a>
+	<li><a href="#items">Items</a></li>
+	<li><a href="#inventory">Inventory</a></li>
+	<li><a href="#fsm_engine">Finite State Machine Engine</a></li>
 	<li><a href="#rendering_engine">Rendering Engine</a></li>
+	<li><a href="#translation_engine_spec">Translation Engine</a></li>
+	<li><a href="#evolution_curves">Evolution Curves</a></li>
 	<li><a href="#external_files">External files</a>
 		<!--<ol>
 			<li><a href="#"></a></li>
@@ -50,7 +54,6 @@
 			<li><a href="#"></a></li>
 		</ol>-->
 	</li>
-	<li><a href="#">???</a></li>
 	</ol>
 	</nav>
 </div>
@@ -72,7 +75,7 @@
 			The application shall be modable (external developpers shall be able to develop libraries for their games and those libraries shall be loaded by the application).
 		</p>
 	</article>
-	</section>
+</section>
 <section><h1 id="resources_main">Resources</h1>
 	<article><h1 id="resources">Resources</h1>
 	<p>In this goal, the application is divided into "resources" such as:
@@ -300,6 +303,54 @@
 	<p></p>
 	</article>
 </section>
+<section><h1 id="items">Items</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#items_spec">Specification</a></li>
+		<li><a href="#"></a></li>
+	</ul>
+	</nav>
+	<article><h1 id="items_spec">Specification</h1>
+	<p>
+	This part specify items as follow.<br/>
+	There is 3 types of items
+	<ol>
+		<li>Stuff items that affect characters by wearing it</li>
+		<li>Usable items that affect characters by using it</li>
+		<li>Items that does not affect characters</li>
+	</ol>
+	</p>
+	</article>
+	<article><h1 id="">???</h1>
+	<p></p>
+	</article>
+</section>
+<section><h1 id="inventory">Inventory</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#inventory_spec">Specification</a></li>
+		<li><a href="#"></a></li>
+	</ul>
+	</nav>
+	<article><h1 id="inventory_spec">Specification</h1>
+	<p>
+	This part specify inventory as follow
+	<ol>
+		<li>Shall contain all types of items</li>
+		<li>Shall manage sorting engine
+			<ol>
+				<li>Sorting by name</li>
+				<li>Sorting by type</li>
+			</ol>
+		</li>
+		<li>Shall provide search engine</li>
+	</ol>
+	</p>
+	</article>
+	<article><h1 id="">???</h1>
+	<p></p>
+	</article>
+</section>
 <section><h1 id="fsm_engine">Finite State Machine Engine</h1>
 	<nav><h1>Overview</h1>
 	<ul>
@@ -376,6 +427,8 @@
 		<tr><td>process</td><td>Nothing</td><td><ul><li>false on error</li><li>true otherwise</li></ul></td><td>Method called when the state is active</td></tr>
 		</table>
 		<p>callProcess function is defined for calling onEntry when the state is first entered, then calls process while the state is activated.<br/>When the FSM is leaving the state, onExit method is called.</p>
+		</article>
+		
 		<article><h1 id="entry_exit_state">EntryExitState</h1>
 		<p>
 		This class provids mechanism for managing entering and living state.<br/>
@@ -394,7 +447,6 @@
 		
 		
 		</p>
-		</article>
 		</article>
 		
 
@@ -498,6 +550,49 @@
 	<article><h1 id="">???</h1>
 	</article>
 </section>
+<section><h1 id="translation_engine">Translation Engine</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#translation_engine_spec">Specification</a></li>
+		<li><a href="#"></a></li>
+	</ul>
+	</nav>
+	<article><h1 id="translation_engine_spec">Specification</h1>
+	<p>
+	This part specify the translation engine.
+	<ol>
+		<li>Shall provide text translation
+			<p>A text is composed of words<br/>A text delivers a message</p>
+		</li>
+		<li>Shall manage variable words
+			<p>A sentence such as:"Do you want to by <strong>a sword</strong>?" could work with <strong>a bow</strong> or something else.<br/>Those words are "variable words"</p>
+		</li>
+	</ol>
+	</p>
+	</article>
+	<article><h1 id="">???</h1>
+	<p></p>
+	</article>
+</section>
+<section><h1 id="evolution_curves">Evolution Curves</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#evolution_curves_spec">Specification</a></li>
+		<li><a href="#"></a></li>
+	</ul>
+	</nav>
+	<article><h1 id="evolution_curves_spec">Specification</h1>
+	<p>
+	This part specify the evolutions curves in case of level up or else.
+	<ol>
+		<li>Shall provide mathematical function such as: u_n+1 = f(u_n, u_n-1, ...) where u_n+1 is the value for the next level, u_n is the value for the current level, u_n-1 is the value of the last level and so on</li>
+	</ol>
+	</p>
+	</article>
+	<article><h1 id="">???</h1>
+	<p></p>
+	</article>
+</section>
 <section><h1 id="external_files">External files</h1>
 	<nav><h1>Overview</h1>
 	<ul>
@@ -552,7 +647,7 @@
 
 <section><h1>Document Templates</h1>
 
-<section><h1>???</h1>
+<section><h1 id="">???</h1>
 	<nav><h1>Overview</h1>
 	<ul>
 		<li><a href="#">Specification</a></li>
@@ -560,7 +655,12 @@
 	</ul>
 	</nav>
 	<article><h1 id="">Specification</h1>
-	<p></p>
+	<p>
+	This part specify the ??? engine.
+	<ol>
+		<li>Shall do things</li>
+	</ol>
+	</p>
 	</article>
 	<article><h1 id="">???</h1>
 	<p></p>
