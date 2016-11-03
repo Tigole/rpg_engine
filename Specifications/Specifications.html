@@ -130,23 +130,50 @@
 	</article>
 	</section>
 <section><h1 id="fight_engine_main">Fight Engine</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#fight_engine_spec">Specification</a></li>
+		<li><a href="#fight_engine">FightEngine</a></li>
+		<li><a href="#basic_fight_engine">BasicFightEngine</a></li>
+	</ul>
+	</nav>
 	<article><h1 id="fight_engine">FightEngine</h1>
-		<p>This is the part of the application that manage the fight mechanism.
-		<article><h1 id="">BasicFightEngine</h1>
-			<p>This class is the basic representation of a fight engine for the application.</p>
-			<table>
-			<caption>This fsm is represented as follow</caption>
-			<tr><th>State Name</th><th>Description</th><th>On Entry Action</th><th>Action</th><th>On Exit Action</th><th>Transition With Priority</th><th>Next State Name</th></tr>
-			<tr><td>Error</td><td>Error state</td><td>Nothing</td><td>Throw an exception</td><td>Nothing</td><td>Nothing</td><td></td></tr>
-			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
-			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
-			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
-			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
-			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
-			<tr><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td><td>???</td></tr>
-			</table>
-		</article>
+		<p>This is the part of the application that manage the fight mechanism and is specified as follow.
+		<ol>
+			<li>Shall manage a fight for a turned-based rpg</li>
+			<li>Shall manage a fight of several parties</li>
+			<li>Shall return which party won the fight</li>
+			<li>Shall be implemented in a non preemptive desing</li>
+		</ol>
 		</p>
+	</article>
+	<article><h1 id="basic_fight_engine">BasicFightEngine</h1>
+		<p>This class is the basic representation of a fight engine for the application.<br/>It is divided into 2 fsm:<ol><li>Manage the fsm for ordering characters' turns</li><li>Manage the turn of a single character</li></ol>
+
+		<table>
+		<caption>The main fsm is specified as follow (sequential)</caption>
+		<tr><th>State Name</th><th>On Entry Action</th><th>Action</th><th>On Exit Action</th><th>Transition With Priority</th><th>Next State Name</th></tr>
+		<tr><td>Error state</td><td>Nothing</td><td>Throw an exception</td><td>Nothing</td><td>Nothing</td><td>Error</td></tr>
+		<tr><td>Schedule all</td><td>Nothing</td><td>Schedule the order of all characters for the current turn</td><td>Nothing</td><td>=1</td><td>Run all characters</td></tr>
+		<tr><td>Run current character</td><td><ol><li>Select the current character from the scheduler</li><li>Initialize the "Run single character" fsm</li></ol></td><td>Call the "Run single character" fsm</td><td>Nothing</td><td>the "Run single character" fsm has ended</td><td>Determine state</td></tr>
+		<tr><td rowspan="4">Dtermine state</td><td rowspan="4">Nothing</td><td rowspan="4">Nothing</td><td rowspan="4">Nothing</td><td>1) All alive characters are in the same party OR all characters in hero party are dead</td><td>End</td></tr>
+		<tr><td>2) All characters have played their turn</td><td>Run all characters</td></tr>
+		<tr><td>3) At least one party ask for re scheduling</td><td>Schedule unplayed</td></tr>
+		<tr><td>4) None of the above</td><td>Run current character</td></tr>
+		<tr><td>Schedule unplayed</td><td>Remove dead characters from scheduling queue</td><td>Schedule characters that didn't play their turn</td><td>Nothing</td><td>=1</td><td>Run all characters</td></tr>
+		<tr><td>End</td><td>Nothing</td><td>End of the fight</td><td>Noting</td><td>Nothing</td><td>End</td></tr>
+		</table>
+
+		<table>
+		<caption>The "Run single character" fsm is specified as follow (sequential)</caption>
+		<tr><th>State Name</th><th>On Entry Action</th><th>Action</th><th>On Exit Action</th><th>Transition With Priority</th><th>Next State Name</th></tr>
+		<tr><td>Character action selection</td><td>Nothing</td><td>Make the character choose its action for this turn</td><td>Nothing</td><td>=1</td><td>Character pre-turn</td></tr>
+		<tr><td rowspan="2">Character pre-turn</td><td rowspan="2">Nothing</td><td rowspan="2">Manage all effects that affect the character just before its turn</td><td rowspan="2">Nothing</td><td>1) Character can not play this turn</td><td>Character post-turn</td></tr>
+		<tr><td>2) Character can play this turn</td><td>Character turn</td></tr>
+		<tr><td>Character turn</td><td>Nothing</td><td>Manage character's action</td><td>Nothing</td><td>=1</td><td>Character post-turn</td></tr>
+		<tr><td>Character post-turn</td><td>Nothing</td><td>Manage all effects that affect the character just after its turn</td><td>Nothing</td><td>=1</td><td>End</td></tr>
+		<tr><td>End</td><td>Nothing</td><td>Leave this fsm and go back to the main</td><td>Nothing</td><td>Nothing</td><td>End</td></tr>
+		</table></p>
 	</article>	
 </section>
 <section><h1 id="battle_ground_engine">Battleground</h1>
@@ -171,7 +198,18 @@
 	</ul>
 	</nav>
 	<article><h1 id="party_spec">Specification</h1>
-		<p>A party contains multiple characters.</p>
+		<p>This is the part of the application that manages parties and is specified as follow.
+		<ol>
+			<li>Shall manage multiple characters that fight together</li>
+			<li>Shall provide scheduling query for fight engine
+			<ol><li>a member left</li>
+				<li>a new member arrived</li>
+				<li>a member is dead</li>
+				<li>a member is resurrected</li>
+			</ol></li>
+		</ol>
+
+		</p>
 	</article>
 	<article><h1 id="i_party">IParty</h1>
 	<p></p>
@@ -495,6 +533,7 @@
 		</li>
 		<li>Shall provide dialog boxes rendering
 			<ol>
+				<li>Shall provide children pop-up</li>
 				<li>Shall be displayed at a screen position (top left given)</li>
 				<li>Shall be displayed in a fixed size (x and y)</li>
 				<li>Shall accept text</li>
@@ -505,11 +544,12 @@
 				<p>Example of navigation (black is the daliog box, green is the dispalyed part of the dialog box)<br/><img src="dialog_boxes_1.png"/><br/>Arrows shows that displayed part of the dialog box should be moved up and down to show the rest of data.<br/>Note that in case of a larger dialog box left/right navigation is also required</p></li>
 				<li>Shall provide data (text and images) selection
 				<p>Example of selection (orange is the data selected)<br/><img src="dialog_boxes_2.png"/></p></li>
+				<li>Shall allow selection in children pop-up</li>
 			</ol>
 		</li>
 		<li>Shall provide animations on data (text and images)
 			<ol>
-				<li>Shall provide image appearance</li>
+				<li>Shall provide image and dialog boxes appearance</li>
 				<li>Shall provide sprite management
 					<ol>
 						<li>An image is divided into several sub-images that are displayed the one after the other<p>Example of sprite<br/><img src="animations_1.bmp"/></p></li>
@@ -565,7 +605,7 @@
 			<p>A text is composed of words<br/>A text delivers a message</p>
 		</li>
 		<li>Shall manage variable words
-			<p>A sentence such as:"Do you want to by <strong>a sword</strong>?" could work with <strong>a bow</strong> or something else.<br/>Those words are "variable words"</p>
+			<p>A sentence such as:"Do you want to buy <strong>a sword</strong>?" could work with <strong>a bow</strong> or something else.<br/>Those words are "variable words"</p>
 		</li>
 	</ol>
 	</p>
@@ -672,13 +712,17 @@
 
 <footer>
 	<section>
-	<h1>Versions</h1>
-	<p>Document:1.0<br/>
-	Application:???</p>
+	<h1>Thanks</h1>
+	<p>
+	<table><caption>Here are special thanks</caption>
+	<tr><th>Who</th><th>Why</th></tr>
+	<tr><td>Théo Arcourt</td><td>For navigation in this document</td></tr>
+	</table>
+	</p>
 	</section>
 	<section>
 	<h1>Foreword</h1>
-		<p>Don't forget to can "ctr+f" for better navigation in this document.</p>
+		<p>Don't forget to "ctr+f" for better navigation in this document.</p>
 	</section>
 </footer>
 </div>
