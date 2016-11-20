@@ -53,8 +53,8 @@ class StatusHandlerFSM : public IFSM
 public:
 	enum StatusHandlerFSM_Status
 	{
-		STATUS_FSM_ERROR,
 		STATUS_FSM_RUNNING,
+		STATUS_FSM_ERROR,
 
 		STATUS_FSM_STATUS_MAX
 	};

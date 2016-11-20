@@ -23,6 +23,9 @@
 #include "Attribute\Loader\AttributeListLoader.hpp"
 #include "Attribute\Loader\AttributeLoaderFactory.hpp"
 
+#include "GUI\DialogBox.hpp"
+#include "GUI\TextureManager.hpp"
+
 #include "Exception\Exception.hpp"
 
 #include <SFML/Graphics.hpp>
@@ -200,6 +203,8 @@ namespace uut
 
 		// choix du style du texte
 		text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+		window.setFramerateLimit(30);
 
 		while (window.isOpen())
 		{
@@ -418,6 +423,52 @@ namespace uut
 	void uut_CharacterLoading(void)
 	{
 		log().entranceFunction(FUNCTION_NAME);
+		log().exitFunction();
+	}
+
+	void uut_DialogBox(void)
+	{
+		TextureManager texture_manager;
+		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
+		BasicDialogBox dlg_box_0(32, 32+64, 64, 64), dlg_box_1(16, 32, 64*3, 64*2), dlg_box_2(texture_manager, "dlg", 5, 300, 32, 150, 150);
+		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::COPY, 5, 33, 33, 350, 250);
+		bool b_hide(false);
+		//std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
+
+		log().entranceFunction(FUNCTION_NAME);
+
+		window.setFramerateLimit(90);
+
+		dlg_box_1.setScreenPosition(32, 64+32);
+		dlg_box_0.setScreenPosition(32, 16);
+
+		dlg_box_1.setDimensions(64 * 3, 64 * 2);
+		
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+				else if (event.type == sf::Event::KeyPressed)
+				{
+					if (b_hide == true)
+						b_hide = false;
+					else
+						b_hide = true;
+				}
+			}
+			dlg_box_0.hide(b_hide);
+
+			window.clear(sf::Color::Magenta);
+			// puis, dans la boucle de dessin, entre window.clear() et window.display()
+			window.draw(gui_bg);
+			//window.draw(dlg_box_0);
+			//window.draw(dlg_box_1);
+			//window.draw(dlg_box_2);
+			window.display();
+		}
 		log().exitFunction();
 	}
 

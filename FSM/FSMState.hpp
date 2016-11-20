@@ -18,6 +18,14 @@ public:
 	bool reset(void) { return true; }
 };
 
+class IdleState : public State
+{
+public:
+	virtual ~IdleState(){}
+protected:
+	virtual bool process(void) { return true; }
+};
+
 }
 
 #endif // _FSMSTATE_H

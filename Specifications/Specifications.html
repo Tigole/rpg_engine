@@ -499,7 +499,7 @@
 	<nav><h1>Overview</h1>
 	<ul>
 		<li><a href="#rendering_engine_spec">Specification</a></li>
-		<li><a href="#"></a></li>
+		<li><a href="#rendering_engine_navigation_engine">IMenuNavigation</a></li>
 	</ul>
 	</nav>
 	<article><h1 id="rendering_engine_spec">Specification</h1>
@@ -587,7 +587,38 @@
 	</ol>
 	<p></p>
 	</article>
-	<article><h1 id="">???</h1>
+	<article><h1 id="rendering_engine_navigation_engine">IMenuNavigation</h1>
+	<p>
+		A IMenuNavigator represents a dialog box used to let user to select data.
+		
+		<table>
+		<caption>Methods</caption>
+		<tr><th>Name</th><th>Inputs</th><th>Outputs</th><th>Desription</th></tr>
+		<tr><td>onValidate</td><td>Nothing</td><td></td><td>Shall manage data validation</td></tr>
+		<tr><td>onCancel</td><td>Nothing</td><td></td><td>Shall manage cancel action</td></tr>
+		<tr><td>onLeft</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on left</td></tr>
+		<tr><td>onRight</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on right</td></tr>
+		<tr><td>onUp</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on up</td></tr>
+		<tr><td>onDown</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on down</td></tr>
+		</table>
+	</p>
+	</article>
+	<article><h1 id="rendering_engine_basic_menu_navigation">BasicMenuNavigation</h1>
+	<p>
+		Inherits from <a href="rendering_engine_navigation_engine">IMenuNavigation</a>.
+		It is composed of several
+		
+		<table>
+		<caption>Methods</caption>
+		<tr><th>Name</th><th>Inputs</th><th>Outputs</th><th>Desription</th></tr>
+		<tr><td>onValidate</td><td>Nothing</td><td></td><td>Shall manage data validation</td></tr>
+		<tr><td>onCancel</td><td>Nothing</td><td></td><td>Shall manage cancel action</td></tr>
+		<tr><td>onLeft</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on left</td></tr>
+		<tr><td>onRight</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on right</td></tr>
+		<tr><td>onUp</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on up</td></tr>
+		<tr><td>onDown</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on down</td></tr>
+		</table>
+	</p>
 	</article>
 </section>
 <section><h1 id="translation_engine">Translation Engine</h1>

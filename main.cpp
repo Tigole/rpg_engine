@@ -53,6 +53,7 @@ int main(int argc, char** argv)
 	uut_functions.push_back(make_pair("uut_AttributeLoading", uut_AttributeLoading));
 	uut_functions.push_back(make_pair("uut_SkillLoading", uut_SkillLoading));
 	uut_functions.push_back(make_pair("uut_CharacterLoading", uut_CharacterLoading));
+	uut_functions.push_back(make_pair("uut_DialogBox", uut_DialogBox));
 
 		for (auto& a : uut_functions)
 		{

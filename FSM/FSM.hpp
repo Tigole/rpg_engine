@@ -48,11 +48,11 @@ public:
 
 protected:
 
-	void addStopState(IState* stop_state);
+	void addStopState(IState* stop_state, int return_value = SEQUENTIAL_STOP_STATE_REACHED);
 
 private:
 
-	std::vector<IState*> m_stop_states;
+	std::vector<std::pair<IState*, int>> m_stop_states;
 };
 
 }
