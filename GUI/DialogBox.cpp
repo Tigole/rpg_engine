@@ -9,56 +9,51 @@ IDialogBox::~IDialogBox()
 	/** Nothing **/
 }
 
-BasicDialogBox::BasicDialogBox(int top_px, int left_px, unsigned int width_px, unsigned int height_px)
-	: m_hide_flag(false)
+/*BasicDialogBox::BasicDialogBox(int top_px, int left_px, unsigned int width_px, unsigned int height_px)
+	: m_hide_flag(false),
+	m_drawable()
 {
-	sf::Texture texture;
-	sf::Image image, dest_image;
+	/** Nothing ** /
+}*/
 
-	image.create(width_px, height_px, sf::Color(219, 23, 2));
-	m_background_texture.create(width_px, height_px);
-	m_background_texture.update(image);
-
-	m_background_texture.loadFromFile("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Texture/dlg.png");
-
-
-
-	//image.loadFromFile("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Texture/dlg.png");
-	//texture
-
-
-	m_background_sprite.setTexture(m_background_texture);
-	m_background_sprite.setPosition((float)top_px, (float)left_px);
-	// dlg_top_left
+BasicDialogBox::BasicDialogBox()
+	:m_drawable(),
+	m_background(),
+	m_hide_flag(true)
+{
+	/** Nothing **/
 }
 
-BasicDialogBox::BasicDialogBox(TextureManager& texture_manager)
+BasicDialogBox::BasicDialogBox(std::unique_ptr<IGUIBackground>& background)
+	:m_drawable(),
+	m_background(nullptr),
+	m_hide_flag(true)
 {
-	sf::Texture texture;
-	sf::Sprite sprite;
-	sf::RenderTexture renderer;
-
-	texture = texture_manager.getTexture("dlg");
-	sprite.setTextureRect(sf::IntRect(0, 0, 11, 11));
-	renderer.draw(sprite);
-
-	m_background_texture = renderer.getTexture();
-	m_background_sprite.setTexture(m_background_texture);
+	setBackground(background);
+}
+BasicDialogBox::BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsigned int left_px, unsigned int top_px)
+	:m_drawable(),
+	m_background(nullptr),
+	m_hide_flag(false)
+{
+	setBackground(background);
+	setScreenPosition(left_px, top_px);
 }
 
-BasicDialogBox::BasicDialogBox(TextureManager& texture_manager, const std::string& resource_file, unsigned int edge_size_px, unsigned int top_px, unsigned int left_px, unsigned int width_px, unsigned int height_px)
+BasicDialogBox::BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsigned int left_px, unsigned int top_px, unsigned int width_px, unsigned int height_px)
+	:m_drawable(),
+	m_background(nullptr),
+	m_hide_flag(false)
 {
-	sf::Texture& texture(texture_manager.getTexture(resource_file));
-	sf::Sprite background, corner, edge;
-	
-	edge.setTexture(texture);
-	edge.setTextureRect(sf::IntRect(edge_size_px, 0, edge_size_px, edge_size_px));
+	setBackground(background);
+	setScreenPosition(left_px, top_px);
+	setDimensions(width_px, height_px);
+}
 
-	corner.setTexture(texture);
-	corner.setTextureRect(sf::IntRect(0, edge_size_px, edge_size_px, edge_size_px));
-
-	background.setTexture(texture);
-	background.setTextureRect(sf::IntRect(edge_size_px, edge_size_px, texture.getSize().x - edge_size_px, texture.getSize().y - edge_size_px));
+void BasicDialogBox::setBackground(std::unique_ptr<IGUIBackground>& new_background)
+{
+	m_background.reset(new_background.release());
+	m_hide_flag = m_hide_flag || (m_background == nullptr);
 }
 
 void BasicDialogBox::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -66,7 +61,9 @@ void BasicDialogBox::draw(sf::RenderTarget &target, sf::RenderStates states) con
 	if (m_hide_flag == false)
 	{
 		//states.blendMode = sf::BlendMode(sf::BlendMode::SrcColor, sf::BlendMode::DstColor);
-		target.draw(m_background_sprite, states);
+		target.draw(*m_background, states);
+		for (auto& a : m_drawable)
+			target.draw(*a, states);
 	}
 	else
 	{
@@ -76,24 +73,25 @@ void BasicDialogBox::draw(sf::RenderTarget &target, sf::RenderStates states) con
 
 void BasicDialogBox::hide(bool hide)
 {
-	m_hide_flag = hide;
+	m_hide_flag = hide || (m_background == nullptr);
 }
 
-void BasicDialogBox::setEdgeSize(int edge_size_px)
+void BasicDialogBox::setScreenPosition(unsigned int left_px, unsigned int top_px)
 {
-	//
+	m_background->setScreenPosition(top_px, left_px);
 }
 
-void BasicDialogBox::setScreenPosition(int top_px, int left_px)
+void BasicDialogBox::setDimensions(unsigned int width_px, unsigned int height_px)
 {
-	m_background_sprite.setPosition((float)top_px, (float)left_px);
+	m_background->setDimensions(width_px, height_px);
 }
 
-void BasicDialogBox::setDimensions(int width_px, int height_px)
+sf::Vector2u BasicDialogBox::getInsideDimensions(void) const
 {
-	sf::Vector2f targetSize((float)width_px, (float)height_px);
+	sf::Vector2u l_ret(0, 0);
 
-	m_background_sprite.setScale(
-		targetSize.x / m_background_sprite.getLocalBounds().width,
-		targetSize.y / m_background_sprite.getLocalBounds().height);
+	if (m_background != nullptr)
+		l_ret = m_background->getUsableDimensions();
+
+	return l_ret;
 }

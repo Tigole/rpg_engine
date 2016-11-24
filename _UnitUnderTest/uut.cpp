@@ -426,12 +426,48 @@ namespace uut
 		log().exitFunction();
 	}
 
+	void uut_GUIBackground(void)
+	{
+		TextureManager texture_manager;
+		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
+		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
+
+		gui_bg.setDimensions(350, 250);
+
+		log().entranceFunction(FUNCTION_NAME);
+
+		gui_bg.setScreenPosition(33, 33);
+
+		window.setFramerateLimit(90);
+
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+
+			window.clear(sf::Color::Magenta);
+
+			// puis, dans la boucle de dessin, entre window.clear() et window.display()
+			window.draw(gui_bg);
+
+			window.display();
+		}
+		log().exitFunction();
+
+	}
+
 	void uut_DialogBox(void)
 	{
 		TextureManager texture_manager;
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
-		BasicDialogBox dlg_box_0(32, 32+64, 64, 64), dlg_box_1(16, 32, 64*3, 64*2), dlg_box_2(texture_manager, "dlg", 5, 300, 32, 150, 150);
-		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::COPY, 5, 33, 33, 350, 250);
+		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
+		BasicDialogBox dlg_box_0(std::unique_ptr<IGUIBackground>(gui_bg.clone()), 32, 32+64, 64, 64), 
+			dlg_box_1(std::unique_ptr<IGUIBackground>(gui_bg.clone()), 16, 32, 64*3, 64*2), 
+			dlg_box_2(std::unique_ptr<IGUIBackground>(gui_bg.clone()), 300, 32, 150, 150);
 		bool b_hide(false);
 		//std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
 
@@ -442,7 +478,7 @@ namespace uut
 		dlg_box_1.setScreenPosition(32, 64+32);
 		dlg_box_0.setScreenPosition(32, 16);
 
-		dlg_box_1.setDimensions(64 * 3, 64 * 2);
+		dlg_box_1.setDimensions(350, 250);
 		
 		while (window.isOpen())
 		{
@@ -463,10 +499,9 @@ namespace uut
 
 			window.clear(sf::Color::Magenta);
 			// puis, dans la boucle de dessin, entre window.clear() et window.display()
-			window.draw(gui_bg);
-			//window.draw(dlg_box_0);
-			//window.draw(dlg_box_1);
-			//window.draw(dlg_box_2);
+			window.draw(dlg_box_0);
+			window.draw(dlg_box_1);
+			window.draw(dlg_box_2);
 			window.display();
 		}
 		log().exitFunction();

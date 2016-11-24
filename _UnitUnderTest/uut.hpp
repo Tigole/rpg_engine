@@ -26,6 +26,7 @@ namespace uut
 	void uut_AttributeLoading(void);
 	void uut_SkillLoading(void);
 	void uut_CharacterLoading(void);
+	void uut_GUIBackground(void);
 	void uut_DialogBox(void);
 }
 
