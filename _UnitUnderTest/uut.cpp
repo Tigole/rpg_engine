@@ -507,4 +507,36 @@ namespace uut
 		log().exitFunction();
 	}
 
+	void uut_TextDialogBox(void)
+	{
+		TextureManager texture_manager;
+		sf::Font font;
+		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
+		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
+		font.loadFromFile("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Font/firestarter/FIRESTARTER.ttf");
+		TextDialogBox text_dialog(std::unique_ptr<IGUIBackground>(gui_bg.clone()), TextDialogBox::TextData(font), 32, 32 + 64);
+
+		log().entranceFunction(FUNCTION_NAME);
+
+		window.setFramerateLimit(90);
+
+		text_dialog.setText("Coucou\ntoi !");
+
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+
+			window.clear(sf::Color::Magenta);
+			// puis, dans la boucle de dessin, entre window.clear() et window.display()
+			window.draw(text_dialog);
+			window.display();
+		}
+		log().exitFunction();
+	}
+
 }

@@ -154,13 +154,16 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	sf::Sprite background;
 	sf::Sprite top_edge_sprite, right_edge_sprite, bottom_edge_sprite, left_edge_sprite;
 	sf::Sprite top_left_corner_sprite, top_right_corner_sprite, bottom_right_corner_sprite, bottom_left_corner_sprite;
-	unsigned int vertical_elements_count(3), horizontal_element_count(2);
+	unsigned int vertical_elements_count(1), horizontal_element_count(1);
 	unsigned int temp_x, temp_y;
 	
 	temp_x = m_texture.getSize().x;
 	temp_y = m_texture.getSize().y;
-	vertical_elements_count = ((width_px + (temp_x >> 1)) / temp_x);
-	horizontal_element_count = ((height_px + (temp_y >> 1)) / temp_y);
+	/*vertical_elements_count = ((width_px + (temp_x >> 1)) / temp_x) + 1;
+	horizontal_element_count = ((height_px + (temp_y >> 1)) / temp_y) + 1;*/
+
+	vertical_elements_count = (width_px + m_texture_data.m_left_edge_size_px + m_texture_data.m_right_edge_size_px) / temp_x + 1;
+	horizontal_element_count = (height_px + m_texture_data.m_top_edge_size_px + m_texture_data.m_bottom_edge_size_px) / temp_y + 1;
 
 	background.setTexture(m_texture);
 	background.setTextureRect(
@@ -267,9 +270,14 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_renderer.getTexture().getSize().x, m_renderer.getTexture().getSize().y));
 }
 
-sf::Vector2u GUIBackground::getUsableDimensions(void) const
+sf::IntRect GUIBackground::getUsableDimensions(void) const
 {
-	sf::Vector2u l_ret(0, 0);
+	sf::IntRect l_ret(0, 0, 0, 0);
+
+	l_ret.left = m_sprite.getGlobalBounds().left + m_texture_data.m_left_edge_size_px;
+	l_ret.top = m_sprite.getGlobalBounds().top + m_texture_data.m_top_edge_size_px;
+	l_ret.width = m_sprite.getGlobalBounds().width - m_texture_data.m_right_edge_size_px;
+	l_ret.height = m_sprite.getGlobalBounds().height - m_texture_data.m_bottom_edge_size_px;
 
 	return l_ret;
 }

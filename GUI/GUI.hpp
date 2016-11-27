@@ -16,7 +16,7 @@ public:
 	virtual void setScreenPosition(unsigned int left_px, unsigned int top_px) = 0;
 	virtual void moveBy(int dx, int dy) = 0;
 	virtual void setDimensions(unsigned int width_px, unsigned int height_px) = 0;
-	virtual sf::Vector2u getUsableDimensions(void) const = 0;
+	virtual sf::IntRect getUsableDimensions(void) const = 0;
 	virtual sf::Vector2u getDimensions(void) const = 0;
 };
 
@@ -46,7 +46,7 @@ public:
 	virtual void setScreenPosition(unsigned int left_px, unsigned int top_px);
 	virtual void moveBy(int dx, int dy);
 	virtual void setDimensions(unsigned int width_px, unsigned int height_px);
-	sf::Vector2u getUsableDimensions(void) const;
+	sf::IntRect getUsableDimensions(void) const;
 	virtual sf::Vector2u getDimensions(void) const;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -92,6 +92,7 @@ protected:
 	sf::Sprite m_sprite;
 	sf::RenderTexture m_renderer;
 	sf::Transformable m_transformable;
+	sf::IntRect m_usable_dimension;
 };
 
 #endif // !_GUI_HPP

@@ -55,6 +55,7 @@ int main(int argc, char** argv)
 	uut_functions.push_back(make_pair("uut_CharacterLoading", uut_CharacterLoading));
 	uut_functions.push_back(make_pair("uut_GUIBackground", uut_GUIBackground));
 	uut_functions.push_back(make_pair("uut_DialogBox", uut_DialogBox));
+	uut_functions.push_back(make_pair("uut_TextDialogBox", uut_TextDialogBox));
 
 		for (auto& a : uut_functions)
 		{

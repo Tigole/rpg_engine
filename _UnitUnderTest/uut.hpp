@@ -28,6 +28,7 @@ namespace uut
 	void uut_CharacterLoading(void);
 	void uut_GUIBackground(void);
 	void uut_DialogBox(void);
+	void uut_TextDialogBox(void);
 }
 
 
