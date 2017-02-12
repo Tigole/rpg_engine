@@ -7,13 +7,14 @@
 #include "FSM\FSM.hpp"
 #include "FSM\FSMTransition.hpp"
 #include "MenuNavigationStates.hpp"
+#include "GUI\DialogBox.hpp"
 
 class INavigationObject;
 
-class MenuNavigation : public BasicActionable, public fsm::SequentialFSM
+class MenuNavigation : public BasicActionable, public fsm::SequentialFSM, public BasicDialogBox
 {
 public:
-	MenuNavigation(unsigned int row_number, unsigned int column_number);
+	MenuNavigation();
 
 	void onValidate(void);
 	void onCancel(void);
@@ -22,12 +23,15 @@ public:
 	void onUp(void);
 	void onBottom(void);
 
-	void setNavigatioObjects(std::vector<INavigationObject*>& navigation_objects);
+	void setNavigatioObjects(std::vector<INavigationObject*>& navigation_objects, unsigned int row_number, unsigned int column_number);
 
 protected:
+	void manageDrawing(void);
+
 	std::vector<INavigationObject*> m_navigation_objects;
 	std::vector<INavigationObject*>::iterator m_target_object;
 	unsigned int m_row_number, m_column_number;
+	sf::Vector2u m_cell_dimensions;
 
 	fsm::IdleState m_state_idle;
 	fsm::EmptyState m_state_done;

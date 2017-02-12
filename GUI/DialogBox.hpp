@@ -68,4 +68,5 @@ protected:
 	sf::Font m_font;
 };
 
+
 #endif // !_DIALOG_BOX_HPP

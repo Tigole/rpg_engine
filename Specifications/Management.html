@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Management</title>
+<link rel="stylesheet" href="Specifications.css" type="text/css">
+<link rel="stylesheet" href="Progression.css" type="text/css">
+</head>
+<body>
+<div class="menu">
+	<nav><h1>Document overview</h1>
+	<ol>
+	<li><a href="#top_1">Top 1</a></li>
+	<li><a href="#app_main_mod">Application's main modules</a></li>
+	<li><a href="#app_sub_mod">Application's sub modules</a></li>
+	</ol>
+	</nav>
+</div>
+<div class="corps">
+
+<header><h1>Project's maturity
+</h1><p>The aim of this document is to present the project's maturity and tops</p>
+</header>
+
+<section><h1 id="top_1">Top 1</h1>
+<article>
+<p>In this top, the application will provide a short demonstration of a battle of 2 parties with 1 character in both.</p>
+</article>
+</section>
+
+<section><h1 id="">
+</h1></section>
+
+<section><h1 id="">
+</h1></section>
+
+<section><h1 id="app_main_mod">Application's main modules</h1>
+<article><p>This part of the document reprensents the development maturity and requirements of main modules of the application</p>
+<table>
+<caption>Application's main modules</caption>
+<tr><th>Application's main module</th><th>Progression/Comment</th><th>Top 1</th></tr>
+<tr><td id="main_fsm_management">FSM management</td><td class="green">DONE</td><td class="red">REQUIRED</td></tr>
+<tr><td id="main_fight_engine">Fight engine</td><td class="yellow">coded<br/>to be tested</td><td class="red">REQUIRED</td></tr>
+<tr><td id="main_navigation_menu">Navigation menu</td><td class="yellow">work in progress</td><td class="red">REQUIRED</td></tr>
+<tr><td id="main_text_dialog_boxes">Text dialog boxes</td><td class="yellow">work in progress</td><td class="red">REQUIRED</td></tr>
+<tr><td id="main_data_loading">Data loading</td><td class="yellow">Attributes, Skills, Characters partially done<br/>Items still have to be done</td><td class="grey">NOT REQUIRED</td></tr>
+<tr><td id="main_graphics_effects_management">Graphics effects management</td><td class="red">To be specified</td><td class="grey">NOT REQUIRED</td></tr>
+<tr><td id="main_music_management">Music management</td><td class="red">To be specified</td><td class="grey">NOT REQUIRED</td></tr>
+<tr><td id="main_sound_management">Sound management</td><td class="red">To be specified</td><td class="grey">NOT REQUIRED</td></tr>
+<tr><td id="main_data_saving">Data saving</td><td class="red">to be specified</td><td class="grey">NOT REQUIRED</td></tr>
+<tr><td id="main_inputs_management">Inputs management</td><td class="red">To be specified</td><td class="red">REQUIRED</td></tr>
+<tr><td id="main_rendering_engine">Rendering engine</td><td class="yellow">Partially specified</td><td class="red">REQUIRED</td></tr>
+</table>
+</article>
+</section>
+
+<section><h1 id="app_sub_mod">Application's sub modules</h1>
+<article><p>This part of the document reprensents the development maturity and requirements of sub modules of the application</p>
+<table>
+<caption>Application's sub modules</caption>
+<tr><th>Application's sub module</th><th>Progression/Comment</th><th>Needed module</th><th>Main module</th></tr>
+<tr><td id="sub_attr_load">Attributes loading</td><td class="green">DONE</td><td class="grey">NA</td><td><ul><li><a href="#main_data_loading">Data loading</a></li></ul></td></tr>
+<tr><td id="sub_skill_load">Skills loading</td><td class="green">DONE</td><td class="grey">NA</td><td><ul><li><a href="#main_data_loading">Data loading</a></li></ul></td></tr>
+<tr><td id="sub_items_load">Items loading</td><td class="red">To be specified</td><td class="grey">NA</td><td><ul><li><a href="#main_data_loading">Data loading</a></li></ul></td></tr>
+<tr><td id="sub_char_load">Character loading</td><td class="yellow">Partially done</td><td><ul><li><a href="#sub_attr_load">Attributes</a></li><li><a href="#sub_skill_load">Skills</a></li><li><a href="#sub_items_load">Items</a></li></ul></td><td><ul><li><a href="#main_data_loading">Data loading</a></li></ul></td></tr>
+<tr><td id="sub_inputs_management_keyboard_mouse">Input management keyboard and mouse</td><td class="red">To be specified</td><td class="grey">NA</td><td class="grey">NA</td></tr>
+<tr><td id="sub_inputs_management_joystick">Input management joystick</td><td class="red">To be specified</td><td class="grey">NA</td><td class="grey">NA</td></tr>
+<tr><td id="sub_inputs_management_merge">Input management merge (merge from keyboard and mouse AND joystick)</td><td class="red">To be specified</td><td><ul><li><a href="#sub_inputs_management_keyboard_mouse">Keyboard and mouse</a></li><li><a href="#sub_inputs_management_joystick">Joystick</a></li></ul></td><td><ul><li><a href="#main_rendering_engine">Rendering engine</a></li><li><a href="#main_navigation_menu">Navigation_menu</a></li></ul></td></tr>
+<tr><td id="sub_plugin_management">Plugin management</td><td class="yellow">Not specified<br/>Design already oriented for plugins</td><td class="grey">NA</td><td class="grey">NA</td></tr>
+<tr><td id="sub_plugin_loading">Plugin loading</td><td class="red">Not specified<br/>Design not oriented</td><td class="grey">NA</td><td class="grey">NA</td></tr>
+<tr><td id="sub_sprite_loading">Spites sloading</td><td class=""></td></tr>
+<tr><td id="sub_translation_engine">Translation engine</td><td class="red">Specified<br/>Desgin not ready</td><td class="red">ALL</td><td class="red">MANY</td></tr>
+<tr><td>Evolution curves<br/>Quests system<br/>Others</td></tr>
+</table>
+</article>
+</section>
+
+</div>
+</body>
+</html>

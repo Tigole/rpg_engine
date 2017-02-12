@@ -23,11 +23,6 @@ public:
 class GUIBackground : public IGUIBackground
 {
 public:
-	enum EdgeType
-	{
-		COPY,
-		SCALE
-	};
 	struct TextureData
 	{
 		TextureData();
