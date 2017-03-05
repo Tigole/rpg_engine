@@ -6,9 +6,9 @@
 #include "Miscellaneous.hpp"
 #include "Character/ICharacter.hpp"
 #include "Logger/ILogger.h"
-#include "Math\ExpressionParser.hpp"
-#include "FightEngine\IBattleGroundWrapper.hpp"
-#include "Effect\IEffect.hpp"
+#include "Math/ExpressionParser.hpp"
+#include "FightEngine/IBattleGroundWrapper.hpp"
+#include "Effect/IEffect.hpp"
 
 #include <algorithm>
 

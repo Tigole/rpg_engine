@@ -1,6 +1,6 @@
 #include "MenuNavigationStates.hpp"
 #include "INavigationObject.hpp"
-#include "FSM\FSM.hpp"
+#include "FSM/FSM.hpp"
 
 MenuNavigationState_Child::MenuNavigationState_Child(MenuNavigation& parent, std::vector<INavigationObject*>& navigation_objects, std::vector<INavigationObject*>::iterator& target_object, fsm::TogglableTransition& trans_child_validate, fsm::TogglableTransition& trans_child_cancel)
 	:m_parent(parent),

@@ -1,7 +1,7 @@
 #include "GUI.hpp"
 
-#include "GUI\TextureManager.hpp"
-#include "Exception\Exception.hpp"
+#include "GUI/TextureManager.hpp"
+#include "Exception/Exception.hpp"
 #include "Miscellaneous.hpp"
 
 #include <iostream>
@@ -64,11 +64,11 @@ GUIBackground::GUIBackground(const GUIBackground& copy)
 }
 
 #if 0
-GUIBackground::GUIBackground(TextureManager& texture_manager, 
+GUIBackground::GUIBackground(TextureManager& texture_manager,
 	const std::string& texture_id,
 	EdgeType edge_type,
 	unsigned int edge_size_px,
-	unsigned int width_px, 
+	unsigned int width_px,
 	unsigned int height_px)
 {
 	const sf::Texture& texture(texture_manager.getTexture(texture_id));
@@ -156,7 +156,7 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	sf::Sprite top_left_corner_sprite, top_right_corner_sprite, bottom_right_corner_sprite, bottom_left_corner_sprite;
 	unsigned int vertical_elements_count(1), horizontal_element_count(1);
 	unsigned int temp_x, temp_y;
-	
+
 	temp_x = m_texture.getSize().x;
 	temp_y = m_texture.getSize().y;
 	/*vertical_elements_count = ((width_px + (temp_x >> 1)) / temp_x) + 1;
@@ -178,8 +178,8 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	top_left_corner_sprite.setTexture(m_texture);
 	top_left_corner_sprite.setTextureRect(
 		sf::IntRect(
-			0, 
-			0, 
+			0,
+			0,
 			m_texture_data.m_left_edge_size_px,
 			m_texture_data.m_top_edge_size_px));
 	top_right_corner_sprite.setTexture(m_texture);
@@ -187,7 +187,7 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	top_right_corner_sprite.setTextureRect(
 		sf::IntRect(
 			m_texture.getSize().x - m_texture_data.m_right_edge_size_px,
-			0, 
+			0,
 			m_texture_data.m_right_edge_size_px,
 			m_texture_data.m_top_edge_size_px));
 
@@ -202,7 +202,7 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	bottom_left_corner_sprite.setTexture(m_texture);
 	bottom_left_corner_sprite.setTextureRect(
 		sf::IntRect(
-			0, 
+			0,
 			m_texture.getSize().y - m_texture_data.m_bottom_edge_size_px,
 			m_texture_data.m_left_edge_size_px,
 			m_texture_data.m_bottom_edge_size_px));
@@ -212,7 +212,7 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	top_edge_sprite.setTexture(m_texture);
 	top_edge_sprite.setTextureRect(
 		sf::IntRect(
-			m_texture_data.m_left_edge_size_px, 
+			m_texture_data.m_left_edge_size_px,
 			0,
 			m_texture.getSize().x - (m_texture_data.m_left_edge_size_px + m_texture_data.m_right_edge_size_px),
 			m_texture_data.m_top_edge_size_px));
@@ -221,7 +221,7 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	right_edge_sprite.setTextureRect(
 		sf::IntRect(
 			m_texture.getSize().x - m_texture_data.m_right_edge_size_px,
-			m_texture_data.m_top_edge_size_px, 
+			m_texture_data.m_top_edge_size_px,
 			m_texture_data.m_right_edge_size_px,
 			m_texture.getSize().y - (m_texture_data.m_top_edge_size_px + m_texture_data.m_bottom_edge_size_px)));
 
@@ -236,13 +236,13 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 	left_edge_sprite.setTexture(m_texture);
 	left_edge_sprite.setTextureRect(
 		sf::IntRect(
-			0, 
-			m_texture_data.m_top_edge_size_px, 
+			0,
+			m_texture_data.m_top_edge_size_px,
 			m_texture_data.m_left_edge_size_px,
 			m_texture.getSize().y - (m_texture_data.m_top_edge_size_px + m_texture_data.m_bottom_edge_size_px)));
 
 	m_renderer.create(
-		vertical_elements_count * background.getTextureRect().width + m_texture_data.m_left_edge_size_px + m_texture_data.m_right_edge_size_px, 
+		vertical_elements_count * background.getTextureRect().width + m_texture_data.m_left_edge_size_px + m_texture_data.m_right_edge_size_px,
 		horizontal_element_count * background.getTextureRect().height + m_texture_data.m_top_edge_size_px + m_texture_data.m_bottom_edge_size_px);
 
 	m_renderer.clear(sf::Color::Blue);
@@ -256,7 +256,7 @@ void GUIBackground::setDimensions(unsigned int width_px, unsigned int height_px)
 		horizontal_element_count,
 		vertical_elements_count,
 		sf::Vector2i(background.getTextureRect().width, background.getTextureRect().height));
-	
+
 	setEdge(top_edge_sprite,
 		right_edge_sprite,
 		bottom_edge_sprite,
@@ -309,7 +309,7 @@ std::unique_ptr<IGUIBackground> GUIBackground::clone(void) const
 
 void GUIBackground::setBackground(sf::Sprite& sprite,
 	unsigned int x_sub_sprite_count,
-	unsigned int y_sub_sprite_count, 
+	unsigned int y_sub_sprite_count,
 	const TextureData& texture_data)
 {
 	unsigned int x, y;
@@ -365,22 +365,22 @@ void GUIBackground::setEdge(sf::Sprite& top_edge_sprite,
 	}
 }
 
-/*void GUIBackground::setEdgeCopy(sf::Sprite& top_edge_sprite, 
-								sf::Sprite& right_edge_sprite, 
-								sf::Sprite& bottom_edge_sprite, 
-								sf::Sprite& left_edge_sprite, 
-								unsigned int horizontal_sub_lignes_count, 
-								unsigned int vertical_sub_lignes_count, 
+/*void GUIBackground::setEdgeCopy(sf::Sprite& top_edge_sprite,
+								sf::Sprite& right_edge_sprite,
+								sf::Sprite& bottom_edge_sprite,
+								sf::Sprite& left_edge_sprite,
+								unsigned int horizontal_sub_lignes_count,
+								unsigned int vertical_sub_lignes_count,
 								sf::Vector2i background_sprite_size)
 {
 	unsigned int x, y;
-	
+
 	/** Top and bottom ** /
 	for (x = 0; x < vertical_sub_lignes_count; x++)
 	{
-		top_edge_sprite.setPosition((x) * background_sprite_size.x + left_edge_sprite.getTextureRect().width, 
+		top_edge_sprite.setPosition((x) * background_sprite_size.x + left_edge_sprite.getTextureRect().width,
 			0.0f);
-		bottom_edge_sprite.setPosition((x) * background_sprite_size.x + left_edge_sprite.getTextureRect().width, 
+		bottom_edge_sprite.setPosition((x) * background_sprite_size.x + left_edge_sprite.getTextureRect().width,
 			horizontal_sub_lignes_count * background_sprite_size.y + top_edge_sprite.getTextureRect().height);
 		m_renderer.draw(top_edge_sprite);
 		m_renderer.draw(bottom_edge_sprite);
@@ -388,9 +388,9 @@ void GUIBackground::setEdge(sf::Sprite& top_edge_sprite,
 
 	for (y = 0; y < horizontal_sub_lignes_count; y++)
 	{
-		left_edge_sprite.setPosition(0.0f, 
+		left_edge_sprite.setPosition(0.0f,
 			(y) * background_sprite_size.y + top_edge_sprite.getTextureRect().height);
-		right_edge_sprite.setPosition(vertical_sub_lignes_count * background_sprite_size.x + left_edge_sprite.getTextureRect().width, 
+		right_edge_sprite.setPosition(vertical_sub_lignes_count * background_sprite_size.x + left_edge_sprite.getTextureRect().width,
 			(y) * background_sprite_size.y + top_edge_sprite.getTextureRect().height);
 		m_renderer.draw(left_edge_sprite);
 		m_renderer.draw(right_edge_sprite);
@@ -422,9 +422,9 @@ void GUIBackground::setEdgeScale(sf::Sprite& top_edge_sprite,
 void GUIBackground::setCorners(	sf::Sprite& top_left_corner_sprite,
 								sf::Sprite& top_right_corner_sprite,
 								sf::Sprite& bottom_right_corner_sprite,
-								sf::Sprite& bottom_left_corner_sprite, 
-								unsigned int horizontal_sub_elements_count, 
-								unsigned int vertical_sub_element_count, 
+								sf::Sprite& bottom_left_corner_sprite,
+								unsigned int horizontal_sub_elements_count,
+								unsigned int vertical_sub_element_count,
 								sf::Vector2i background_sprite_size)
 {
 	unsigned int x_offset_px(top_left_corner_sprite.getTextureRect().width);

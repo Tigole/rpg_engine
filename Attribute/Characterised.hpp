@@ -3,8 +3,8 @@
 
 #include "Attribute/ICharacterised.hpp"
 #include "Attribute/IAttribute.hpp"
-#include "Logger\ILogger.h"
-#include "Exception\Exception.hpp"
+#include "Logger/ILogger.h"
+#include "Exception/Exception.hpp"
 
 template<class AttributeType>
 class Characterised : public ICharacterised<AttributeType>
@@ -36,7 +36,7 @@ public:
 
 		if (it != m_attributes.end())
 			throw AttributeAlreadyExists(attribute->getName(), "ICharacterised<AttributeType>");
-		
+
 		m_attributes[attribute->getName()] = std::move(attribute);
 	}
 

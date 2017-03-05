@@ -1,9 +1,9 @@
 #include "BasicSkillLoader.hpp"
 #include "Skill/Skill/BasicSkill.hpp"
-#include "Attribute\Loader\AttributeLoader.hpp"
-#include "Exception\Exception.hpp"
+#include "Attribute/Loader/AttributeLoader.hpp"
+#include "Exception/Exception.hpp"
 
-#include "Logger\ILogger.h"
+#include "Logger/ILogger.h"
 
 
 SkillLoader* createBasicSkillLoader()
@@ -42,7 +42,7 @@ std::unique_ptr<ISkill> BasicSkillLoader::load(const TiXmlElement& element)
 
 	if (element.QueryStringAttribute("id", &skill_id) != TIXML_SUCCESS)
 		throw XMLLoadingExceptionAttributeMissing(element, "id");
-	
+
 	l_ret = std::unique_ptr<ISkill>(new BasicSkill(skill_id));
 
 	if (l_ret != nullptr)
@@ -53,10 +53,10 @@ std::unique_ptr<ISkill> BasicSkillLoader::load(const TiXmlElement& element)
 			if (l_element != nullptr)
 			{
 				auto it(m_children.find(l_element->Value()));
-				
+
 				if (it == m_children.end())
 					throw XMLLoadingExceptionNoLoader(l_element->Value());
-				
+
 				(this->*(it->second))(*l_element, *l_ret);
 			}
 		}
@@ -67,7 +67,7 @@ std::unique_ptr<ISkill> BasicSkillLoader::load(const TiXmlElement& element)
 
 void BasicSkillLoader::loadAttributes(const TiXmlElement& element, ISkill& skill) const
 {
-	AttributeLoaderFactory::LoaderCreator attribute_loader_creator;
+	LoaderCreator<AttributeLoader> attribute_loader_creator;
 
 	for (const TiXmlNode* l_node = element.FirstChild(); l_node != nullptr; l_node = l_node->NextSibling())
 	{
@@ -77,8 +77,9 @@ void BasicSkillLoader::loadAttributes(const TiXmlElement& element, ISkill& skill
 		{
 			attribute_loader_creator = m_attribute_loader_factory->getLoader(l_element->Value());
 			std::unique_ptr<AttributeLoader> attribute_loader(attribute_loader_creator.m_creator());
+			std::unique_ptr<IAttribute> iattribute(attribute_loader->load(*l_element));
 
-			skill.addAttribute(attribute_loader->load(*l_element));
+			skill.addAttribute(iattribute);
 		}
 	}
 }

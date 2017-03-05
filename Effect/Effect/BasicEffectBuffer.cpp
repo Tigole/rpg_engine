@@ -1,6 +1,6 @@
 #include "BasicEffectBuffer.hpp"
 
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 BasicEffectBuffer::BasicEffectBuffer(const std::string& target_attribute, int value, int nb_turn)
 	:Effect(target_attribute),

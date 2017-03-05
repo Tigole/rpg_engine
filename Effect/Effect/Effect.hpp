@@ -1,7 +1,7 @@
 #ifndef _EFFECT_HPP
 #define _EFFECT_HPP 1
 
-#include "Effect\IEffect.hpp"
+#include "Effect/IEffect.hpp"
 #include <string>
 
 class Effect : public IEffect

@@ -99,7 +99,7 @@ sf::IntRect BasicDialogBox::getInsideDimensions(void) const
 
 
 
-TextDialogBox::TextData::TextData(sf::Font font)
+TextDialogBox::TextData::TextData(sf::Font& font)
 	:m_font(font),
 	m_color(sf::Color(sf::Color::White)),
 	m_char_size_px(10)
@@ -107,7 +107,7 @@ TextDialogBox::TextData::TextData(sf::Font font)
 	/** Nothing **/
 }
 
-TextDialogBox::TextData::TextData(sf::Font font, unsigned int char_size_px)
+TextDialogBox::TextData::TextData(sf::Font& font, unsigned int char_size_px)
 	:m_font(font),
 	m_color(sf::Color(sf::Color::White)),
 	m_char_size_px(char_size_px)
@@ -115,7 +115,7 @@ TextDialogBox::TextData::TextData(sf::Font font, unsigned int char_size_px)
 	/** Nothing **/
 }
 
-TextDialogBox::TextData::TextData(sf::Font font, sf::Color color)
+TextDialogBox::TextData::TextData(sf::Font& font, sf::Color color)
 	:m_font(font),
 	m_color(color),
 	m_char_size_px(10)
@@ -123,7 +123,7 @@ TextDialogBox::TextData::TextData(sf::Font font, sf::Color color)
 	/** Nothing **/
 }
 
-TextDialogBox::TextData::TextData(sf::Font font, sf::Color color, unsigned int char_size_px)
+TextDialogBox::TextData::TextData(sf::Font& font, sf::Color color, unsigned int char_size_px)
 	:m_font(font),
 	m_color(color),
 	m_char_size_px(char_size_px)

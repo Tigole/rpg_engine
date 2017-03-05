@@ -1,5 +1,5 @@
 #include "TextureManager.hpp"
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 #include "Miscellaneous.hpp"
 
 #include "GUI.hpp"
@@ -9,7 +9,7 @@ TextureManager::TextureManager()
 	/** Nothing **/
 	/** For debuggin purpose **/
 	sf::Texture texture;
-	texture.loadFromFile("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Texture/dlg.png");
+	texture.loadFromFile("/home/jaja/Documents/Git/rpg_engine/Resources/Texture/dlg.png");
 	texture.setRepeated(true);
 
 	m_textures["dlg"] = texture;

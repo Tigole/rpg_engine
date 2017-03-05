@@ -1,7 +1,7 @@
 #ifndef _DIALOG_BOX_HPP
 #define _DIALOG_BOX_HPP 1
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "GUI.hpp"
 
@@ -25,7 +25,7 @@ public:
 	BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsigned int left_px, unsigned int top_px);
 	BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsigned int left_px, unsigned int top_px, unsigned int width_px, unsigned int height_px);
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-	
+
 	virtual void hide(bool hide);
 	virtual void setScreenPosition(unsigned int left_px, unsigned int top_px);
 	virtual void setDimensions(unsigned int width_px, unsigned int height_px);
@@ -43,12 +43,12 @@ class TextDialogBox : public BasicDialogBox
 public:
 	struct TextData
 	{
-		TextData(sf::Font font);
-		TextData(sf::Font font, unsigned int char_size_px);
-		TextData(sf::Font font, sf::Color color);
-		TextData(sf::Font font, sf::Color color, unsigned int char_size_px);
+		TextData(sf::Font& font);
+		TextData(sf::Font& font, unsigned int char_size_px);
+		TextData(sf::Font& font, sf::Color color);
+		TextData(sf::Font& font, sf::Color color, unsigned int char_size_px);
 
-		sf::Font m_font;
+		sf::Font& m_font;
 		sf::Color m_color;
 		unsigned int m_char_size_px;
 	};

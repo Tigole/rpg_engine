@@ -44,6 +44,7 @@
 	<li><a href="#inventory">Inventory</a></li>
 	<li><a href="#fsm_engine">Finite State Machine Engine</a></li>
 	<li><a href="#rendering_engine">Rendering Engine</a></li>
+	<li><a href="#mapping_engine">Mapping Engine</a></li>
 	<li><a href="#translation_engine_spec">Translation Engine</a></li>
 	<li><a href="#evolution_curves">Evolution Curves</a></li>
 	<li><a href="#external_files">External files</a>
@@ -589,7 +590,7 @@
 	</article>
 	<article><h1 id="rendering_engine_navigation_engine">IMenuNavigation</h1>
 	<p>
-		A IMenuNavigator represents a dialog box used to let user to select data.
+		A IMenuNavigator represents a dialog box used to let user select data.
 		
 		<table>
 		<caption>Methods</caption>
@@ -619,6 +620,35 @@
 		<tr><td>onDown</td><td>Nothing</td><td></td><td>Shall manage cursor selection mouvement on down</td></tr>
 		</table>
 	</p>
+	</article>
+</section>
+<section><h1 id="mapping_engine">Mapping Engine</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#">Specification</a></li>
+		<li><a href="#"></a></li>
+	</ul>
+	</nav>
+	<article><h1 id="">Specification</h1>
+	<p>
+	This part specify the Mapping engine which shall manage a game map.
+	<ol>
+		<li>Shall provide map loading</li>
+		<li>May provide map saving</li>
+		<li>Shall provide map rendering
+			<ul><li>Shall proide Z-axis rendering</li></ul>
+		</li>
+		<li>Shall provide collision between character that move and the map environment (wall, trees...)
+			<ul><li>Shall provide environment evolution (walls may be destroyed/deleted, trees cut...)</li></ul>
+		</li>
+		<li>Shall provide collision between differents characters that can move</li>
+		<li>Shall provide link between different maps</li>
+		<li>Shall allow interactions between characters and environment (talk to a character, cut a tree...)</li>
+	</ol>
+	</p>
+	</article>
+	<article><h1 id="">???</h1>
+	<p></p>
 	</article>
 </section>
 <section><h1 id="translation_engine">Translation Engine</h1>

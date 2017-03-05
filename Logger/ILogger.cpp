@@ -9,7 +9,7 @@
 #if LOG_XML == 1
 static XMLLogger gs_logger(STRINGIZE(LOG_FILE), "rpg_engine");
 #else
-static DummyLogger gs_logger(LOG_FILE);
+static DummyLogger gs_logger;
 #endif
 
 ILogger& log()

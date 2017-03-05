@@ -1,7 +1,7 @@
 #ifndef _BASIC_EFFECT_LOADER_HPP
 #define _BASIC_EFFECT_LOADER_HPP 1
 
-#include "Effect\EffectLoader.hpp"
+#include "Effect/EffectLoader.hpp"
 
 class BasicEffectSetterLoader : public EffectLoader
 {

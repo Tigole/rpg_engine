@@ -1,6 +1,6 @@
 #include "CompositeAttribute.hpp"
-#include "Logger\ILogger.h"
-#include "Exception\Exception.hpp"
+#include "Logger/ILogger.h"
+#include "Exception/Exception.hpp"
 
 #include <algorithm>
 

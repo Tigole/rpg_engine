@@ -8,5 +8,5 @@ SkillLoaderFactory::SkillLoaderFactory(AttributeLoaderFactory& attribute_factory
 
 	basic_loader.setAttributeLoaderFactory(&attribute_factory);
 
-	m_creators[basic_loader.getElementName()] = LoaderCreator(&createBasicSkillLoader, &deleteBasicSkillLoader);
+	m_creators[basic_loader.getElementName()] = LoaderCreator<SkillLoader>(&createBasicSkillLoader, &deleteBasicSkillLoader);
 }

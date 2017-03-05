@@ -8,10 +8,16 @@
 #include <memory>
 #include <map>
 
+#define PLATFORM_WINDOWS 1
+#define PLATFORM_LINUX 2
+
+
 #if defined(_WIN32)
 #define PLATFORM PLATFORM_WINDOWS
+//#warning PLATFORM_WINDOWS
 #elif defined(__gnu_linux__)
 #define PLATFORM PLATFORM_LINUX
+#warning PLATFORM_LINUX
 #else
 #error Your platform is not usable for now
 #endif
@@ -22,8 +28,10 @@
 #define FUNCTION_NAME __PRETTY_FUNCTION__
 #endif // PLATFORM
 
-#if PLATOFORM == PLATFORM_WINDOWS
+#if PLATFORM == PLATFORM_WINDOWS
 #include <windows.h>
+#elif PLATFORM == PLATFORM_LINUX
+#include <dlfcn.h>
 #endif
 
 #define UNUSED_PARAMETER(x) (void)(x)
@@ -53,7 +61,7 @@ namespace misc
 
 		virtual bool reset(void) = 0;
 	};
-	
+
 	template<typename T>
 	class PointerCollection
 	{
@@ -269,10 +277,12 @@ namespace misc
 		std::string m_element_name;
 	};
 
-	
+
+	template <typename FunctionPointer>
 	class DLL_Loader
 	{
 	public:
+		DLL_Loader() : m_dll(){/** Nothing **/}
 		~DLL_Loader()
 		{
 			for (auto& dll : m_dll)
@@ -284,11 +294,10 @@ namespace misc
 #endif
 			}
 		}
-		template <typename FunctionPointer>
 		FunctionPointer getFunction(const std::string& dll_name, const std::string& function_name)
 		{
-			FunctionPointer ret(nullptr);
-			NativeHandleType dll_handle(nullptr);
+			FunctionPointer l_ret(nullptr);
+			NativeDllHandleType dll_handle(nullptr);
 			std::map<std::string, NativeDllHandleType>::iterator it(m_dll.find(dll_name));
 
 			if (it != m_dll.end())
@@ -315,14 +324,14 @@ namespace misc
 #endif
 			}
 
-			return ret;
+			return l_ret;
 		}
 
 	protected:
 #if PLATFORM == PLATFORM_WINDOWS
 		typedef HINSTANCE NativeDllHandleType;
 #elif PLATFORM == PLATFORM_LINUX
-		typedef void* NativeHandleType;
+		typedef void* NativeDllHandleType;
 #endif
 
 		std::map<std::string, NativeDllHandleType> m_dll;

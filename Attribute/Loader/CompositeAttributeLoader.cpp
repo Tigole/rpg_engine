@@ -1,11 +1,11 @@
 #include "CompositeAttributeLoader.hpp"
-#include "Attribute\Attribute\CompositeAttribute.hpp"
+#include "Attribute/Attribute/CompositeAttribute.hpp"
 #include "BasicAttributeLoader.hpp"
 
-#include "Logger\ILogger.h"
+#include "Logger/ILogger.h"
 #include "tinyxml.h"
 
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 
 AttributeLoader* createCompositeAttributeLoader(void)

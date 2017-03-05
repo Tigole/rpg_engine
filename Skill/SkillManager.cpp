@@ -3,7 +3,7 @@
 #include "Logger/ILogger.h"
 #include "Loader/SkillLoader.hpp"
 
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 #include <algorithm>
 
@@ -51,7 +51,7 @@ std::unique_ptr<ISkill> SkillManager::getSkill(const std::string& skill_name, IC
 
 	if (l_it == m_skills.end())
 		throw ResourceDoesNotExists(skill_name, FUNCTION_NAME);
-	
+
 	l_ret = std::move(l_it->second->clone());
 
 	l_ret->setOwner(skill_owner);

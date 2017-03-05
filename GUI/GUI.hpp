@@ -1,7 +1,7 @@
 #ifndef _GUI_HPP
 #define _GUI_HPP 1
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 
 #include "Miscellaneous.hpp"
@@ -61,11 +61,11 @@ protected:
 		unsigned int vertical_sub_lignes_count,
 		sf::Vector2i background_sprite_size);
 	/*virtual void setEdgeCopy(sf::Sprite& top_edge_sprite,
-		sf::Sprite& right_edge_sprite, 
-		sf::Sprite& bottom_edge_sprite, 
-		sf::Sprite& left_edge_sprite, 
-		unsigned int horizontal_sub_lignes_count, 
-		unsigned int vertical_sub_lignes_count, 
+		sf::Sprite& right_edge_sprite,
+		sf::Sprite& bottom_edge_sprite,
+		sf::Sprite& left_edge_sprite,
+		unsigned int horizontal_sub_lignes_count,
+		unsigned int vertical_sub_lignes_count,
 		sf::Vector2i background_sprite_size);*/
 	/*virtual void setEdgeScale(sf::Sprite& top_edge_sprite,
 		sf::Sprite& right_edge_sprite,
@@ -78,8 +78,8 @@ protected:
 		sf::Sprite& top_right_corner_sprite,
 		sf::Sprite& bottom_right_corner_sprite,
 		sf::Sprite& bottom_left_corner_sprite,
-		unsigned int horizontal_sub_lignes_count, 
-		unsigned int vertical_sub_lignes_count, 
+		unsigned int horizontal_sub_lignes_count,
+		unsigned int vertical_sub_lignes_count,
 		sf::Vector2i background_sprite_size);
 
 	const sf::Texture& m_texture;

@@ -1,9 +1,9 @@
 #include "BasicEffectLoader.hpp"
 
-#include "Effect\Effect\BasicEffectBuffer.hpp"
-#include "Effect\Effect\BasicEffectModifer.hpp"
-#include "Effect\Effect\BasicEffectSetter.hpp"
-#include "Exception\Exception.hpp"
+#include "Effect/Effect/BasicEffectBuffer.hpp"
+#include "Effect/Effect/BasicEffectModifer.hpp"
+#include "Effect/Effect/BasicEffectSetter.hpp"
+#include "Exception/Exception.hpp"
 
 #include <tinyxml.h>
 

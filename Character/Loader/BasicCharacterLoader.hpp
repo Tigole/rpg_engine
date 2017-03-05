@@ -2,7 +2,7 @@
 #define _BASIC_CHARACTER_LOADER_HPP 1
 
 #include "CharacterLoader.hpp"
-#include "Attribute\Loader\AttributeLoaderFactory.hpp"
+#include "Attribute/Loader/AttributeLoaderFactory.hpp"
 
 class BasicCharacter;
 

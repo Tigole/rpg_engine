@@ -1,7 +1,7 @@
 #include "Attribute/Attribute/BasicAttribute.hpp"
-#include "Attribute\Loader\BasicAttributeLoader.hpp"
-#include "Logger\ILogger.h"
-#include "Exception\Exception.hpp"
+#include "Attribute/Loader/BasicAttributeLoader.hpp"
+#include "Logger/ILogger.h"
+#include "Exception/Exception.hpp"
 
 void deleteBasicAttribute(IAttribute* obj)
 {
@@ -50,7 +50,7 @@ void BasicAttribute::setValue(const std::string& attribute_name, int value)
 {
 	if (attribute_name != m_name)
 		throw AttributeNotFound(attribute_name, "BasicAttribute");
-	
+
 	m_value = value;
 }
 

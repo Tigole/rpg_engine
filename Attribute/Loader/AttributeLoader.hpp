@@ -1,7 +1,7 @@
 #ifndef _ATTRIBUTE_LOADER_HPP
 #define _ATTRIBUTE_LOADER_HPP 1
 
-#include "Loader\Loader.hpp"
+#include "Loader/Loader.hpp"
 #include "Miscellaneous.hpp"
 
 class IAttribute;

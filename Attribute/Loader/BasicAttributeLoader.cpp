@@ -1,10 +1,10 @@
 #include "BasicAttributeLoader.hpp"
-#include "Attribute\Attribute\BasicAttribute.hpp"
+#include "Attribute/Attribute/BasicAttribute.hpp"
 
 #include "tinyxml.h"
-#include "Logger\ILogger.h"
+#include "Logger/ILogger.h"
 
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 AttributeLoader* createBasicAttributeLoader(void)
 {

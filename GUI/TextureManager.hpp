@@ -1,7 +1,7 @@
 #ifndef _TEXTURE_MANAGER_HPP
 #define _TEXTURE_MANAGER_HPP 1
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <map>
 #include <memory>
 

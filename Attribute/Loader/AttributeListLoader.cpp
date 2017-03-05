@@ -1,8 +1,8 @@
 #include "AttributeListLoader.hpp"
-#include "Attribute\Loader\AttributeLoaderFactory.hpp"
+#include "Attribute/Loader/AttributeLoaderFactory.hpp"
 #include "AttributeLoader.hpp"
-#include "Logger\ILogger.h"
-#include "Exception\Exception.hpp"
+#include "Logger/ILogger.h"
+#include "Exception/Exception.hpp"
 
 #include <tinyxml.h>
 
@@ -15,7 +15,7 @@ AttributeListLoader::AttributeListLoader(const AttributeLoaderFactory& attribute
 
 void AttributeListLoader::load(const TiXmlElement& element, std::vector<std::unique_ptr<IAttribute>>& attributes)
 {
-	AttributeLoaderFactory::LoaderCreator attribute_loader;
+	LoaderCreator<AttributeLoader> attribute_loader_creator;
 
 	if (element.NoChildren() == true)
 		throw XMLLoadingExceptionElementHasNoChild(element);
@@ -26,9 +26,9 @@ void AttributeListLoader::load(const TiXmlElement& element, std::vector<std::uni
 
 		if (l_element != nullptr)
 		{
-			attribute_loader = m_attribute_loader_factory.getLoader(l_element->Value());
+			attribute_loader_creator = m_attribute_loader_factory.getLoader(l_element->Value());
 
-			std::unique_ptr<AttributeLoader> attribute_loader(attribute_loader.m_creator());
+			std::unique_ptr<AttributeLoader> attribute_loader(attribute_loader_creator.m_creator());
 
 			m_attributes.second.push_back(std::move(attribute_loader->load(*l_element)));
 		}

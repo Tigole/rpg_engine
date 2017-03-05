@@ -1,5 +1,5 @@
 #include "BasicEffectModifer.hpp"
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 BasicEffectModifier::BasicEffectModifier(const std::string& target_attribute, const std::string& formula)
 	:Effect(target_attribute),

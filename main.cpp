@@ -11,7 +11,7 @@
 #include "_UnitUnderTest/uut.hpp"
 #include "Logger/ILogger.h"
 
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 #include <cwchar>
 #include <locale>
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 
 	//uut_functions.push_back(uut_Fight_std);
 	//uut_functions.push_back(uut_Fight_obj);
-	
+
 	uut_functions.push_back(make_pair("uut_TestLoadingSkills", uut_TestLoadingSkills));
 	uut_functions.push_back(make_pair("uut_Test_Sf_String", uut_Test_Sf_String));
 	uut_functions.push_back(make_pair("uut_Loading_Characters", uut_Loading_Characters));

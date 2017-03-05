@@ -6,7 +6,7 @@
 #include "Logger/ILogger.h"
 #include "Character/Loader/CharacterLoader.hpp"
 
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 #include <algorithm>
 

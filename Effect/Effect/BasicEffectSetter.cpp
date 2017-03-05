@@ -1,9 +1,9 @@
 #include "BasicEffectSetter.hpp"
 
-#include "Character\ICharacter.hpp"
-#include "Math\VariableList.hpp"
-#include "Math\ExpressionParser.hpp"
-#include "Exception\Exception.hpp"
+#include "Character/ICharacter.hpp"
+#include "Math/VariableList.hpp"
+#include "Math/ExpressionParser.hpp"
+#include "Exception/Exception.hpp"
 
 
 BasicEffectSetter::BasicEffectSetter(const std::string& target_attribute, const std::string& formula)
@@ -115,7 +115,7 @@ void BasicEffectSetter::getVariables(ISkill& skill_owner, ICharacter& char_owner
 			getValue(char_target, formula_target_attribute, attribute_value);
 		else
 			throw ResourceDoesNotExists(formula_target_name, FUNCTION_NAME);
-			
+
 		var_list.setVariable(variables_names[i], misc::numberToString(attribute_value));
 	}
 }

@@ -2,7 +2,7 @@
 #define _BASIC_SKILL_LOADER_HPP 1
 
 #include "SkillLoader.hpp"
-#include "Attribute\Loader\AttributeLoaderFactory.hpp"
+#include "Attribute/Loader/AttributeLoaderFactory.hpp"
 
 SkillLoader* createBasicSkillLoader(void);
 void deleteBasicSkillLoader(SkillLoader* basic_skill_loader);

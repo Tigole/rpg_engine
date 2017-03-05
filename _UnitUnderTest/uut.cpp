@@ -12,21 +12,21 @@
 
 #include "Skill/Loader/SkillLoader.hpp"
 #include "Skill/Loader/DBG_DamageSkillLoader.hpp"
-#include "Skill\Loader\BasicSkillLoader.hpp"
+#include "Skill/Loader/BasicSkillLoader.hpp"
 
 #include "Character/CharacterManager.hpp"
 
 #include "Math/ExpressionParser.hpp"
 
-#include "Attribute\Loader\BasicAttributeLoader.hpp"
-#include "Attribute\Loader\CompositeAttributeLoader.hpp"
-#include "Attribute\Loader\AttributeListLoader.hpp"
-#include "Attribute\Loader\AttributeLoaderFactory.hpp"
+#include "Attribute/Loader/BasicAttributeLoader.hpp"
+#include "Attribute/Loader/CompositeAttributeLoader.hpp"
+#include "Attribute/Loader/AttributeListLoader.hpp"
+#include "Attribute/Loader/AttributeLoaderFactory.hpp"
 
-#include "GUI\DialogBox.hpp"
-#include "GUI\TextureManager.hpp"
+#include "GUI/DialogBox.hpp"
+#include "GUI/TextureManager.hpp"
 
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -36,6 +36,11 @@
 
 namespace uut
 {
+
+	/** Please change this path for your own working 
+		(We're working to make it easier to configure from the project configuration)
+	**/
+	std::string g_resource_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
 
 	void uut_Fight_std(void)
 	{
@@ -139,7 +144,7 @@ namespace uut
 	{
 		SkillManager sm;
 		std::map<std::string, std::unique_ptr<SkillLoader>> loaders;
-		std::string file_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Data/Skills.xml");
+		std::string file_path(g_resource_path + "Data/Skills.xml");
 		std::vector<std::string> skills_names;
 		DBG_Character c("JaJa", 50);
 
@@ -178,12 +183,11 @@ namespace uut
 		sf::Text text;
 		sf::RenderWindow window(sf::VideoMode(640, 480), "ààà");
 		bool font_loaded;
-		std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
 
 		log().entranceFunction(FUNCTION_NAME);
 
 		//font_loaded = font.loadFromFile(res_path + "Font/firestarter/FIRESTARTER.ttf");
-		font_loaded = font.loadFromFile(res_path + "Font/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");
+		font_loaded = font.loadFromFile(g_resource_path + "Font/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");
 
 		window.setTitle(title.c_str());
 
@@ -230,8 +234,7 @@ namespace uut
 		SkillManager sm;
 		std::map<std::string, std::unique_ptr<SkillLoader>> skill_loaders;
 		std::map<std::string, std::unique_ptr<CharacterLoader>> char_loaders;
-		std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/"),
-					skills_file("Data/Skills.xml"),
+		std::string skills_file("Data/Skills.xml"),
 					characters_file("Data/Mobs.xml"),
 					character_to_get("Toto");
 
@@ -240,14 +243,14 @@ namespace uut
 		skill_loaders["DBG_DamageSkill"] = std::unique_ptr<SkillLoader>(new DBG_DamageSkillLoader("DBG_DamageSkill"));
 		char_loaders["DBG_Character"] = std::unique_ptr<CharacterLoader>(new DBG_CharacterLoader("DBG_Character"));
 
-		sm.load(res_path + skills_file, skill_loaders);
-		cm.load(res_path + characters_file, char_loaders, sm);
+		sm.load(g_resource_path + skills_file, skill_loaders);
+		cm.load(g_resource_path + characters_file, char_loaders, sm);
 		character = cm.getCharacter(character_to_get);
 		character->dump(log());
-		
+
 		log().exitFunction();
 	}
-	
+
 	void uut_ExpressionParser(void)
 	{
 		int res;
@@ -293,7 +296,7 @@ namespace uut
 			}
 
 			log().endBlock();
-		}		
+		}
 
 		log().exitFunction();
 	}
@@ -401,7 +404,7 @@ namespace uut
 		basic_skill_loader.setAttributeLoaderFactory(&attribute_loader_factory);
 
 		log().entranceFunction(FUNCTION_NAME);
-		
+
 		element.reset(new TiXmlElement("BasicSkill"));
 		element->SetAttribute("id", "fire_ball");
 		element->SetAttribute("target_attribute", "hp.current");
@@ -465,11 +468,14 @@ namespace uut
 		TextureManager texture_manager;
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
-		BasicDialogBox dlg_box_0(std::unique_ptr<IGUIBackground>(gui_bg.clone()), 32, 32+64, 64, 64), 
-			dlg_box_1(std::unique_ptr<IGUIBackground>(gui_bg.clone()), 16, 32, 64*3, 64*2), 
-			dlg_box_2(std::unique_ptr<IGUIBackground>(gui_bg.clone()), 300, 32, 150, 150);
+		std::unique_ptr<IGUIBackground> bg_ptr(gui_bg.clone());
+		BasicDialogBox dlg_box_0(bg_ptr, 32, 32+64, 64, 64);
+		bg_ptr = gui_bg.clone();
+		BasicDialogBox dlg_box_1(bg_ptr, 16, 32, 64*3, 64*2);
+		bg_ptr = gui_bg.clone();
+		BasicDialogBox dlg_box_2(bg_ptr, 300, 32, 150, 150);
 		bool b_hide(false);
-		//std::string res_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
+		//std::string res_path("/home/jaja/Documents/Git/rpg_engine/Resources/");
 
 		log().entranceFunction(FUNCTION_NAME);
 
@@ -479,7 +485,7 @@ namespace uut
 		dlg_box_0.setScreenPosition(32, 16);
 
 		dlg_box_1.setDimensions(350, 250);
-		
+
 		while (window.isOpen())
 		{
 			sf::Event event;
@@ -513,8 +519,9 @@ namespace uut
 		sf::Font font;
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
-		font.loadFromFile("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/Font/firestarter/FIRESTARTER.ttf");
-		TextDialogBox text_dialog(std::unique_ptr<IGUIBackground>(gui_bg.clone()), TextDialogBox::TextData(font), 32, 32 + 64);
+		font.loadFromFile(g_resource_path + "Font/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");//"Font/firestarter/FIRESTARTER.ttf");
+		std::unique_ptr<IGUIBackground> bg_ptr(gui_bg.clone());
+		TextDialogBox text_dialog(bg_ptr, TextDialogBox::TextData(font), 32, 32 + 64);
 
 		log().entranceFunction(FUNCTION_NAME);
 

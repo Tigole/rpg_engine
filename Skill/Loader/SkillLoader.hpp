@@ -4,7 +4,7 @@
 #include <string>
 #include "Loader/Loader.hpp"
 #include "Miscellaneous.hpp"
-#include "Skill\ISkill.hpp"
+#include "Skill/ISkill.hpp"
 
 class TiXmlElement;
 class ISkill;

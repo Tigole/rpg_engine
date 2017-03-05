@@ -1,8 +1,8 @@
 #ifndef _MENU_NAVIGATION_STATES_HPP
 #define _MENU_NAVIGATION_STATES_HPP 1
 
-#include "FSM\FSMState.hpp"
-#include "FSM\FSMTransition.hpp"
+#include "FSM/FSMState.hpp"
+#include "FSM/FSMTransition.hpp"
 
 class INavigationObject;
 class MenuNavigation;
@@ -10,10 +10,10 @@ class MenuNavigation;
 class MenuNavigationState_Child : public fsm::State
 {
 public:
-	MenuNavigationState_Child(	MenuNavigation& parent, 
-								std::vector<INavigationObject*>& navigation_objects, 
-								std::vector<INavigationObject*>::iterator& target_object, 
-								fsm::TogglableTransition& trans_child_validate, 
+	MenuNavigationState_Child(	MenuNavigation& parent,
+								std::vector<INavigationObject*>& navigation_objects,
+								std::vector<INavigationObject*>::iterator& target_object,
+								fsm::TogglableTransition& trans_child_validate,
 								fsm::TogglableTransition& trans_child_cancel);
 protected:
 	MenuNavigation& m_parent;

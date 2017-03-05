@@ -1,7 +1,7 @@
 #ifndef _EFFECT_LOADER_HPP
 #define _EFFECT_LOADER_HPP 1
 
-#include "Loader\Loader.hpp"
+#include "Loader/Loader.hpp"
 #include <memory>
 
 class IEffect;

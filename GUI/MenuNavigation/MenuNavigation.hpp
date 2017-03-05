@@ -3,11 +3,11 @@
 
 #include <vector>
 
-#include "GUI\Actionable\BasicActionable.hpp"
-#include "FSM\FSM.hpp"
-#include "FSM\FSMTransition.hpp"
+#include "GUI/Actionable/BasicActionable.hpp"
+#include "FSM/FSM.hpp"
+#include "FSM/FSMTransition.hpp"
 #include "MenuNavigationStates.hpp"
-#include "GUI\DialogBox.hpp"
+#include "GUI/DialogBox.hpp"
 
 class INavigationObject;
 

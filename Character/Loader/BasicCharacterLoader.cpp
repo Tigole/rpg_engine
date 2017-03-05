@@ -1,7 +1,7 @@
 #include "BasicCharacterLoader.hpp"
-#include "Character\Character\BasicCharacter.hpp"
-#include "Skill\SkillManager.hpp"
-#include "Exception\Exception.hpp"
+#include "Character/Character/BasicCharacter.hpp"
+#include "Skill/SkillManager.hpp"
+#include "Exception/Exception.hpp"
 
 #include <tinyxml.h>
 

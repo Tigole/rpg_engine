@@ -1,8 +1,8 @@
 #ifndef _BASIC_EFFECT_SETTER_HPP
 #define _BASIC_EFFECT_SETTER_HPP 1
 
-#include "Effect\IEffect.hpp"
-#include "Skill\ISkill.hpp"
+#include "Effect/IEffect.hpp"
+#include "Skill/ISkill.hpp"
 
 #include <string>
 #include <vector>
@@ -22,7 +22,7 @@ private:
 	void getVariables(const std::string& formula, std::vector<std::string>& variables);
 	void splitNameAndAttribute(const std::string& str, std::string& name, std::string& attribute);
 	void getVariables(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target, const std::vector<std::string>& variables_names, VariableList& var_list);
-	
+
 	template<typename T>
 	void affect(T& target, const std::string& attribute_name, int value)
 	{

@@ -3,7 +3,7 @@
 #include "Skill/ISkill.hpp"
 #include "Skill/SkillManager.hpp"
 #include "Logger/ILogger.h"
-#include "Exception\Exception.hpp"
+#include "Exception/Exception.hpp"
 
 void deleteBasiCharacter(ICharacter* obj)
 {
