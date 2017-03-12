@@ -41,7 +41,7 @@ std::unique_ptr<ISkill> BasicSkillLoader::load(const TiXmlElement& element)
 	const char* attribute_value;
 
 	if (element.QueryStringAttribute("id", &skill_id) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "id");
+		throw ExceptionXMLLoadingAttributeMissing(element, "id");
 
 	l_ret = std::unique_ptr<ISkill>(new BasicSkill(skill_id));
 
@@ -55,7 +55,7 @@ std::unique_ptr<ISkill> BasicSkillLoader::load(const TiXmlElement& element)
 				auto it(m_children.find(l_element->Value()));
 
 				if (it == m_children.end())
-					throw XMLLoadingExceptionNoLoader(l_element->Value());
+					throw ExceptionXMLLoadingNoLoader(l_element->Value());
 
 				(this->*(it->second))(*l_element, *l_ret);
 			}

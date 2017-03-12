@@ -41,7 +41,7 @@ void BasicAttribute::save(TiXmlElement& parent) const
 void BasicAttribute::getValue(const std::string& attribute_name, int& value) const
 {
 	if (attribute_name != m_name)
-		throw AttributeNotFound(attribute_name, "BasicAttribute");
+		throw ExceptionAttributeNotFound(attribute_name, "BasicAttribute");
 
 	value = m_value;
 }
@@ -49,7 +49,7 @@ void BasicAttribute::getValue(const std::string& attribute_name, int& value) con
 void BasicAttribute::setValue(const std::string& attribute_name, int value)
 {
 	if (attribute_name != m_name)
-		throw AttributeNotFound(attribute_name, "BasicAttribute");
+		throw ExceptionAttributeNotFound(attribute_name, "BasicAttribute");
 
 	m_value = value;
 }

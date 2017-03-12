@@ -36,7 +36,7 @@ public:
 		auto it(m_creators.find(element_name));
 
 		if (it == m_creators.end())
-			throw XMLLoadingExceptionNoLoader(element_name);
+			throw ExceptionXMLLoadingNoLoader(element_name);
 
 		return it->second;
 	}

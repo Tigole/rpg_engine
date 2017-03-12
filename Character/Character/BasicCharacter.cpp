@@ -65,7 +65,7 @@ void BasicCharacter::getAttribute(const std::string& attribute_id, int& attribut
 	auto l_it(m_attributes.find(attribute_id));
 
 	if (l_it == m_attributes.end())
-		throw AttributeNotFound(attribute_id, "BasicCharacter", getName());
+		throw ExceptionAttributeNotFound(attribute_id, "BasicCharacter", getName());
 	l_it->second->getValue(attribute_id, attribute_value);
 }
 
@@ -74,7 +74,7 @@ void BasicCharacter::getAttribute(const std::string& attribute_id, int& attribut
 	auto l_it(m_attributes.find(attribute_id));
 
 	if (l_it == m_attributes.end())
-		throw AttributeNotFound(attribute_id, "BasicCharacter", getName());
+		throw ExceptionAttributeNotFound(attribute_id, "BasicCharacter", getName());
 
 	l_it->second->getValue(attribute_id, attribute_value);
 }
@@ -84,7 +84,7 @@ void BasicCharacter::setAttribute(const std::string& attribute_id, int attribute
 	auto l_it(m_attributes.find(attribute_id));
 
 	if (l_it == m_attributes.end())
-		throw AttributeNotFound(attribute_id, "BasicCharacter", getName());
+		throw ExceptionAttributeNotFound(attribute_id, "BasicCharacter", getName());
 	l_it->second->setValue(attribute_id, attribute_value);
 }
 
@@ -102,12 +102,12 @@ void BasicCharacter::endTurn(void)
 
 void BasicCharacter::selectSkill(void)
 {
-	throw UnimplementedFunction(FUNCTION_NAME);
+	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 }
 
 void BasicCharacter::useSkill(void)
 {
-	throw UnimplementedFunction(FUNCTION_NAME);
+	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 }
 
 bool BasicCharacter::isDead(void) const

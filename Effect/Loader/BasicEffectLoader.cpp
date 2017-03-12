@@ -19,10 +19,10 @@ std::unique_ptr<IEffect> BasicEffectSetterLoader::load(const TiXmlElement& eleme
 	std::string target_attribute, formula;
 
 	if (element.QueryStringAttribute("target_attribute", &target_attribute) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "target_attribute");
+		throw ExceptionXMLLoadingAttributeMissing(element, "target_attribute");
 
 	if (element.QueryStringAttribute("formula", &formula) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "formula");
+		throw ExceptionXMLLoadingAttributeMissing(element, "formula");
 
 	l_ret.reset(new BasicEffectSetter(target_attribute, formula));
 
@@ -41,10 +41,10 @@ std::unique_ptr<IEffect> BasicEffectModifierLoader::load(const TiXmlElement& ele
 	std::string target_attribute, formula;
 
 	if (element.QueryStringAttribute("target_attribute", &target_attribute) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "target_attribute");
+		throw ExceptionXMLLoadingAttributeMissing(element, "target_attribute");
 
 	if (element.QueryStringAttribute("formula", &formula) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "formula");
+		throw ExceptionXMLLoadingAttributeMissing(element, "formula");
 
 	l_ret.reset(new BasicEffectModifier(target_attribute, formula));
 
@@ -64,13 +64,13 @@ std::unique_ptr<IEffect> BasicEffectBufferLoader::load(const TiXmlElement& eleme
 	int value, nb_turn;
 
 	if (element.QueryStringAttribute("target_attribute", &target_attribute) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "target_attribute");
+		throw ExceptionXMLLoadingAttributeMissing(element, "target_attribute");
 
 	if (element.QueryIntAttribute("value", &value) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "value");
+		throw ExceptionXMLLoadingAttributeMissing(element, "value");
 
 	if (element.QueryIntAttribute("nb_turn", &nb_turn) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "nb_turn");
+		throw ExceptionXMLLoadingAttributeMissing(element, "nb_turn");
 
 	l_ret.reset(new BasicEffectBuffer(target_attribute, value, nb_turn));
 

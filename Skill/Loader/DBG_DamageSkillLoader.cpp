@@ -22,13 +22,13 @@ std::unique_ptr<ISkill> DBG_DamageSkillLoader::load(const TiXmlElement& element)
 	DamageSkill::DamageSkillOperator skill_operator(DamageSkill::DSO_ERROR);
 
 	if (element.QueryStringAttribute("id", &skill_name) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "id");
+		throw ExceptionXMLLoadingAttributeMissing(element, "id");
 
 	if (element.QueryIntAttribute("damages", &skill_damages) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "damages");
+		throw ExceptionXMLLoadingAttributeMissing(element, "damages");
 
 	if (element.QueryStringAttribute("operator", &skill_operator_str) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "operator");
+		throw ExceptionXMLLoadingAttributeMissing(element, "operator");
 
 	skill_operator = DamageSkill::stringToOperator(skill_operator_str);
 

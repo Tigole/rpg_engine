@@ -36,9 +36,9 @@ std::unique_ptr<IAttribute> CompositeAttributeLoader::load(const TiXmlElement& e
 	std::string attribute_name;
 
 	if (element.QueryStringAttribute("name", &attribute_name) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "name");
+		throw ExceptionXMLLoadingAttributeMissing(element, "name");
 	if (element.NoChildren() == true)
-		throw XMLLoadingExceptionElementHasNoChild(element);
+		throw ExceptionXMLLoadingElementHasNoChild(element);
 
 	l_tmp = new CompositeAttribute(attribute_name);
 

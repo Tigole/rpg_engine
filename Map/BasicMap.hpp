@@ -2,16 +2,11 @@
 #define _BASIC_MAP_HPP 1
 
 #include "IMap.hpp"
+#include "Tileset.hpp"
 
 #include <SFML\Graphics.hpp>
 
 #include <vector>
-
-struct BasicCell
-{
-	sf::Sprite m_sprite;
-	bool m_is_walkable;
-};
 
 class BasicMap : public IMap
 {
@@ -23,7 +18,7 @@ public:
 	void save(TiXmlElement& element);
 
 protected:
-	std::vector<BasicCell> m_cells;
+	std::vector<Tile> m_cells;
 };
 
 #endif // !_BASIC_MAP_HPP

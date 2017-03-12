@@ -24,72 +24,78 @@ protected:
 	std::string m_what;
 };
 
-class XMLLoadingExceptionAttributeMissing : public Exception
+class ExceptionXMLLoadingAttributeMissing : public Exception
 {
 public:
-	XMLLoadingExceptionAttributeMissing(const TiXmlElement& element, const std::string& attribute_missing_name);
+	ExceptionXMLLoadingAttributeMissing(const TiXmlElement& element, const std::string& attribute_missing_name);
 };
 
-class XMLLoadingExceptionElementMissing : public Exception
+class ExceptionXMLLoadingElementMissing : public Exception
 {
 public:
-	XMLLoadingExceptionElementMissing(const TiXmlElement& element, const std::string& element_missing_name);
+	ExceptionXMLLoadingElementMissing(const TiXmlElement& element, const std::string& element_missing_name);
 };
 
-class XMLLoadingExceptionElementHasNoChild : public Exception
+class ExceptionXMLLoadingElementHasNoChild : public Exception
 {
 public:
-	XMLLoadingExceptionElementHasNoChild(const TiXmlElement& element);
+	ExceptionXMLLoadingElementHasNoChild(const TiXmlElement& element);
 };
 
-class XMLLoadingExceptionNoLoader : public Exception
+class ExceptionXMLLoadingNoLoader : public Exception
 {
 public:
-	XMLLoadingExceptionNoLoader(const std::string& id);
+	ExceptionXMLLoadingNoLoader(const std::string& id);
 };
 
-class AttributeNotFound : public Exception
+class ExceptionAttributeNotFound : public Exception
 {
 public:
-	AttributeNotFound(const std::string& attribute_name, const std::string& type_name);
-	AttributeNotFound(const std::string& attribute_name, const std::string& type_name, const std::string& object_name);
+	ExceptionAttributeNotFound(const std::string& attribute_name, const std::string& type_name);
+	ExceptionAttributeNotFound(const std::string& attribute_name, const std::string& type_name, const std::string& object_name);
 };
 
-class AttributeAlreadyExists : public Exception
+class ExceptionAttributeAlreadyExists : public Exception
 {
 public:
-	AttributeAlreadyExists(const std::string& attribute_name, const std::string& type_name);
-	AttributeAlreadyExists(const std::string& attribute_name, const std::string& type_name, const std::string& object_name);
+	ExceptionAttributeAlreadyExists(const std::string& attribute_name, const std::string& type_name);
+	ExceptionAttributeAlreadyExists(const std::string& attribute_name, const std::string& type_name, const std::string& object_name);
 };
 
-class ResourceDoesNotExists : public Exception
+class ExceptionResourceDoesNotExists : public Exception
 {
 public:
-	ResourceDoesNotExists(const std::string& resource_name, const std::string& context);
+	ExceptionResourceDoesNotExists(const std::string& resource_name, const std::string& context);
 };
 
-class ResourceAlradeyExists : public Exception
+class ExceptionResourceAlradeyExists : public Exception
 {
 public:
-	ResourceAlradeyExists(const std::string& resource_name, const std::string& context);
+	ExceptionResourceAlradeyExists(const std::string& resource_name, const std::string& context);
 };
 
-class UnimplementedFunction : public Exception
+class ExceptionUnimplementedFunction : public Exception
 {
 public:
-	UnimplementedFunction(const std::string& function_name);
+	ExceptionUnimplementedFunction(const std::string& function_name);
 };
 
-class DLLFunctionNotFound : public Exception
+class ExceptionDLLFunctionNotFound : public Exception
 {
 public:
-	DLLFunctionNotFound(const std::string& dll_name, const std::string& function_name);
+	ExceptionDLLFunctionNotFound(const std::string& dll_name, const std::string& function_name);
 };
 
-class StringSplittingFail : public Exception
+class ExceptionStringSplittingFail : public Exception
 {
 public:
-	StringSplittingFail(const std::string& str);
+	ExceptionStringSplittingFail(const std::string& str);
+};
+
+class ExceptionArraySize : public Exception
+{
+public:
+	ExceptionArraySize(unsigned int index, unsigned int array_size, const std::string& array_name, const std::string& context);
 };
 
 #endif // !_EXCEPTION_HPP

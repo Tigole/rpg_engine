@@ -12,7 +12,7 @@ BasicEffectBuffer::BasicEffectBuffer(const std::string& target_attribute, int va
 
 void BasicEffectBuffer::affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
 {
-	throw UnimplementedFunction(FUNCTION_NAME);
+	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 }
 
 std::unique_ptr<IEffect> BasicEffectBuffer::clone(void) const

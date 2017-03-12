@@ -41,7 +41,7 @@ void BasicEffectSetter::affect(ISkill& skill_owner, ICharacter& char_owner, ICha
 	else if (affected_name == "target")
 		affect(char_target, affected_attribute, attribute_value);
 	else
-		throw ResourceDoesNotExists(affected_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(affected_name, FUNCTION_NAME);
 }
 
 std::unique_ptr<IEffect> BasicEffectSetter::clone(void) const
@@ -92,7 +92,7 @@ void BasicEffectSetter::splitNameAndAttribute(const std::string& str, std::strin
 
 	dot_pos = str.find('.');
 	if (dot_pos == std::string::npos)
-		throw StringSplittingFail(str);
+		throw ExceptionStringSplittingFail(str);
 
 	name = str.substr(0, dot_pos);
 	attribute = str.substr(dot_pos + 1);
@@ -114,7 +114,7 @@ void BasicEffectSetter::getVariables(ISkill& skill_owner, ICharacter& char_owner
 		else if (formula_target_name == "target")
 			getValue(char_target, formula_target_attribute, attribute_value);
 		else
-			throw ResourceDoesNotExists(formula_target_name, FUNCTION_NAME);
+			throw ExceptionResourceDoesNotExists(formula_target_name, FUNCTION_NAME);
 
 		var_list.setVariable(variables_names[i], misc::numberToString(attribute_value));
 	}

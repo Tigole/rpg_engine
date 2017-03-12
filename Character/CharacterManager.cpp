@@ -29,14 +29,14 @@ void CharacterManager::load(const std::string& file_path, const std::map<std::st
 	root = document.RootElement();
 
 	if (root->NoChildren() == true)
-		throw XMLLoadingExceptionElementHasNoChild(*root);
+		throw ExceptionXMLLoadingElementHasNoChild(*root);
 
 	for (const TiXmlElement* l_element = root->FirstChildElement(); l_element != nullptr; l_element = l_element->NextSiblingElement())
 	{
 		l_it = loaders.find(l_element->ValueStr());
 
 		if (l_it == loaders.end())
-			throw XMLLoadingExceptionNoLoader(l_element->ValueStr());
+			throw ExceptionXMLLoadingNoLoader(l_element->ValueStr());
 
 		l_tmp_char = (l_it->second)->load(*l_element, sm);
 		m_characters[l_tmp_char->getName()] = std::move(l_tmp_char);
@@ -48,7 +48,7 @@ std::unique_ptr<ICharacter> CharacterManager::getCharacter(const std::string& ch
 	auto l_it(m_characters.find(character_name));
 
 	if (l_it == m_characters.end())
-		throw ResourceDoesNotExists(character_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(character_name, FUNCTION_NAME);
 
 	return l_it->second->clone();
 }

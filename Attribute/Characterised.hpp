@@ -25,7 +25,7 @@ public:
 		auto it(m_attributes.find(attribute_name));
 
 		if (it == m_attributes.end())
-			throw AttributeNotFound(attribute_name, "ICharacterised<AttributeType>");
+			throw ExceptionAttributeNotFound(attribute_name, "ICharacterised<AttributeType>");
 
 		return it->second.get();
 	}
@@ -35,7 +35,7 @@ public:
 		auto it(m_attributes.find(attribute->getName()));
 
 		if (it != m_attributes.end())
-			throw AttributeAlreadyExists(attribute->getName(), "ICharacterised<AttributeType>");
+			throw ExceptionAttributeAlreadyExists(attribute->getName(), "ICharacterised<AttributeType>");
 
 		m_attributes[attribute->getName()] = std::move(attribute);
 	}

@@ -10,7 +10,7 @@ BasicEffectModifier::BasicEffectModifier(const std::string& target_attribute, co
 
 void BasicEffectModifier::affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
 {
-	throw UnimplementedFunction(FUNCTION_NAME);
+	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 }
 std::unique_ptr<IEffect> BasicEffectModifier::clone(void) const
 {

@@ -35,10 +35,10 @@ std::unique_ptr<IAttribute> BasicAttributeLoader::load(const TiXmlElement& eleme
 	int attribute_value;
 
 	if (element.QueryStringAttribute("id", &attribute_name) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "id");
+		throw ExceptionXMLLoadingAttributeMissing(element, "id");
 
 	if (element.QueryIntAttribute("value", &attribute_value) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "value");
+		throw ExceptionXMLLoadingAttributeMissing(element, "value");
 
 	l_ret = std::unique_ptr<IAttribute>(new BasicAttribute(attribute_name, attribute_value));
 

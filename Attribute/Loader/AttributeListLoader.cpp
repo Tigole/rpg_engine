@@ -18,7 +18,7 @@ void AttributeListLoader::load(const TiXmlElement& element, std::vector<std::uni
 	LoaderCreator<AttributeLoader> attribute_loader_creator;
 
 	if (element.NoChildren() == true)
-		throw XMLLoadingExceptionElementHasNoChild(element);
+		throw ExceptionXMLLoadingElementHasNoChild(element);
 
 	for (const TiXmlNode* l_node = element.FirstChild(); l_node != nullptr; l_node = l_node->NextSibling())
 	{

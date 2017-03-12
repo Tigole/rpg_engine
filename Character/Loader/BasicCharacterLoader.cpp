@@ -25,7 +25,7 @@ std::unique_ptr<ICharacter> BasicCharacterLoader::load(const TiXmlElement& eleme
 	std::string character_name;
 
 	if (element.QueryStringAttribute("name", &character_name) != TIXML_SUCCESS)
-		throw XMLLoadingExceptionAttributeMissing(element, "name");
+		throw ExceptionXMLLoadingAttributeMissing(element, "name");
 
 	l_ret = new BasicCharacter(character_name);
 
@@ -57,7 +57,7 @@ void BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vecto
 	std::string tmp;
 
 	if (element.NoChildren() == true)
-		throw XMLLoadingExceptionElementHasNoChild(element);
+		throw ExceptionXMLLoadingElementHasNoChild(element);
 
 
 	for (const TiXmlNode* l_node = element.FirstChild(); l_node != nullptr; l_node = l_node->NextSibling())
@@ -68,7 +68,7 @@ void BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vecto
 			if (l_element->ValueStr() == "Skill")
 			{
 				if (l_element->QueryStringAttribute("id", &tmp) != TIXML_SUCCESS)
-					throw XMLLoadingExceptionAttributeMissing(*l_element, "id");
+					throw ExceptionXMLLoadingAttributeMissing(*l_element, "id");
 
 				skill_id.push_back(tmp);
 			}
@@ -85,7 +85,7 @@ void BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vecto
 void BasicCharacterLoader::loadAttributList(const TiXmlElement& element, BasicCharacter& character)
 {
 	if (element.NoChildren() == true)
-		throw XMLLoadingExceptionElementHasNoChild(element);
+		throw ExceptionXMLLoadingElementHasNoChild(element);
 
-	throw UnimplementedFunction(FUNCTION_NAME);
+	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 }

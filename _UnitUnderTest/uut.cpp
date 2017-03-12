@@ -431,7 +431,7 @@ namespace uut
 
 	void uut_GUIBackground(void)
 	{
-		TextureManager texture_manager;
+		TextureManager texture_manager(g_resource_path);
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
 
@@ -465,7 +465,7 @@ namespace uut
 
 	void uut_DialogBox(void)
 	{
-		TextureManager texture_manager;
+		TextureManager texture_manager(g_resource_path);
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
 		std::unique_ptr<IGUIBackground> bg_ptr(gui_bg.clone());
@@ -514,7 +514,7 @@ namespace uut
 
 	void uut_TextDialogBox(void)
 	{
-		TextureManager texture_manager;
+		TextureManager texture_manager(g_resource_path);
 		sf::Font font;
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));

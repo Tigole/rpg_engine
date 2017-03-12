@@ -32,7 +32,7 @@ void CompositeAttribute::save(TiXmlElement& parent) const
 {
 	TiXmlElement* l_this(nullptr);
 
-	throw UnimplementedFunction(FUNCTION_NAME);
+	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 
 	l_this = new TiXmlElement("CompositeAttribute");
 		l_this->SetAttribute("name", m_name);
@@ -53,7 +53,7 @@ void CompositeAttribute::addAttributes(std::unique_ptr<IAttribute>& lower_attrib
 		throw std::runtime_error(FUNCTION_NAME);
 
 	if (m_attributes.find(lower_attribute->getName()) != m_attributes.end())
-		throw ResourceAlradeyExists(lower_attribute->getName(), FUNCTION_NAME);
+		throw ExceptionResourceAlradeyExists(lower_attribute->getName(), FUNCTION_NAME);
 
 	m_attributes[lower_attribute->getName()] = std::move(lower_attribute);
 }
@@ -66,11 +66,11 @@ void CompositeAttribute::getValue(const std::string& attribute_name, int& value)
 	splitAttributeName(attribute_name, base_name, lower_name);
 
 	if (base_name != m_name)
-		throw ResourceDoesNotExists(base_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(base_name, FUNCTION_NAME);
 
 	it = m_attributes.find(lower_name);
 	if (it == m_attributes.end())
-		throw ResourceDoesNotExists(lower_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(lower_name, FUNCTION_NAME);
 
 	it->second->getValue(lower_name, value);
 }
@@ -83,11 +83,11 @@ void CompositeAttribute::setValue(const std::string& attribute_name, int value)
 	splitAttributeName(attribute_name, base_name, lower_name);
 
 	if (base_name != m_name)
-		throw ResourceDoesNotExists(base_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(base_name, FUNCTION_NAME);
 
 	it = m_attributes.find(lower_name);
 	if (it == m_attributes.end())
-		throw ResourceDoesNotExists(lower_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(lower_name, FUNCTION_NAME);
 
 	it->second->setValue(lower_name, value);
 }
@@ -97,14 +97,14 @@ void CompositeAttribute::splitAttributeName(const std::string& full_name, std::s
 	std::stringstream ss;
 
 	if (full_name.find('.') == std::string::npos)
-		throw StringSplittingFail(full_name);
+		throw ExceptionStringSplittingFail(full_name);
 
 	ss.str(full_name);
 	std::getline(ss, base_name, '.');
 	ss >> lower_name;
 
 	if (base_name.size() == 0 || lower_name.size() == 0)
-		throw StringSplittingFail(full_name);
+		throw ExceptionStringSplittingFail(full_name);
 }
 
 void CompositeAttribute::dump(ILogger& l)

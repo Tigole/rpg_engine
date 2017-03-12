@@ -29,14 +29,14 @@ void SkillManager::load(const std::string& file_path, const std::map<std::string
 	root = l_doc.RootElement();
 
 	if (root->NoChildren() == true)
-		throw XMLLoadingExceptionElementHasNoChild(*root);
+		throw ExceptionXMLLoadingElementHasNoChild(*root);
 
 	for (const TiXmlElement* l_element = root->FirstChildElement(); l_element != nullptr; l_element = l_element->NextSiblingElement())
 	{
 		l_it = loaders.find(l_element->ValueStr());
 
 		if (l_it == loaders.end())
-			throw XMLLoadingExceptionNoLoader(l_element->ValueStr());
+			throw ExceptionXMLLoadingNoLoader(l_element->ValueStr());
 
 		l_tmp_skill = (l_it->second)->load(*l_element);
 
@@ -50,7 +50,7 @@ std::unique_ptr<ISkill> SkillManager::getSkill(const std::string& skill_name, IC
 	std::map<std::string, std::unique_ptr<ISkill>>::const_iterator l_it(m_skills.find(skill_name));
 
 	if (l_it == m_skills.end())
-		throw ResourceDoesNotExists(skill_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(skill_name, FUNCTION_NAME);
 
 	l_ret = std::move(l_it->second->clone());
 
