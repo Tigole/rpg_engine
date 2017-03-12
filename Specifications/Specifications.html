@@ -2,7 +2,8 @@
 <html>
 <head>
 <title>Specification</title>
-<link rel="stylesheet" href="Specifications.css" type="text/css">
+<link rel="stylesheet" href="Specifications.css" type="text/css"/>
+<link rel="icon" href="specifications.jpg"/>
 </head>
 <body>
 <div class="menu">
@@ -636,19 +637,42 @@
 		<li>Shall provide map loading</li>
 		<li>May provide map saving</li>
 		<li>Shall provide map rendering
-			<ul><li>Shall proide Z-axis rendering</li></ul>
+			<ul><li>Shall provide Z-axis rendering</li></ul>
 		</li>
 		<li>Shall provide collision between character that move and the map environment (wall, trees...)
 			<ul><li>Shall provide environment evolution (walls may be destroyed/deleted, trees cut...)</li></ul>
 		</li>
 		<li>Shall provide collision between differents characters that can move</li>
-		<li>Shall provide link between different maps</li>
+		<li>Shall provide links between different maps</li>
 		<li>Shall allow interactions between characters and environment (talk to a character, cut a tree...)</li>
 	</ol>
 	</p>
 	</article>
-	<article><h1 id="">???</h1>
-	<p></p>
+	<article><h1 id="">IMap</h1>
+	<p>
+	An IMap represent the base class object for representing a map specified above.
+	
+	<table>
+	<caption>Abstract methods</caption>
+	<tr><th>Name</th><th>Arguments</th><th>Returned value</th><th>Description</th></tr>
+	<tr><td>load</td><td>Xml element that discribes the map</td><td>Nothing</td><td>Load the map</td></tr>
+	<tr><td>save</td><td>Xml element to save the map</td><td>Nothing</td><td>Write the map's data</td></tr>
+	<tr><td>run</td><td>Nothing ?</td><td>The next map to be activated</td><td>Method called to make the map work</td></tr>
+	</table>
+	</p>
+	</article>
+	<article><h1 id="">BasicMap</h1>
+	<p>
+	A BasicMap represent the base class object for representing a map specified above.
+	
+	<table>
+	<caption>Abstract methods</caption>
+	<tr><th>Name</th><th>Arguments</th><th>Returned value</th><th>Description</th></tr>
+	<tr><td>load</td><td>Xml element that discribes the map</td><td>Nothing</td><td>Load the map</td></tr>
+	<tr><td>save</td><td>Xml element to save the map</td><td>Nothing</td><td>Write the map's data</td></tr>
+	<tr><td>run</td><td>Nothing ?</td><td>The next map to be activated</td><td>Method called to make the map work</td></tr>
+	</table>
+	</p>
 	</article>
 </section>
 <section><h1 id="translation_engine">Translation Engine</h1>

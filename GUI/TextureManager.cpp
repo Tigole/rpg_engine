@@ -4,12 +4,17 @@
 
 #include "GUI.hpp"
 
+namespace uut
+{
+	extern std::string g_resource_path;
+}
+
 TextureManager::TextureManager()
 {
 	/** Nothing **/
 	/** For debuggin purpose **/
 	sf::Texture texture;
-	texture.loadFromFile("/home/jaja/Documents/Git/rpg_engine/Resources/Texture/dlg.png");
+	texture.loadFromFile(uut::g_resource_path +  "Graphics/Textures/dlg.png");
 	texture.setRepeated(true);
 
 	m_textures["dlg"] = texture;

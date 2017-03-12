@@ -40,7 +40,7 @@ namespace uut
 	/** Please change this path for your own working 
 		(We're working to make it easier to configure from the project configuration)
 	**/
-	std::string g_resource_path("C:/Users/Janniere Sylvain/Documents/GitHub/rpg_engine/Resources/");
+	std::string g_resource_path("C:/Users/Janniere Sylvain/Documents/Rpg_Engine_Resources/Resources/");
 
 	void uut_Fight_std(void)
 	{
@@ -187,7 +187,7 @@ namespace uut
 		log().entranceFunction(FUNCTION_NAME);
 
 		//font_loaded = font.loadFromFile(res_path + "Font/firestarter/FIRESTARTER.ttf");
-		font_loaded = font.loadFromFile(g_resource_path + "Font/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");
+		font_loaded = font.loadFromFile(g_resource_path + "Graphics/Fonts/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");
 
 		window.setTitle(title.c_str());
 
@@ -475,7 +475,6 @@ namespace uut
 		bg_ptr = gui_bg.clone();
 		BasicDialogBox dlg_box_2(bg_ptr, 300, 32, 150, 150);
 		bool b_hide(false);
-		//std::string res_path("/home/jaja/Documents/Git/rpg_engine/Resources/");
 
 		log().entranceFunction(FUNCTION_NAME);
 
@@ -519,7 +518,7 @@ namespace uut
 		sf::Font font;
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
-		font.loadFromFile(g_resource_path + "Font/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");//"Font/firestarter/FIRESTARTER.ttf");
+		font.loadFromFile(g_resource_path + "Graphics/Fonts/shaded_larch/ShadedLarch_PERSONAL_USE.ttf");//"Font/firestarter/FIRESTARTER.ttf");
 		std::unique_ptr<IGUIBackground> bg_ptr(gui_bg.clone());
 		TextDialogBox text_dialog(bg_ptr, TextDialogBox::TextData(font), 32, 32 + 64);
 
