@@ -28,6 +28,8 @@
 
 #include "Exception/Exception.hpp"
 
+#include "Map/BasicMap.hpp"
+
 #include <SFML/Graphics.hpp>
 
 #include <cstdio>
@@ -432,6 +434,7 @@ namespace uut
 	void uut_GUIBackground(void)
 	{
 		TextureManager texture_manager(g_resource_path);
+		texture_manager.load(g_resource_path + "Data/Textures.xml");
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
 
@@ -466,6 +469,7 @@ namespace uut
 	void uut_DialogBox(void)
 	{
 		TextureManager texture_manager(g_resource_path);
+		texture_manager.load(g_resource_path + "Data/Textures.xml");
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
 		std::unique_ptr<IGUIBackground> bg_ptr(gui_bg.clone());
@@ -515,6 +519,7 @@ namespace uut
 	void uut_TextDialogBox(void)
 	{
 		TextureManager texture_manager(g_resource_path);
+		texture_manager.load(g_resource_path + "Data/Textures.xml");
 		sf::Font font;
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
@@ -540,6 +545,74 @@ namespace uut
 			window.clear(sf::Color::Magenta);
 			// puis, dans la boucle de dessin, entre window.clear() et window.display()
 			window.draw(text_dialog);
+			window.display();
+		}
+		log().exitFunction();
+	}
+
+	void uut_Tileset(void)
+	{
+		TextureManager texture_manager(g_resource_path);
+		texture_manager.load(g_resource_path + "Data/Textures.xml");
+		Tileset tileset;
+		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
+		Tile top_left, top_right, buttonm_right, buttom_left;
+
+		log().entranceFunction(FUNCTION_NAME);
+
+		top_left = tileset.getSprite(0, 0);
+		top_right = tileset.getSprite(1, 0);
+		buttonm_right = tileset.getSprite(1, 1);
+		buttom_left = tileset.getSprite(0, 1);
+
+		window.setFramerateLimit(90);
+
+		top_right.setPosition(50, 0);
+		buttonm_right.setPosition(50, 50);
+		buttom_left.setPosition(0, 50);
+
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+
+			window.clear(sf::Color::Yellow);
+			
+			window.draw(top_left);
+			window.draw(top_right);
+			window.draw(buttonm_right);
+			window.draw(buttom_left);
+			// puis, dans la boucle de dessin, entre window.clear() et window.display()
+			window.display();
+		}
+		log().exitFunction();
+	}
+
+	void uut_Map(void)
+	{
+		TextureManager texture_manager(g_resource_path);
+		texture_manager.load(g_resource_path + "Data/Textures.xml");
+		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
+
+		log().entranceFunction(FUNCTION_NAME);
+
+		window.setFramerateLimit(90);
+
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+
+			window.clear(sf::Color::Magenta);
+			// puis, dans la boucle de dessin, entre window.clear() et window.display()
 			window.display();
 		}
 		log().exitFunction();

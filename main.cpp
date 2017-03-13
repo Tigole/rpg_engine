@@ -56,22 +56,24 @@ int main(int argc, char** argv)
 	uut_functions.push_back(make_pair("uut_GUIBackground", uut_GUIBackground));
 	uut_functions.push_back(make_pair("uut_DialogBox", uut_DialogBox));
 	uut_functions.push_back(make_pair("uut_TextDialogBox", uut_TextDialogBox));
+	uut_functions.push_back(make_pair("uut_Tileset", uut_Tileset));
+	uut_functions.push_back(make_pair("uut_Map", uut_Map));
 
-		for (auto& a : uut_functions)
+	for (auto& a : uut_functions)
+	{
+		try
 		{
-			try
-			{
-				a.second();
-			}
-			catch (std::exception& e)
-			{
-				cerr << "[" << a.first << "] : " << e.what() << "\n";
-			}
-			catch (const IException& e)
-			{
-				cerr << "[" << a.first << "] : " << e.what() << "\n";
-			}
+			a.second();
 		}
+		catch (std::exception& e)
+		{
+			cerr << "[" << a.first << "] : " << e.what() << "\n";
+		}
+		catch (const IException& e)
+		{
+			cerr << "[" << a.first << "] : " << e.what() << "\n";
+		}
+	}
 
 	cout << "ééé@à" << "\n";
 	log() << "ééé@à" << "\n";

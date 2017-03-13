@@ -1,18 +1,19 @@
 #ifndef _TILESET_HPP
 #define _TILESET_HPP 1
 
-#include <SFML\Graphics.hpp>
+#include "Loader/Loader.hpp"
+
+#include <SFML/Graphics.hpp>
 
 class TiXmlElement;
 class TextureManager;
 
-struct Tile
+struct Tile : public sf::Sprite
 {
-	sf::Sprite m_sprite;
 	bool m_is_walkable;
 };
 
-class Tileset
+class Tileset : public ILoader
 {
 public:
 	void load(const TiXmlElement& tileset, TextureManager& texture_manager);
@@ -20,6 +21,7 @@ public:
 	Tile getSprite(unsigned int x, unsigned int y);
 protected:
 	std::vector<std::vector<Tile>> m_tiles;
+	std::string m_id;
 };
 
 #endif // !_TILESET_HPP

@@ -1,7 +1,6 @@
 #include "TextureManager.hpp"
 #include "Exception/Exception.hpp"
 #include "Miscellaneous.hpp"
-
 #include "GUI.hpp"
 
 /*namespace uut
@@ -25,6 +24,28 @@ TextureManager::~TextureManager()
 	/** Nothing **/
 }
 
+void TextureManager::load(const std::string& file_path)
+{
+	TiXmlDocument doc(file_path);
+	TiXmlElement* root(nullptr);
+
+	if (doc.LoadFile(file_path))
+	{
+		root = doc.FirstChildElement();
+		for (auto a = root->FirstChildElement(); a != nullptr; a = a->NextSiblingElement())
+		{
+			if (a->ValueStr() == "Texture")
+			{
+				load(*a);
+			}
+		}
+	}
+	else
+	{
+		throw ExceptionResourceDoesNotExists(file_path, FUNCTION_NAME);
+	}
+}
+
 void TextureManager::load(const TiXmlElement& texture)
 {
 	std::vector<std::string> attributes;
@@ -34,19 +55,16 @@ void TextureManager::load(const TiXmlElement& texture)
 	attributes.push_back("id");
 	attributes.push_back("path");
 
-	for (auto child = texture.FirstChildElement(); (child != nullptr); child = child->NextSiblingElement())
+	if (checkAttributes(texture, attributes) == true)
 	{
-		if (checkAttributes(texture, attributes) == true)
-		{
-			texture.QueryStringAttribute("path", &attrib);
-			t.loadFromFile(m_resources_path + attrib);
-			texture.QueryStringAttribute("id", &attrib);
+		texture.QueryStringAttribute("path", &attrib);
+		t.loadFromFile(m_resources_path + attrib);
+		texture.QueryStringAttribute("id", &attrib);
 
-			if (m_textures.find(attrib) != m_textures.end())
-				throw ExceptionResourceAlradeyExists(attrib, FUNCTION_NAME);
+		if (m_textures.find(attrib) != m_textures.end())
+			throw ExceptionResourceAlradeyExists(attrib, FUNCTION_NAME);
 
-			m_textures[attrib] = t;
-		}
+		m_textures[attrib] = t;
 	}
 }
 

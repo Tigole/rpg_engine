@@ -29,6 +29,8 @@ namespace uut
 	void uut_GUIBackground(void);
 	void uut_DialogBox(void);
 	void uut_TextDialogBox(void);
+	void uut_Tileset(void);
+	void uut_Map(void);
 }
 
 
