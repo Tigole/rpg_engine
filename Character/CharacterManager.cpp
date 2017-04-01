@@ -43,12 +43,12 @@ void CharacterManager::load(const std::string& file_path, const std::map<std::st
 	}
 }
 
-std::unique_ptr<ICharacter> CharacterManager::getCharacter(const std::string& character_name)
+std::unique_ptr<ICharacter> CharacterManager::getCharacter(const std::string& character_id)
 {
-	auto l_it(m_characters.find(character_name));
+	auto l_it(m_characters.find(character_id));
 
 	if (l_it == m_characters.end())
-		throw ExceptionResourceDoesNotExists(character_name, FUNCTION_NAME);
+		throw ExceptionResourceDoesNotExists(character_id, FUNCTION_NAME);
 
 	return l_it->second->clone();
 }

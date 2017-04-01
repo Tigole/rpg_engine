@@ -75,8 +75,8 @@ int main(int argc, char** argv)
 		}
 	}
 
-	cout << "ééé@à" << "\n";
-	log() << "ééé@à" << "\n";
+	/*cout << "ééé@à" << "\n";
+	log() << "ééé@à" << "\n";*/
 
 #ifdef _WIN32
 	system("PAUSE");

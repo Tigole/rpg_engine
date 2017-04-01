@@ -18,7 +18,7 @@ public:
 
 	void load(const std::string& file_path, const std::map<std::string, std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm);
 
-	std::unique_ptr<ICharacter> getCharacter(const std::string& character_name);
+	std::unique_ptr<ICharacter> getCharacter(const std::string& character_id);
 
 private:
 

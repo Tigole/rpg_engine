@@ -29,6 +29,8 @@
 #include "Exception/Exception.hpp"
 
 #include "Map/BasicMap.hpp"
+#include "Map/TilesetManager.hpp"
+#include "Environment.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -552,18 +554,18 @@ namespace uut
 
 	void uut_Tileset(void)
 	{
-		TextureManager texture_manager(g_resource_path);
-		texture_manager.load(g_resource_path + "Data/Textures.xml");
-		Tileset tileset;
+		TilesetManager tileset_manager(g_resource_path);
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		Tile top_left, top_right, buttonm_right, buttom_left;
 
 		log().entranceFunction(FUNCTION_NAME);
 
-		top_left = tileset.getSprite(0, 0);
-		top_right = tileset.getSprite(1, 0);
-		buttonm_right = tileset.getSprite(1, 1);
-		buttom_left = tileset.getSprite(0, 1);
+		tileset_manager.load(g_resource_path + "Data/Tilesets.xml");
+
+		top_left = tileset_manager.getTile("Tileset_0", 0, 0);
+		top_right = tileset_manager.getTile("Tileset_0", 1, 0);
+		buttonm_right = tileset_manager.getTile("Tileset_0", 1, 1);
+		buttom_left = tileset_manager.getTile("Tileset_0", 0, 1);
 
 		window.setFramerateLimit(90);
 
@@ -594,13 +596,25 @@ namespace uut
 
 	void uut_Map(void)
 	{
-		TextureManager texture_manager(g_resource_path);
-		texture_manager.load(g_resource_path + "Data/Textures.xml");
-		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
+		Environment env(g_resource_path);
+		BasicMap basic_map;
+		TiXmlDocument doc;
+		//sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 
 		log().entranceFunction(FUNCTION_NAME);
 
-		window.setFramerateLimit(90);
+		//window.setFramerateLimit(90);
+
+		env.m_tileset_manager.load(g_resource_path + "Data/Tilesets.xml");
+		env.m_music_manager.load(g_resource_path + "Data/Musics.xml");
+
+		doc.LoadFile(g_resource_path + "Data/Maps.xml");
+
+		basic_map.load(*doc.FirstChildElement("Maps")->FirstChildElement("BasicMap"), env.m_tileset_manager);
+
+		basic_map.run(env);
+
+#if 0
 
 		while (window.isOpen())
 		{
@@ -615,6 +629,7 @@ namespace uut
 			// puis, dans la boucle de dessin, entre window.clear() et window.display()
 			window.display();
 		}
+#endif 
 		log().exitFunction();
 	}
 
