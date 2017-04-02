@@ -11,6 +11,8 @@ class TiXmlElement;
 
 struct Tile : public sf::Sprite
 {
+	Tile();
+	Tile(const Tile& cp);
 	bool m_is_walkable;
 };
 

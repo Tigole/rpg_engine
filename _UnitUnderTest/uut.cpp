@@ -31,6 +31,7 @@
 #include "Map/BasicMap.hpp"
 #include "Map/TilesetManager.hpp"
 #include "Environment.hpp"
+#include "Map/BasicMapLoader.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -631,6 +632,26 @@ namespace uut
 		}
 #endif 
 		log().exitFunction();
+	}
+	void uut_MapPManager(void)
+	{
+		Environment l_environment(g_resource_path);
+		std::map<std::string, std::unique_ptr<MapLoader>> l_loaders;
+		IMap* l_map;
+
+		l_loaders["BasicMap"].reset(new BasicMapLoader());
+
+		l_environment.m_map_manager.load(g_resource_path + "Data/Maps.xml", l_loaders, l_environment.m_tileset_manager);
+
+		l_map = l_environment.m_map_manager.getMap("FirstMap");
+
+		l_map->run(l_environment);
+	}
+	void uut_Environment(void)
+	{
+		Environment l_environment(g_resource_path);
+
+		l_environment.load();
 	}
 
 }

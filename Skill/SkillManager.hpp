@@ -9,8 +9,9 @@
 #include <tinyxml.h>
 
 #include "Miscellaneous.hpp"
+#include "ISkill.hpp"
+#include "Loader/SkillLoader.hpp"
 
-class ISkill;
 class ICharacter;
 class SkillLoader;
 

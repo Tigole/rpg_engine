@@ -5,9 +5,9 @@
 #include <map>
 #include <vector>
 #include "Miscellaneous.hpp"
+#include "ICharacter.hpp"
+#include "Loader/CharacterLoader.hpp"
 
-class ICharacter;
-class CharacterLoader;
 class TiXmlDocument;
 class SkillManager;
 

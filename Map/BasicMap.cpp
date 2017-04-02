@@ -3,6 +3,8 @@
 #include "Environment.hpp"
 #include <tinyxml.h>
 
+#include "Logger/ILogger.h"
+
 
 BasicMap::BasicMap()
 	: m_background(),
@@ -70,7 +72,9 @@ void BasicMap::load(const TiXmlElement& element, const TilesetManager& tm)
 			l_ground_size = l_it->second->size();
 			for (l_col = 0; l_col < l_ground_size.x; l_col++)
 				for (l_row = 0; l_row < l_ground_size.y; l_row++)
+				{
 					(*l_it->second)[l_col][l_row].setPosition(l_col * l_tile_width, l_row * l_tile_heigt);
+				}
 		}
 		else if (l_child->ValueStr() == "LinkedMaps")
 		{
@@ -90,6 +94,11 @@ void BasicMap::initialize(MapManager& map_manager)
 
 void BasicMap::save(TiXmlElement& element)
 {}
+
+const std::string& BasicMap::getId() const
+{
+	return m_id;
+}
 
 void BasicMap::loadGround(const TiXmlElement& element_ground, const TilesetManager& tm, Grid<Tile>& ground)
 {

@@ -31,6 +31,8 @@ namespace uut
 	void uut_TextDialogBox(void);
 	void uut_Tileset(void);
 	void uut_Map(void);
+	void uut_MapPManager(void);
+	void uut_Environment(void);
 }
 
 

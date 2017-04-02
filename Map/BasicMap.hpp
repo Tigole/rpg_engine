@@ -55,20 +55,15 @@ public:
 	void load(const TiXmlElement& element, const TilesetManager& tm);
 	void initialize(MapManager& map_manager);
 	void save(TiXmlElement& element);
+	const std::string& getId() const;
 
 protected:
 	void loadGround(const TiXmlElement& element_ground, const TilesetManager& tm, Grid<Tile>& ground);
 	void loadLinkedMaps(const TiXmlElement& linked_maps);
 	struct LinkedMap
 	{
-		union UnionLinkedMap
-		{
-			~UnionLinkedMap(){}
-			std::string m_name;
-			IMap* m_map_ptr;
-		};
 		unsigned int m_col, m_row;
-		UnionLinkedMap m_linked_map;
+		std::string m_linked_map_name;
 	};
 	Grid<Tile> m_background;
 	Grid<Tile> m_middleground;

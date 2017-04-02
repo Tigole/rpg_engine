@@ -58,6 +58,8 @@ int main(int argc, char** argv)
 	uut_functions.push_back(make_pair("uut_TextDialogBox", uut_TextDialogBox));
 	uut_functions.push_back(make_pair("uut_Tileset", uut_Tileset));
 	uut_functions.push_back(make_pair("uut_Map", uut_Map));
+	uut_functions.push_back(make_pair("uut_MapPManager", uut_MapPManager));
+	uut_functions.push_back(make_pair("uut_Environment", uut_Environment));
 
 	for (auto& a : uut_functions)
 	{
@@ -68,10 +70,12 @@ int main(int argc, char** argv)
 		catch (std::exception& e)
 		{
 			cerr << "[" << a.first << "] : " << e.what() << "\n";
+			log().exitFunction();
 		}
 		catch (const IException& e)
 		{
 			cerr << "[" << a.first << "] : " << e.what() << "\n";
+			log().exitFunction();
 		}
 	}
 

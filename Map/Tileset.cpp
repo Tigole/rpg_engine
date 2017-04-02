@@ -2,6 +2,16 @@
 #include "Exception\Exception.hpp"
 #include "Miscellaneous.hpp"
 
+Tile::Tile()
+	:m_is_walkable(true)
+{}
+
+Tile::Tile(const Tile& cp)
+	: m_is_walkable(cp.m_is_walkable)
+{
+	setTexture(*cp.getTexture());
+}
+
 void Tileset::load(const TiXmlElement& tileset, const std::string& resource_path)
 {
 	std::vector<std::string> l_attributes;
