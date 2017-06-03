@@ -12,11 +12,26 @@ template<typename T>
 class Grid
 {
 public:
+	Grid() : m_data(){}
+	Grid(const Grid& cp) : m_data(cp.m_data){}
 	void insert(unsigned int col, unsigned int row, const T& data)
 	{
-		if ((col >= m_data.size()) || (row >= m_data[0].size()))
+		unsigned int l_col(m_data.size()), l_row(0);
+		if (m_data.size() != 0)
+			l_row = m_data[0].size();
+		if ((l_col == 0) && (l_row == 0))
 		{
-			resize(col + 1, row + 1);
+			l_col = 1;
+			l_row = 1;
+			resize(l_col, l_row);
+		}
+		if ((col >= l_col) || (row >= l_row))
+		{
+			if (col >= l_col)
+				l_col = col + 1;
+			if (row >= l_row)
+				l_row = row + 1;
+			resize(l_col, l_row);
 		}
 		m_data[col][row] = data;
 	}
@@ -56,6 +71,7 @@ public:
 	void initialize(MapManager& map_manager);
 	void save(TiXmlElement& element);
 	const std::string& getId() const;
+	std::unique_ptr<IMap> clone(void) const;
 
 protected:
 	void loadGround(const TiXmlElement& element_ground, const TilesetManager& tm, Grid<Tile>& ground);

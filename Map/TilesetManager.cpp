@@ -33,11 +33,21 @@ void TilesetManager::load(const std::string& file_path)
 
 Tile TilesetManager::getTile(const std::string& tileset_id, unsigned int col, unsigned int row) const
 {
-	std::map<std::string, Tileset>::const_iterator it;
+	return getTileset(tileset_id, FUNCTION_NAME)->second.getTile(col, row);
+}
 
-	it = m_tilesets.find(tileset_id);
-	if (it == m_tilesets.end())
-		throw ExceptionResourceDoesNotExists(tileset_id, FUNCTION_NAME);
+sf::Vector2u TilesetManager::getTileSize(const std::string& tileset_id) const
+{
+	return getTileset(tileset_id, FUNCTION_NAME)->second.getTileSize();
+}
 
-	return it->second.getTile(col, row);
+std::map<std::string, Tileset>::const_iterator TilesetManager::getTileset(const std::string& tileset_id, const std::string& calling_function) const
+{
+	std::map<std::string, Tileset>::const_iterator l_it;
+
+	l_it = m_tilesets.find(tileset_id);
+	if (l_it == m_tilesets.end())
+		throw ExceptionResourceDoesNotExists(tileset_id, calling_function);
+
+	return l_it;
 }

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Specification</title>
+<link rel="stylesheet" href="../../Specifications.css" type="text/css"/>
+<link rel="icon" href="../../specifications.jpg"/>
+</head>
+<body>
+<div class="menu">
+	<nav><h1>Document overview</h1>
+	<ol>
+	<li><a href="#application_goal_main">Application goal</a>
+		<ol>
+			<li><a href="#application_goal">Application goal</a></li>
+		</ol>
+	</li>
+	<li><a href="#resources_main">Resources</a>
+		<ol>
+			<li><a href="#resources">Resources</a></li>
+			<li><a href="#resources_handling">Resources handling</a></li>
+			<li><a href="#resource_loading">Loading resources</a></li>
+		</ol>
+	</li>
+	<li><a href="#fight_engine_main">Fight Engine</a>
+		<!--<ol>
+			<li><a href="#fight_engine">FightEngine</a></li>
+			<li><a href="#i_battle_ground_wrapper">IBattleGroundWrapper</a></li>
+			<li><a href="#i_party">IParty</a></li>
+			<li><a href="#i_character">ICharacter</a></li>
+			<li><a href="#i_skill">ISkill</a></li>
+			<li><a href="#i_attribute">IAttribute</a></li>
+			<li><a href="#i_effect">IEffect</a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+		</ol> -->
+	</li>
+	<li><a href="#battle_ground_engine">Battleground</a></li>
+	<li><a href="#party_engine">Parties</a></li>
+	<li><a href="#character_engine">Characters</a></li>
+	<li><a href="#skill_engine">Skills</a></li>
+	<li><a href="#attribute_engine">Attributes</a></li>
+	<li><a href="#effects_engine">Effects</a></li>
+	<li><a href="#items">Items</a></li>
+	<li><a href="#inventory">Inventory</a></li>
+	<li><a href="#fsm_engine">Finite State Machine Engine</a></li>
+	<li><a href="#rendering_engine">Rendering Engine</a></li>
+	<li><a href="#mapping_engine">Mapping Engine</a></li>
+	<li><a href="#translation_engine_spec">Translation Engine</a></li>
+	<li><a href="#evolution_curves">Evolution Curves</a></li>
+	<li><a href="#external_files">External files</a>
+		<!--<ol>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+		</ol>-->
+	</li>
+	</ol>
+	</nav>
+</div>
+
+
+
+<div class="body">
+	<header>
+	<h1>Specifications : Fight Engine</h1>
+	<p>The aim of this document is to detail the specification for the Fight Engine</p>
+	</header>
+<section><h1 id="fight_engine_main">Fight Engine</h1>
+	<article><h1 id="fight_engine">Specification</h1>
+		<p>This is the part of the application that manage the fight mechanism and is specified as follow.
+		<ol>
+			<li>Shall manage a fight for a turned-based rpg</li>
+			<li>Shall manage a fight of several parties</li>
+			<li>Shall return which party won the fight</li>
+			<li>Shall be implemented in a non preemptive desing</li>
+		</ol>
+		</p>
+	</article>
+	<article><h1 id="">IFightEngine</h1>
+		<p>This class is the base class for representation of a fight engine.<br/>
+		It shall provide methods defined as follow
+		<table>
+		<caption>Public virtual methods</caption>
+		<tr><th>Method name</th><th>Method description</th></tr>
+		<tr><td>run</td><td>Shall activate the engine for a fight between hero's party and others</td></tr>
+		<tr><td>initialize</td><td>Shall initialize the engine for a fight between hero's party and others</td></tr>
+		</table>
+		</p>
+	</article>
+	<article><h1 id="basic_fight_engine">BasicFightEngine</h1>
+		<p>This class is the basic representation of a fight engine for the application.<br/>It is divided into 2 fsm:<ol><li>Manage the fsm for ordering characters' turns</li><li>Manage the turn of a single character</li></ol>
+
+		<table>
+		<caption>The main fsm is specified as follow (sequential)</caption>
+		<tr><th>State Name</th><th>On Entry Action</th><th>Action</th><th>On Exit Action</th><th>Transition With Priority</th><th>Next State Name</th></tr>
+		<tr><td>Error state</td><td>Nothing</td><td>Throw an exception</td><td>Nothing</td><td>Nothing</td><td>Error</td></tr>
+		<tr><td>Schedule all</td><td>Nothing</td><td>Schedule the order of all characters for the current turn</td><td>Nothing</td><td>=1</td><td>Run all characters</td></tr>
+		<tr><td>Run current character</td><td><ol><li>Select the current character from the scheduler</li><li>Initialize the "Run single character" fsm</li></ol></td><td>Call the "Run single character" fsm</td><td>Nothing</td><td>the "Run single character" fsm has ended</td><td>Determine state</td></tr>
+		<tr><td rowspan="4">Dtermine state</td><td rowspan="4">Nothing</td><td rowspan="4">Nothing</td><td rowspan="4">Nothing</td><td>1) All alive characters are in the same party OR all characters in hero party are dead</td><td>End</td></tr>
+		<tr><td>2) All characters have played their turn</td><td>Run all characters</td></tr>
+		<tr><td>3) At least one party ask for re scheduling</td><td>Schedule unplayed</td></tr>
+		<tr><td>4) None of the above</td><td>Run current character</td></tr>
+		<tr><td>Schedule unplayed</td><td>Remove dead characters from scheduling queue</td><td>Schedule characters that didn't play their turn</td><td>Nothing</td><td>=1</td><td>Run all characters</td></tr>
+		<tr><td>End</td><td>Nothing</td><td>End of the fight</td><td>Noting</td><td>Nothing</td><td>End</td></tr>
+		</table>
+
+		<table>
+		<caption>The "Run single character" fsm is specified as follow (sequential)</caption>
+		<tr><th>State Name</th><th>On Entry Action</th><th>Action</th><th>On Exit Action</th><th>Transition With Priority</th><th>Next State Name</th></tr>
+		<tr><td>Character action selection</td><td>Nothing</td><td>Make the character choose its action for this turn</td><td>Nothing</td><td>=1</td><td>Character pre-turn</td></tr>
+		<tr><td rowspan="2">Character pre-turn</td><td rowspan="2">Nothing</td><td rowspan="2">Manage all effects that affect the character just before its turn</td><td rowspan="2">Nothing</td><td>1) Character can not play this turn</td><td>Character post-turn</td></tr>
+		<tr><td>2) Character can play this turn</td><td>Character turn</td></tr>
+		<tr><td>Character turn</td><td>Nothing</td><td>Manage character's action</td><td>Nothing</td><td>=1</td><td>Character post-turn</td></tr>
+		<tr><td>Character post-turn</td><td>Nothing</td><td>Manage all effects that affect the character just after its turn</td><td>Nothing</td><td>=1</td><td>End</td></tr>
+		<tr><td>End</td><td>Nothing</td><td>Leave this fsm and go back to the main</td><td>Nothing</td><td>Nothing</td><td>End</td></tr>
+		</table></p>
+	</article>	
+</section>
+
+<footer>
+	<section>
+	<h1>Thanks</h1>
+	<p>
+	<table><caption>Here are special thanks</caption>
+	<tr><th>Who</th><th>Why</th></tr>
+	<tr><td>Théo Arcourt</td><td>For navigation in this document</td></tr>
+	<tr><td>Martin Tamisier</td><td>For developping translation engine</td></tr>
+	</table>
+	</p>
+	</section>
+	<section>
+	<h1>Foreword</h1>
+		<p>Don't forget to "ctr+f" for better navigation in this document.</p>
+	</section>
+</footer>
+</div>
+</body>
+</html>
+
+
+

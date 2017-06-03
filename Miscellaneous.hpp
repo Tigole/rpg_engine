@@ -36,6 +36,8 @@
 
 #define UNUSED_PARAMETER(x) (void)(x)
 
+#include "Exception/Exception.hpp"
+
 class TiXmlElement;
 class ILogger;
 
@@ -68,6 +70,57 @@ namespace misc
 	public:
 		PointerCollection();
 
+	};
+
+	template<typename T, typename U>
+	T* dynamicCast(U* pointer)
+	{
+		T* l_ret;
+
+		l_ret = dynamic_cast<T*>(pointer);
+
+		if (l_ret == nullptr)
+			throw ExceptionDynamicCastFailed();
+
+		return l_ret;
+	}
+
+	template<typename MessageType>
+	class Observer
+	{
+	public:
+		Observer(){}
+		virtual ~Observer(){}
+
+		virtual void notify(const MessageType& msg) = 0;
+	};
+
+	template<typename MessageType>
+	class MessageHandler
+	{
+	public:
+		void addObserver(Observer<MessageType>* observer)
+		{
+			if ((observer != nullptr) && (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end()))
+			{
+				m_observers.push_back(observer);
+			}
+		}
+		void removeObserver(Observer<MessageType>* observer)
+		{
+			std::vector<Observer<MessageType>>::iterator l_it;
+
+			l_it = std::find(m_observers.begin(), m_observers.end(), observer);
+			if (l_it != m_observers.end())
+				m_observers.erase(l_it);
+		}
+		void broadcast(const MessageType& msg)
+		{
+			for (auto& o : m_observers)
+				o.notify(msg);
+		}
+	private:
+		std::vector<Observer<MessageType>> m_observers;
 	};
 
 	/*template<typename T>

@@ -33,11 +33,17 @@
 #include "Environment.hpp"
 #include "Map/BasicMapLoader.hpp"
 
+#include "ECS_Core\ECS_Entity.hpp"
+#include "ECS_Core\ECS_EntityManager.hpp"
+#include "ECS_Core/ECS_SystemManager.hpp"
+#include "XMLFileLoader.hpp"
+
 #include <SFML/Graphics.hpp>
 
 #include <cstdio>
-
 #include <iostream>
+
+#include <Windows.h>
 
 namespace uut
 {
@@ -45,7 +51,7 @@ namespace uut
 	/** Please change this path for your own working 
 		(We're working to make it easier to configure from the project configuration)
 	**/
-	std::string g_resource_path("C:/Users/Janniere Sylvain/Documents/Rpg_Engine_Resources/Resources/");
+	static std::string g_resource_path("C:/Users/Janniere Sylvain/Dropbox/01-Resources_rpg_engine/Resources/");
 
 	void uut_Fight_std(void)
 	{
@@ -186,7 +192,7 @@ namespace uut
 		std::string title("ééé");
 		sf::Font font;
 		sf::Text text;
-		sf::RenderWindow window(sf::VideoMode(640, 480), "ààà");
+		sf::RenderWindow window(sf::VideoMode(640, 480), sf::String(L"ààà"));
 		bool font_loaded;
 
 		log().entranceFunction(FUNCTION_NAME);
@@ -201,7 +207,7 @@ namespace uut
 			text.setFont(font); // font est un sf::Font
 
 		// choix de la chaîne de caractères à afficher
-		text.setString(sf::String("Hello world éàè@"));
+		text.setString(sf::String(L"Hello world éàè@"));
 
 		// choix de la taille des caractères
 		text.setCharacterSize(24); // exprimée en pixels, pas en points !
@@ -640,10 +646,12 @@ namespace uut
 		IMap* l_map;
 
 		l_loaders["BasicMap"].reset(new BasicMapLoader());
+		l_environment.m_tileset_manager.load(g_resource_path + "Data/Tilesets.xml");
+		l_environment.m_music_manager.load(g_resource_path + "Data/Musics.xml");
 
 		l_environment.m_map_manager.load(g_resource_path + "Data/Maps.xml", l_loaders, l_environment.m_tileset_manager);
 
-		l_map = l_environment.m_map_manager.getMap("FirstMap");
+		l_map = l_environment.m_map_manager.getMap("PkmnMap");
 
 		l_map->run(l_environment);
 	}
@@ -652,6 +660,90 @@ namespace uut
 		Environment l_environment(g_resource_path);
 
 		l_environment.load();
+	}
+	
+	void uut_ECS_Entity(void)
+	{
+		TiXmlElement l_xml_element("Brol");
+
+		ECS_EntityGenerator l_entity_generator;
+		ECS_Entity l_entity_0;
+		ECS_Entity l_entity_1;
+		ECS_Entity l_entity_2;
+
+		l_entity_0.save(l_xml_element);
+
+		l_xml_element.Print(stdout, -1);
+		std::cout << "\n";
+
+		l_entity_generator.generate(l_entity_1);
+		l_entity_1.save(l_xml_element);
+
+		l_xml_element.Print(stdout, -1);
+		std::cout << "\n";
+
+		l_xml_element.SetAttribute("entity_id", 45);
+		l_entity_2.load(l_xml_element, l_entity_generator);
+
+		l_xml_element.Print(stdout, -1);
+		std::cout << "\n";
+	}
+
+	void uut_ECS(void)
+	{
+		ECS_SystemManager l_system_manager;
+		ECS_EntityManager l_entity_manager(l_system_manager);
+		ECS_EntityGenerator l_entity_generator;
+		std::vector<ECS_Entity> l_entities(2, ECS_Entity(l_entity_generator));
+	}
+
+	class UUT_XMLFileLoader
+	{
+	public:
+		bool load_El(const TiXmlElement& element)
+		{
+			std::cout << "load_El\n";
+			return true;
+		}
+		bool load_Data(const TiXmlElement& element)
+		{
+			std::cout << "load_Data\n";
+			return true;
+		}
+		bool load_Sub(const TiXmlElement& element)
+		{
+			std::cout << "load_Sub\n";
+			return true;
+		}
+	};
+
+	void uut_XMLFileLoader(void)
+	{
+		XMLFileLoader l_xml_file_loader;
+		UUT_XMLFileLoader l_loader;
+		std::string l_xml_file(g_resource_path + "xml_file.xml");
+		std::ifstream i(l_xml_file);
+
+		if (i.is_open())
+		{
+			std::string line;
+			while(std::getline(i, line))
+				std::cout << line << "\n";
+			i.close();
+		}
+
+		l_xml_file_loader.setFile(l_xml_file);
+		l_xml_file_loader.addCallback("/Root/El", &UUT_XMLFileLoader::load_El, &l_loader);
+		l_xml_file_loader.addCallback("/Root/El/Sub", &UUT_XMLFileLoader::load_Sub, &l_loader);
+		l_xml_file_loader.addCallback("/Root/El/Sub/Data", &UUT_XMLFileLoader::load_Data, &l_loader);
+
+		l_xml_file_loader.start();
+
+		while(!l_xml_file_loader.isDone())
+		{
+			Sleep(1000);
+		}
+
 	}
 
 }

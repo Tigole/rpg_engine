@@ -48,16 +48,16 @@ void Environment::load()
 	for (const auto& a : l_data)
 	{
 		if (a.first == "Musics")
-			m_music_manager.load(a.second);
+			m_music_manager.load(m_resource_path + "Data/" + a.second);
 		else if (a.first == "Tilesets")
-			m_tileset_manager.load(a.second);
+			m_tileset_manager.load(m_resource_path + "Data/" + a.second);
 		else if (a.first == "Maps")
-			m_map_manager.load(a.second, l_map_loaders, m_tileset_manager);
+			m_map_manager.load(m_resource_path + "Data/" + a.second, l_map_loaders, m_tileset_manager);
 		else if (a.first == "Characters")
-			m_character_manager.load(a.second, l_character_loaders, m_skill_manager);
+			m_character_manager.load(m_resource_path + "Data/" + a.second, l_character_loaders, m_skill_manager);
 		else if (a.first == "Skills")
-			m_skill_manager.load(a.second, l_skill_loaders);
+			m_skill_manager.load(m_resource_path + "Data/" + a.second, l_skill_loaders);
 		else if (a.first == "Textures")
-			m_texture_manager.load(a.second);
+			m_texture_manager.load(m_resource_path + "Data/" + a.second);
 	}
 }

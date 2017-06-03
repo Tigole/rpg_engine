@@ -1,11 +1,40 @@
+.red
+{
+	background-color:#f00000;
+}
+.red_light
+{
+	background-color:#f00000;
+}
+.red_dark
+{
+	background-color:#f00000;
+}
+
 .green
 {
 	background-color:#00f000;
 }
-
-.red
+.green_light
 {
-	background-color:#f00000;
+	background-color:#B0F2B6;
+}
+.green_dark
+{
+	background-color:#00f000;
+}
+
+.blue
+{
+	background-color:#0000f0;
+}
+.blue_light
+{
+	background-color:#B0E0E6;
+}
+.blue_dark
+{
+	background-color:#000070;
 }
 
 .yellow

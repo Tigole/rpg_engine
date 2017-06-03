@@ -60,6 +60,9 @@ int main(int argc, char** argv)
 	uut_functions.push_back(make_pair("uut_Map", uut_Map));
 	uut_functions.push_back(make_pair("uut_MapPManager", uut_MapPManager));
 	uut_functions.push_back(make_pair("uut_Environment", uut_Environment));
+	uut_functions.push_back(make_pair("uut_ECS_Entity", uut_ECS_Entity));
+	uut_functions.push_back(make_pair("uut_ECS", uut_ECS));
+	uut_functions.push_back(make_pair("uut_XMLFileLoader", uut_XMLFileLoader));
 
 	for (auto& a : uut_functions)
 	{

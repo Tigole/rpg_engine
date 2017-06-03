@@ -13,6 +13,7 @@ struct Tile : public sf::Sprite
 {
 	Tile();
 	Tile(const Tile& cp);
+	Tile& operator=(const Tile& cp);
 	bool m_is_walkable;
 };
 
@@ -23,6 +24,7 @@ public:
 
 	Tile getTile(unsigned int col, unsigned int row) const;
 	const std::string& getId() const;
+	sf::Vector2u getTileSize(void) const;
 protected:
 	sf::Texture m_texture;
 	int m_col_count;

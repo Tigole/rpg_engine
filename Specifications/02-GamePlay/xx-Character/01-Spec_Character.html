@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Specification : Character Engine</title>
+<link rel="stylesheet" href="../../Specifications.css" type="text/css"/>
+<link rel="icon" href="../../specifications.jpg"/>
+</head>
+<body>
+<div class="menu">
+	<nav><h1>Document overview</h1>
+	<ol>
+	<li><a href="#application_goal_main">Application goal</a>
+		<ol>
+			<li><a href="#application_goal">Application goal</a></li>
+		</ol>
+	</li>
+	<li><a href="#resources_main">Resources</a>
+		<ol>
+			<li><a href="#resources">Resources</a></li>
+			<li><a href="#resources_handling">Resources handling</a></li>
+			<li><a href="#resource_loading">Loading resources</a></li>
+		</ol>
+	</li>
+	<li><a href="#fight_engine_main">Fight Engine</a>
+		<!--<ol>
+			<li><a href="#fight_engine">FightEngine</a></li>
+			<li><a href="#i_battle_ground_wrapper">IBattleGroundWrapper</a></li>
+			<li><a href="#i_party">IParty</a></li>
+			<li><a href="#i_character">ICharacter</a></li>
+			<li><a href="#i_skill">ISkill</a></li>
+			<li><a href="#i_attribute">IAttribute</a></li>
+			<li><a href="#i_effect">IEffect</a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+		</ol> -->
+	</li>
+	<li><a href="#battle_ground_engine">Battleground</a></li>
+	<li><a href="#party_engine">Parties</a></li>
+	<li><a href="#character_engine">Characters</a></li>
+	<li><a href="#skill_engine">Skills</a></li>
+	<li><a href="#attribute_engine">Attributes</a></li>
+	<li><a href="#effects_engine">Effects</a></li>
+	<li><a href="#items">Items</a></li>
+	<li><a href="#inventory">Inventory</a></li>
+	<li><a href="#fsm_engine">Finite State Machine Engine</a></li>
+	<li><a href="#rendering_engine">Rendering Engine</a></li>
+	<li><a href="#mapping_engine">Mapping Engine</a></li>
+	<li><a href="#translation_engine_spec">Translation Engine</a></li>
+	<li><a href="#evolution_curves">Evolution Curves</a></li>
+	<li><a href="#external_files">External files</a>
+		<!--<ol>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+			<li><a href="#"></a></li>
+		</ol>-->
+	</li>
+	</ol>
+	</nav>
+</div>
+
+
+
+<div class="body">
+	<header>
+	<h1>Specification : Character Engine</h1>
+	<p>The aim of this document is to detail the specification for the Character Engine</p>
+	</header>
+<section><h1 id="character_engine">Characters</h1>
+	<nav><h1>Overview</h1>
+	<ul>
+		<li><a href="#character_spec">Specification</a></li>
+		<li><a href="#i_character">ICharacter</a></li>
+		<li><a href="#basic_character">BasicCharacter</a></li>
+	</ul>
+	</nav>
+	<article><h1 id="character_spec">Specification</h1>
+	<p>A Character is a game entity with which the player may either be or have interactions.<br/>
+	This game engine is supposed to offer the player to be a character which may interact with Non Player Characters, have some attributes and skills, fight, and so on.<br/>
+	A Character is a main part of the gameplay.
+	</p>
+	</article>
+	<article><h1 id="i_character">ICharacter</h1>
+			<p>An ICharacter represents a character for fight engine.</br>
+			It has multiple attributes that are changed from external composents (ISkill, IEffect...).</p>
+	</article>
+	<article><h1 id="basic_character">BasicCharacter</h1>
+		<p>This class is the basic representation of a character for the application.</p>
+	</article>
+</section>
+
+</section>
+
+<footer>
+	<section>
+	<h1>Thanks</h1>
+	<p>
+	<table><caption>Here are special thanks</caption>
+	<tr><th>Who</th><th>Why</th></tr>
+	<tr><td>Théo Arcourt</td><td>For navigation in this document</td></tr>
+	<tr><td>Martin Tamisier</td><td>For developping translation engine</td></tr>
+	</table>
+	</p>
+	</section>
+	<section>
+	<h1>Foreword</h1>
+		<p>Don't forget to "ctr+f" for better navigation in this document.</p>
+	</section>
+</footer>
+</div>
+</body>
+</html>
+
+
+

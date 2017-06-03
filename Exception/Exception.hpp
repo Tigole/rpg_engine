@@ -55,6 +55,12 @@ public:
 	ExceptionAttributeNotFound(const std::string& attribute_name, const std::string& type_name, const std::string& object_name);
 };
 
+class ExceptionDynamicCastFailed : public Exception
+{
+public:
+	ExceptionDynamicCastFailed();
+};
+
 class ExceptionAttributeAlreadyExists : public Exception
 {
 public:

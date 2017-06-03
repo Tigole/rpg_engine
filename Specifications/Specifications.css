@@ -2,7 +2,7 @@
 	position: fixed;
 
 }
-.corps{
+.body{
 	margin-left:250px;
 	margin-right:250px;
 }
@@ -54,4 +54,8 @@ table
 	margin-top:5px;
 	margin-bottom:5px;
 	border-collapse: collapse;
+}
+caption
+{
+	font-weight:bold;
 }

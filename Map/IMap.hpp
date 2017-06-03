@@ -2,13 +2,14 @@
 #define _IMAP_HPP 1
 
 #include <string>
+#include "Miscellaneous.hpp"
 
 class TiXmlElement;
 class MapManager;
 class TilesetManager;
 class Environment;
 
-class IMap
+class IMap : public misc::Clonable<IMap>
 {
 public:
 	virtual ~IMap() {}

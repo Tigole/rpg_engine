@@ -9,5 +9,5 @@ std::unique_ptr<IMap> BasicMapLoader::load(const TiXmlElement& element, const Ti
 {
 	BasicMap bm;
 	bm.load(element, tm);
-	return std::unique_ptr<IMap>(new BasicMap(bm));
+	return bm.clone();
 }

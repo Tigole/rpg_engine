@@ -7,9 +7,27 @@ Tile::Tile()
 {}
 
 Tile::Tile(const Tile& cp)
-	: m_is_walkable(cp.m_is_walkable)
+	: sf::Sprite(cp),
+	m_is_walkable(cp.m_is_walkable)
 {
-	setTexture(*cp.getTexture());
+	setPosition(cp.getPosition());
+	/*const sf::Texture* l_texture(cp.getTexture());
+	//setTextureRect(cp.getTextureRect());
+	if (l_texture != nullptr)
+		setTexture(*l_texture);*/
+}
+
+Tile& Tile::operator=(const Tile& cp)
+{
+	const sf::Texture* l_texture(cp.getTexture());
+
+	if (l_texture != nullptr)
+		setTexture(*l_texture);
+	setTextureRect(cp.getTextureRect());
+	setPosition(cp.getPosition());
+	m_is_walkable = cp.m_is_walkable;
+
+	return *this;
 }
 
 void Tileset::load(const TiXmlElement& tileset, const std::string& resource_path)
@@ -84,5 +102,15 @@ Tile Tileset::getTile(unsigned int col, unsigned int row) const
 	else
 		throw Exception("[" + misc::numberToString(col) + " " + misc::numberToString(row) +"] can't be acceded for tileset \"" + m_id + "\" in " + FUNCTION_NAME);
 
+	return l_ret;
+}
+
+sf::Vector2u Tileset::getTileSize(void) const
+{
+	sf::Vector2u l_ret(m_texture.getSize());
+	
+	l_ret.x /= m_col_count;
+	l_ret.y /= m_row_count;
+	
 	return l_ret;
 }

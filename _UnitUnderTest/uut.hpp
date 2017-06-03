@@ -32,7 +32,10 @@ namespace uut
 	void uut_Tileset(void);
 	void uut_Map(void);
 	void uut_MapPManager(void);
-	void uut_Environment(void);
+	void uut_Environment(void); 
+	void uut_ECS_Entity(void);
+	void uut_ECS(void);
+	void uut_XMLFileLoader(void);
 }
 
 

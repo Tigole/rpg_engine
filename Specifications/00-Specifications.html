@@ -62,7 +62,7 @@
 
 
 
-<div class="corps">
+<div class="body">
 	<header>
 	<h1>Specifications</h1>
 	<p>The aim of this document is to detail the specification for the application</p>
@@ -129,6 +129,11 @@
 			&lt/IResourceList&gt
 			</code> </p>
 			When the factory meets an element, it will find the loader set for the element value and the current element will be send to the loader to create the concrete object.</p>
+	</article>
+	<article><h1 id="resource_loader">Loader</h1>
+	<p>
+	
+	</p>	
 	</article>
 	</section>
 <section><h1 id="fight_engine_main">Fight Engine</h1>
@@ -630,7 +635,7 @@
 		<li><a href="#"></a></li>
 	</ul>
 	</nav>
-	<article><h1 id="">Specification</h1>
+	<article><h1 id="mapping_engine_spec">Specification</h1>
 	<p>
 	This part specify the Mapping engine which shall manage a game map.
 	<ol>
@@ -648,7 +653,7 @@
 	</ol>
 	</p>
 	</article>
-	<article><h1 id="">IMap</h1>
+	<article><h1 id="mapping_engine_imap">IMap</h1>
 	<p>
 	An IMap represent the base class object for representing a map specified above.
 	
@@ -661,7 +666,7 @@
 	</table>
 	</p>
 	</article>
-	<article><h1 id="">BasicMap</h1>
+	<article><h1 id="mapping_engine_basic_map">BasicMap</h1>
 	<p>
 	A BasicMap represent the base class object for representing a map specified above.
 	
@@ -673,6 +678,61 @@
 	<tr><td>run</td><td>Nothing ?</td><td>The next map to be activated</td><td>Method called to make the map work</td></tr>
 	</table>
 	</p>
+	
+	<article><h1 id="mapping_engine_baic_map_xml">BasicMap XML representation</h1>
+	<p>
+	
+	<table>
+	<caption>BasicMap</caption>
+	<tr><th>Type</th><th>Name</th><th>Required</th><th>Description</th></tr>
+	<tr><td>Attribute</td><td>id</td><td>Yes</td><td>Id to find the map</td></tr>
+	<tr><td>Element</td><td>Background</td><td>No</td><td>Represents the ground of the map (where characters walk)</td></tr>
+	<tr><td>Element</td><td>Middleground</td><td>No</td><td>Same layer as characters</td></tr>
+	<tr><td>Element</td><td>Foreground</td><td>No</td><td>Tiles in this layer will be displayed upon other layers</td></tr>
+	<tr><td>Element</td><td>LinkedMaps</td><td>No</td><td>Links to others maps</td></tr>
+	<tr><td>Element</td><td>AmbiantMusic</td><td>No</td><td>Main music of the map</td></tr>
+	</table>
+	
+	<table>
+	<caption>Background/Middleground/Foreground</caption>
+	<tr><th>Type</th><th>Name</th><th>Required</th><th>Description</th></tr>
+	<tr><td>Attribute</td><td>default_tile_col</td><td>No</td><td rowspan="2">Represente the default tile to be used (to avoid repetition)</td></tr>
+	<tr><td>Attribute</td><td>default_tile_row</td><td>No</td></tr>
+	<tr><td>Element</td><td>Cell</td><td>No</td><td>Represents a tile of the layer (should appear multiple times)</td></tr>
+	</table>
+	
+	<table>
+	<caption>Cell</caption>
+	<tr><th>Type</th><th>Name</th><th>Required</th><th>Description</th></tr>
+	<tr><td>Attribute</td><td>cell_col</td><td>Yes</td><td rowspan="2">Position of the tile (index of a matrix or 2d array)</td></tr>
+	<tr><td>Attribute</td><td>cell_row</td><td>Yes</td></tr>
+	<tr><td>Attribute</td><td>tileset_id</td><td>Yes</td><td>Id of the tileset to use</td></tr>
+	<tr><td>Attribute</td><td>tileset_col</td><td>Yes</td><td rowspan="2">Tile of the tileset (index of a matrix or 2d array) </td></tr>
+	<tr><td>Attribute</td><td>tileset_row</td><td>Yes</td></tr>
+	</table>
+	
+	<table>
+	<caption>LinkedMaps</caption>
+	<tr><th>Type</th><th>Name</th><th>Required</th><th>Description</th></tr>
+	<tr><td>Element</td><td>LinkedMap</td><td>No</td><td>Represent a link to another map</td></tr>
+	</table>
+	
+	<table>
+	<caption>LinkedMap</caption>
+	<tr><th>Type</th><th>Name</th><th>Required</th><th>Description</th></tr>
+	<tr><td>Attribute</td><td>cell_col</td><td>Yes</td><td rowspan="2">Position of the tile (index of a matrix or 2d array)</td></tr>
+	<tr><td>Attribute</td><td>cell_row</td><td>Yes</td></tr>
+	<tr><td>Attribute</td><td>map_id</td><td>Yes</td><td>Id of the linked map</td></tr>
+	</table>
+	
+	<table>
+	<caption>AmbiantMusic</caption>
+	<tr><th>Type</th><th>Name</th><th>Required</th><th>Description</th></tr>
+	<tr><td>Attribute</td><td>id</td><td>Yes</td><td>Id of the main music</td></tr>
+	</table>
+	
+	</p>
+	</article>
 	</article>
 </section>
 <section><h1 id="translation_engine">Translation Engine</h1>
@@ -802,6 +862,7 @@
 	<table><caption>Here are special thanks</caption>
 	<tr><th>Who</th><th>Why</th></tr>
 	<tr><td>Théo Arcourt</td><td>For navigation in this document</td></tr>
+	<tr><td>Martin Tamisier</td><td>For developping translation engine</td></tr>
 	</table>
 	</p>
 	</section>
