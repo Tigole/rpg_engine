@@ -13,7 +13,7 @@ public:
 	CompositeAttributeLoader();
 	~CompositeAttributeLoader();
 
-	std::unique_ptr<IAttribute> load(const TiXmlElement& element);
+	std::unique_ptr<IAttribute> mt_Load(const TiXmlElement& element);
 protected:
 	BasicAttributeLoader m_basic_loader;
 };

@@ -9,8 +9,8 @@ MenuNavigation::MenuNavigation(/*unsigned int row_number, unsigned int column_nu
 	m_state_done(),
 	m_state_child(*this, m_navigation_objects, m_target_object, m_trans_child_on_validate, m_trans_child_on_cancel),
 	m_trans_on_validate(),
-	m_trans_on_cancel(), 
-	m_trans_child_on_cancel(), 
+	m_trans_on_cancel(),
+	m_trans_child_on_cancel(),
 	m_trans_child_on_validate()
 {
 	if ((m_row_number == 0) || (m_column_number == 0))
@@ -18,7 +18,7 @@ MenuNavigation::MenuNavigation(/*unsigned int row_number, unsigned int column_nu
 		//
 	}
 
-	addStopState(&m_state_done);
+	mt_Add_Stop_State(&m_state_done);
 	m_state_idle.m_arr_transitions.push_back(std::make_pair(&m_trans_on_validate, false));
 	m_state_idle.m_arr_transitions.push_back(std::make_pair(&m_trans_on_cancel, false));
 
@@ -31,11 +31,11 @@ MenuNavigation::MenuNavigation(/*unsigned int row_number, unsigned int column_nu
 	m_trans_on_cancel.m_target_state = &m_state_done;
 }
 
-void MenuNavigation::onValidate(void)
+void MenuNavigation::mt_On_Validate(void)
 {
 	if (m_target_object != m_navigation_objects.end())
 	{
-		m_trans_child_on_validate.setFlag();
+		m_trans_child_on_validate.mt_Set_Flag();
 	}
 	else
 	{
@@ -43,38 +43,38 @@ void MenuNavigation::onValidate(void)
 	}
 }
 
-void MenuNavigation::onCancel(void)
+void MenuNavigation::mt_On_Cancel(void)
 {
-	m_trans_on_cancel.setFlag();
+	m_trans_on_cancel.mt_Set_Flag();
 }
 
-void MenuNavigation::onLeft(void)
+void MenuNavigation::mt_On_Left(void)
 {
-	onBottom();
+	mt_On_Bottom();
 }
 
-void MenuNavigation::onRight(void)
+void MenuNavigation::mt_On_Right(void)
 {
-	onUp();
+	mt_On_Up();
 }
 
-void MenuNavigation::onUp(void)
+void MenuNavigation::mt_On_Up(void)
 {
 	if (m_target_object != m_navigation_objects.begin())
 		m_target_object--;
-	manageDrawing();
+	mt_Manage_Drawing();
 }
 
-void MenuNavigation::onBottom(void)
+void MenuNavigation::mt_On_Bottom(void)
 {
 	if ((m_target_object + 1) != m_navigation_objects.end())
 		m_target_object++;
-	manageDrawing();
+	mt_Manage_Drawing();
 }
 
-void MenuNavigation::setNavigatioObjects(std::vector<INavigationObject*>& navigation_objects, unsigned int row_number, unsigned int column_number)
+void MenuNavigation::mt_Set_Navigation_Objects(std::vector<INavigationObject*>& navigation_objects, unsigned int row_number, unsigned int column_number)
 {
-	sf::IntRect inside_dimensions(getInsideDimensions());
+	sf::IntRect inside_dimensions(mt_Get_Inside_Dimensions());
 	m_navigation_objects = navigation_objects;
 	m_target_object = m_navigation_objects.begin();
 
@@ -85,7 +85,7 @@ void MenuNavigation::setNavigatioObjects(std::vector<INavigationObject*>& naviga
 
 }
 
-void MenuNavigation::manageDrawing(void)
+void MenuNavigation::mt_Manage_Drawing(void)
 {
 	unsigned int nb_navigation_objects_to_show(m_row_number * m_column_number);
 	std::vector<INavigationObject*>::iterator it, end_it;

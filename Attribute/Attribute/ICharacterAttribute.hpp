@@ -8,15 +8,15 @@ class ICharacterAttribute : public misc::Clonable<ICharacterAttribute>
 public:
 	ICharacterAttribute(){}
 	virtual ~ICharacterAttribute(){}
-	virtual void startTurn(void) = 0;
-	virtual void endTurn(void) = 0;
-	virtual void endFight(void) = 0;
+	virtual void mt_Start_Turn(void) = 0;
+	virtual void mt_End_Turn(void) = 0;
+	virtual void mt_End_Fight(void) = 0;
 
-	virtual const std::string& getName(void) const = 0;
-	virtual bool getValue(const std::string& attribute_name, int& value) const = 0;
-	virtual bool setValue(const std::string& attribute_name, int value) = 0;
-	virtual bool save(TiXmlElement& parent) const = 0;
-	virtual void dump(ILogger& l) = 0;
+	virtual const std::string& mt_Get_Name(void) const = 0;
+	virtual bool mt_Get_Value(const std::string& attribute_name, int& value) const = 0;
+	virtual bool mt_Set_Value(const std::string& attribute_name, int value) = 0;
+	virtual bool mt_Save(TiXmlElement& parent) const = 0;
+	virtual void mt_Dump(ILogger& l) = 0;
 };
 
 #endif // !_ICHARACTER_ATTRIBUTE_HPP

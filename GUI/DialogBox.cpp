@@ -30,15 +30,15 @@ BasicDialogBox::BasicDialogBox(std::unique_ptr<IGUIBackground>& background)
 	m_background(nullptr),
 	m_hide_flag(true)
 {
-	setBackground(background);
+	mt_Set_Background(background);
 }
 BasicDialogBox::BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsigned int left_px, unsigned int top_px)
 	: m_drawable(),
 	m_background(nullptr),
 	m_hide_flag(false)
 {
-	setBackground(background);
-	setScreenPosition(left_px, top_px);
+	mt_Set_Background(background);
+	mt_Set_Screen_Position(left_px, top_px);
 }
 
 BasicDialogBox::BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsigned int left_px, unsigned int top_px, unsigned int width_px, unsigned int height_px)
@@ -46,12 +46,12 @@ BasicDialogBox::BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsi
 	m_background(nullptr),
 	m_hide_flag(false)
 {
-	setBackground(background);
-	setScreenPosition(left_px, top_px);
-	setDimensions(width_px, height_px);
+	mt_Set_Background(background);
+	mt_Set_Screen_Position(left_px, top_px);
+	mt_Set_Dimensions(width_px, height_px);
 }
 
-void BasicDialogBox::setBackground(std::unique_ptr<IGUIBackground>& new_background)
+void BasicDialogBox::mt_Set_Background(std::unique_ptr<IGUIBackground>& new_background)
 {
 	m_background.reset(new_background.release());
 	m_hide_flag = m_hide_flag || (m_background == nullptr);
@@ -72,32 +72,30 @@ void BasicDialogBox::draw(sf::RenderTarget &target, sf::RenderStates states) con
 	}
 }
 
-void BasicDialogBox::hide(bool hide)
+void BasicDialogBox::mt_Hide(bool hide)
 {
 	m_hide_flag = hide || (m_background == nullptr);
 }
 
-void BasicDialogBox::setScreenPosition(unsigned int left_px, unsigned int top_px)
+void BasicDialogBox::mt_Set_Screen_Position(unsigned int left_px, unsigned int top_px)
 {
-	m_background->setScreenPosition(top_px, left_px);
+	m_background->mt_Set_Screen_Position(top_px, left_px);
 }
 
-void BasicDialogBox::setDimensions(unsigned int width_px, unsigned int height_px)
+void BasicDialogBox::mt_Set_Dimensions(unsigned int width_px, unsigned int height_px)
 {
-	m_background->setDimensions(width_px, height_px);
+	m_background->mt_Set_Dimensions(width_px, height_px);
 }
 
-sf::IntRect BasicDialogBox::getInsideDimensions(void) const
+sf::IntRect BasicDialogBox::mt_Get_Inside_Dimensions(void) const
 {
 	sf::IntRect l_ret(0, 0, 0, 0);
 
 	if (m_background != nullptr)
-		l_ret = m_background->getUsableDimensions();
+		l_ret = m_background->mt_Get_Usable_Dimensions();
 
 	return l_ret;
 }
-
-
 
 TextDialogBox::TextData::TextData(sf::Font& font)
 	:m_font(font),
@@ -139,25 +137,25 @@ TextDialogBox::TextDialogBox()
 TextDialogBox::TextDialogBox(std::unique_ptr<IGUIBackground>& background, const TextData& text_data)
 	: BasicDialogBox(background)
 {
-	initialize(text_data);
+	mt_Initialize(text_data);
 }
 
 TextDialogBox::TextDialogBox(std::unique_ptr<IGUIBackground>& background, const TextData& text_data, unsigned int left_px, unsigned int top_px)
 	: BasicDialogBox(background, left_px, top_px)
 {
-	initialize(text_data);
-	setScreenPosition(left_px, top_px);
+	mt_Initialize(text_data);
+	mt_Set_Screen_Position(left_px, top_px);
 }
 
 TextDialogBox::TextDialogBox(std::unique_ptr<IGUIBackground>& background, const TextData& text_data, unsigned int left_px, unsigned int top_px, const std::string& text)
 	: BasicDialogBox(background, left_px, top_px)
 {
-	initialize(text_data);
-	setScreenPosition(left_px, top_px);
-	setText(text);
+	mt_Initialize(text_data);
+	mt_Set_Screen_Position(left_px, top_px);
+	mt_Set_Text(text);
 }
 
-void TextDialogBox::initialize(const TextData& text_data)
+void TextDialogBox::mt_Initialize(const TextData& text_data)
 {
 	m_drawable.push_back(&m_text);
 	m_font = text_data.m_font;
@@ -166,14 +164,14 @@ void TextDialogBox::initialize(const TextData& text_data)
 	m_text.setColor(text_data.m_color);
 }
 
-void TextDialogBox::setText(const std::string& text)
+void TextDialogBox::mt_Set_Text(const std::string& text)
 {
 	m_text.setString(text);
-	setDimensions(m_text.getLocalBounds().width, m_text.getLocalBounds().height);
-	m_text.setPosition(getInsideDimensions().left, getInsideDimensions().top);
+	mt_Set_Dimensions(m_text.getLocalBounds().width, m_text.getLocalBounds().height);
+	m_text.setPosition(mt_Get_Inside_Dimensions().left, mt_Get_Inside_Dimensions().top);
 }
 
-void TextDialogBox::setText(const std::vector<std::string>& text)
+void TextDialogBox::mt_Set_Text(const std::vector<std::string>& text)
 {
 	//
 }

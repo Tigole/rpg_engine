@@ -12,57 +12,57 @@ public:
 	ECS_EntityManager(ECS_SystemManager& system_manager);
 
 	template<class ComponenetType>
-	ComponenetType* addComponent(const ECS_Entity& e, const ECS_ComponentId& c)
+	ComponenetType* mt_Add_Component(const ECS_Entity& entity, const ECS_ComponentId& component_id)
 	{
 		ECS_EntityContainer::iterator l_entity_it;
 		ComponenetType* l_ret(nullptr);
 
-		l_entity_it = m_entities.find(e);
+		l_entity_it = m_entities.find(entity);
 
 		/** Add entity if it doesn't exists **/
 		if (l_entity_it == m_entities.end())
 		{
-			l_entity_it = m_entities.emplace(e, nullptr).first;
+			l_entity_it = m_entities.emplace(entity, nullptr).first;
 		}
 
 		if (l_entity_it != m_entities.end())
 		{
-			l_entity_it->second[c] = new ComponenetType();
-			m_system_manager->entityModified(e, l_entity_it->second);
-			l_ret = l_entity_it->second.at(c).get();
+			l_entity_it->second[component_id] = new ComponenetType();
+			m_system_manager->mt_Entity_Modified(entity, l_entity_it->second);
+			l_ret = l_entity_it->second.at(component_id).get();
 		}
 
 		return l_ret;
 	}
 
-	void removeComponent(const ECS_Entity& e, const ECS_ComponentId& c)
+	void mt_Remove_Component(const ECS_Entity& entity, const ECS_ComponentId& component_id)
 	{
 		ECS_EntityContainer::iterator l_entity_it;
 		ECS_ComponentContainer::iterator l_component_it;
 
-		l_entity_it = m_entities.find(e);
+		l_entity_it = m_entities.find(entity);
 
 		if (l_entity_it != m_entities.end())
 		{
-			l_entity_it->second.erase(c);
+			l_entity_it->second.erase(component_id);
 		}
 	}
 
 	template<class ComponentType>
-	ComponentType* getComponent(const ECS_Entity& e, const ECS_ComponentId& c)
+	ComponentType* mt_Get_Component(const ECS_Entity& entity, const ECS_ComponentId& component_id)
 	{
 		ECS_EntityContainer::iterator l_entity_it;
 		ECS_ComponentContainer::iterator l_component_it;
 		ComponentType* l_ret(nullptr);
 
-		l_entity_it = m_entities.find(e);
+		l_entity_it = m_entities.find(entity);
 
 		if (l_entity_it != m_entities.end())
 		{
-			l_component_it = l_entity_it->second.find(c);
+			l_component_it = l_entity_it->second.find(component_id);
 			if (l_component_it != l_entity_it->second.end())
 			{
-				l_ret = l_component_it->second;
+				l_ret = dynamic_cast<ComponentType*>(l_component_it->second.get());
 			}
 		}
 

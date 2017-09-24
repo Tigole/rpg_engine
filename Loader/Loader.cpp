@@ -14,7 +14,7 @@ ILoader::~ILoader()
 	/** Nothing **/
 }
 
-bool ILoader::checkAttributes(const TiXmlElement& element, const std::vector<std::string>& attributes) const
+bool ILoader::mt_Check_Attributes(const TiXmlElement& element, const std::vector<std::string>& attributes) const
 {
 	bool l_ret(attributes.size() != 0);
 	std::vector<std::string>::size_type i;
@@ -26,15 +26,15 @@ bool ILoader::checkAttributes(const TiXmlElement& element, const std::vector<std
 		if (attrib == nullptr)
 		{
 			l_ret = false;
-			log().entranceFunction(FUNCTION_NAME);
+			log().mt_Entrance_Function(FUNCTION_NAME);
 			log() << "No attribute : \"" << attributes[i] << "\"\n\tIn element : \"" << element.Value() << "\"\n";
-			log().exitFunction();
+			log().mt_Exit_Function();
 		}
 	}
 	return l_ret;
 }
 
-bool ILoader::checkChildren(const TiXmlElement& element, const std::vector<std::string>& children) const
+bool ILoader::mt_Check_Children(const TiXmlElement& element, const std::vector<std::string>& children) const
 {
 	bool l_ret(true);
 
@@ -51,11 +51,11 @@ bool ILoader::checkChildren(const TiXmlElement& element, const std::vector<std::
 
 		if (l_ret == false)
 		{
-			log().entranceFunction(FUNCTION_NAME);
+			log().mt_Entrance_Function(FUNCTION_NAME);
 			log() << "Child \"" << children[i] << "\" can't be found\n";
-			log().exitFunction();
+			log().mt_Exit_Function();
 		}
-	}		
+	}
 
 	return l_ret;
 }
@@ -71,7 +71,7 @@ Loader::~Loader()
 	/** Nothing **/
 }
 
-const std::string& Loader::getElementName(void) const
+const std::string& Loader::mt_Get_Element_Name(void) const
 {
 	return m_element_name;
 }

@@ -38,7 +38,7 @@ class EventBinding
 public:
 	EventBinding(const std::string& event_name);
 
-	void appendEvent(const EventData& event);
+	void mt_Append_Event(const EventData& event);
 
 	std::string m_name;
 	std::vector<std::pair<EventType, EventData>> m_events;

@@ -11,7 +11,7 @@ Attribute::~Attribute()
 	/** Nothing **/
 }
 
-const std::string& Attribute::getName(void)
+const std::string& Attribute::mt_Get_Name(void)
 {
 	return m_name;
 }

@@ -9,16 +9,31 @@
 
 class ECS_System;
 class ECS_Component;
-class ECS_Entity;
 
+using ECS_EntityId = int;
+using ECS_Entity = ECS_EntityId;
 using ECS_EntityMessage = int;
 using ECS_EntityEvent = int;
 
-using ECS_ComponentId = std::string;
-using ECS_ComponentContainer = std::map<ECS_ComponentId, std::unique_ptr<ECS_Component>>;
-using ECS_EntityContainer = std::map<ECS_Entity, ECS_ComponentContainer>;
+enum class ECS_ComponentId
+{
+	POSITION = 0,
+	SPRITE_SHEET,
+	MOVABLE,
 
-using ECS_SystemId = std::string;
+	COUNT
+};
+using ECS_ComponentContainer = std::unordered_map<ECS_ComponentId, std::unique_ptr<ECS_Component>>;
+using ECS_EntityContainer = std::unordered_map<ECS_EntityId, ECS_ComponentContainer>;
+
+enum class ECS_SystemId
+{
+	RENDERER = 0,
+	MOVEMENT,
+
+	COUNT
+};
 using ECS_SystemContainer = std::unordered_map<ECS_SystemId, std::unique_ptr<ECS_System>>;
+
 
 #endif // _ECS_TYPES_HPP

@@ -27,7 +27,7 @@ class IState : public misc::Resetable
 public:
 	virtual ~IState(){}
 
-	virtual IState* callProcess(void) = 0;
+	virtual IState* mt_Call_Process(void) = 0;
 };
 
 }

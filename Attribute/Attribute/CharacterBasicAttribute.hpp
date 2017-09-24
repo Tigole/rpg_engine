@@ -8,9 +8,9 @@ class CharacterBasicAttribute : public ICharacterAttribute, public BasicAttribut
 {
 public:
 	CharacterBasicAttribute(const std::string& name);
-	void startTurn(void);
-	void endTurn(void);
-	void endFight(void);
+	void mt_Start_Turn(void);
+	void mt_End_Turn(void);
+	void mt_End_Fight(void);
 };
 
 #endif // !_CHARACTER_BASIC_ATTRIBUTE_HPP

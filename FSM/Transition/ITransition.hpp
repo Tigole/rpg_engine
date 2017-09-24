@@ -21,7 +21,7 @@ class ITransition : public misc::Resetable
 public:
 	virtual ~ITransition(){}
 
-	virtual IState* check(IState* p_current_state) = 0;
+	virtual IState* mt_Check(IState* p_current_state) = 0;
 };
 
 }

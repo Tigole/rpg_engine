@@ -21,24 +21,24 @@ public:
 	BasicCharacter(const BasicCharacter& bc) = delete;
 	BasicCharacter& operator=(const BasicCharacter& bc) = delete;
 	~BasicCharacter();
-	virtual const std::string& getName(void) const;
-	virtual void setEnnemies(const std::vector<ICharacter*>& ennemies);
-	virtual void getAttribute(const std::string& attribute_id, int& attribute_value) const;
-	virtual void getAttribute(const std::string& attribute_id, int& attribute_value);
-	virtual void setAttribute(const std::string& attribute_id, int attribute_value);
+	virtual const std::string& mt_Get_Name(void) const;
+	virtual void mt_Set_Ennemies(const std::vector<ICharacter*>& ennemies);
+	virtual void mt_Get_Attribute(const std::string& attribute_id, int& attribute_value) const;
+	virtual void mt_Get_Attribute(const std::string& attribute_id, int& attribute_value);
+	virtual void mt_Set_Attribute(const std::string& attribute_id, int attribute_value);
 
 
-	virtual void startTurn(void);
-	virtual void endTurn(void);
-	virtual void selectSkill(void);
-	virtual void useSkill(void);
-	virtual bool isDead(void) const;
+	virtual void mt_Start_Turn(void);
+	virtual void mt_End_Turn(void);
+	virtual void mt_Select_Skill(void);
+	virtual void mt_Use_Skill(void);
+	virtual bool mt_Is_Dead(void) const;
 
-	std::unique_ptr<ICharacter> clone(void) const;
+	std::unique_ptr<ICharacter> mt_Clone(void) const;
 
-	virtual void addSkill(const std::string& skill_name, const SkillManager& sm);
+	virtual void mt_Add_Skill(const std::string& skill_name, const SkillManager& sm);
 
-	virtual void dump(ILogger& l);
+	virtual void mt_Dump(ILogger& l);
 protected:
 
 	/*void selectSkill(void);

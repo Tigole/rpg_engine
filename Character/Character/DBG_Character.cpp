@@ -23,46 +23,46 @@ DBG_Character::~DBG_Character()
 	/** Nothing **/
 }
 
-void DBG_Character::startTurn(void)
+void DBG_Character::mt_Start_Turn(void)
 {
 	/** Nothing **/
 }
 
-void DBG_Character::endTurn(void)
+void DBG_Character::mt_End_Turn(void)
 {
 	/** Nothing **/
 }
 
-void DBG_Character::selectSkill(void)
+void DBG_Character::mt_Select_Skill(void)
 {
-	log().entranceFunction(FUNCTION_NAME);
+	log().mt_Entrance_Function(FUNCTION_NAME);
 	log() << "m_skill_index : " << m_skill_index << "\n";
 	m_current_skill = m_skills[m_skill_index].get();
 	m_skill_index++;
 	if (m_skill_index >= m_skills.size())
 		m_skill_index = 0;
 	m_targets.push_back(m_ennemies.front());
-	log().exitFunction();
+	log().mt_Exit_Function();
 }
 
-void DBG_Character::useSkill(void)
+void DBG_Character::mt_Use_Skill(void)
 {
-	log().entranceFunction(FUNCTION_NAME);
+	log().mt_Entrance_Function(FUNCTION_NAME);
 
-	if (!isDead())
+	if (!mt_Is_Dead())
 	{
 		//m_current_skill->use(m_targets);
 	}
 	m_targets.resize(0);
-	log().exitFunction();
+	log().mt_Exit_Function();
 }
 
-bool DBG_Character::isDead(void) const
+bool DBG_Character::mt_Is_Dead(void) const
 {
 	bool l_ret(false);
 	int hp;
 
-	getAttribute("hp", hp);
+	mt_Get_Attribute("hp", hp);
 
 	assert(l_ret == true);
 
@@ -71,7 +71,7 @@ bool DBG_Character::isDead(void) const
 	return l_ret;
 }
 
-std::unique_ptr<ICharacter> DBG_Character::clone(void) const
+std::unique_ptr<ICharacter> DBG_Character::mt_Clone(void) const
 {
 	return std::unique_ptr<ICharacter>(new DBG_Character(m_name, 5));
 }

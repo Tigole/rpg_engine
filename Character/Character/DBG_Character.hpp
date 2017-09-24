@@ -17,13 +17,13 @@ public:
 	DBG_Character(const std::string& name, int hp_max);
 	~DBG_Character();
 
-	virtual void startTurn(void);
-	virtual void endTurn(void);
-	virtual void selectSkill(void);
-	virtual void useSkill(void);
-	virtual bool isDead(void) const;
+	virtual void mt_Start_Turn(void);
+	virtual void mt_End_Turn(void);
+	virtual void mt_Select_Skill(void);
+	virtual void mt_Use_Skill(void);
+	virtual bool mt_Is_Dead(void) const;
 
-	std::unique_ptr<ICharacter> clone() const;
+	std::unique_ptr<ICharacter> mt_Clone() const;
 
 private:
 	int m_skill_index;

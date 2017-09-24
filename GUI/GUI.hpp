@@ -13,11 +13,11 @@ class IGUIBackground : public sf::Drawable, public misc::Clonable<IGUIBackground
 public:
 	virtual ~IGUIBackground();
 
-	virtual void setScreenPosition(unsigned int left_px, unsigned int top_px) = 0;
-	virtual void moveBy(int dx, int dy) = 0;
-	virtual void setDimensions(unsigned int width_px, unsigned int height_px) = 0;
-	virtual sf::IntRect getUsableDimensions(void) const = 0;
-	virtual sf::Vector2u getDimensions(void) const = 0;
+	virtual void mt_Set_Screen_Position(unsigned int left_px, unsigned int top_px) = 0;
+	virtual void mt_Move_By(int dx, int dy) = 0;
+	virtual void mt_Set_Dimensions(unsigned int width_px, unsigned int height_px) = 0;
+	virtual sf::IntRect mt_Get_Usable_Dimensions(void) const = 0;
+	virtual sf::Vector2u mt_Get_Dimensions(void) const = 0;
 };
 
 class GUIBackground : public IGUIBackground
@@ -38,43 +38,29 @@ public:
 	GUIBackground(const TextureManager& texture_manager, const std::string& texture_id, const TextureData& texture_data);
 	GUIBackground(const GUIBackground& copy);
 
-	virtual void setScreenPosition(unsigned int left_px, unsigned int top_px);
-	virtual void moveBy(int dx, int dy);
-	virtual void setDimensions(unsigned int width_px, unsigned int height_px);
-	sf::IntRect getUsableDimensions(void) const;
-	virtual sf::Vector2u getDimensions(void) const;
+	virtual void mt_Set_Screen_Position(unsigned int left_px, unsigned int top_px);
+	virtual void mt_Move_By(int dx, int dy);
+	virtual void mt_Set_Dimensions(unsigned int width_px, unsigned int height_px);
+	sf::IntRect mt_Get_Usable_Dimensions(void) const;
+	virtual sf::Vector2u mt_Get_Dimensions(void) const;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-	std::unique_ptr<IGUIBackground> clone(void) const;
+	std::unique_ptr<IGUIBackground> mt_Clone(void) const;
 
 protected:
-	virtual void setBackground(sf::Sprite& sprite,
+	virtual void mt_Set_Background(sf::Sprite& sprite,
 		unsigned int x_sub_sprite_count,
 		unsigned int y_sub_sprite_count,
 		const TextureData& texture_data);
-	virtual void setEdge(sf::Sprite& top_edge_sprite,
+	virtual void mt_Set_Edge(sf::Sprite& top_edge_sprite,
 		sf::Sprite& right_edge_sprite,
 		sf::Sprite& bottom_edge_sprite,
 		sf::Sprite& left_edge_sprite,
 		unsigned int horizontal_sub_lignes_count,
 		unsigned int vertical_sub_lignes_count,
 		sf::Vector2i background_sprite_size);
-	/*virtual void setEdgeCopy(sf::Sprite& top_edge_sprite,
-		sf::Sprite& right_edge_sprite,
-		sf::Sprite& bottom_edge_sprite,
-		sf::Sprite& left_edge_sprite,
-		unsigned int horizontal_sub_lignes_count,
-		unsigned int vertical_sub_lignes_count,
-		sf::Vector2i background_sprite_size);*/
-	/*virtual void setEdgeScale(sf::Sprite& top_edge_sprite,
-		sf::Sprite& right_edge_sprite,
-		sf::Sprite& bottom_edge_sprite,
-		sf::Sprite& left_edge_sprite,
-		unsigned int horizontal_sub_lignes_count,
-		unsigned int vertical_sub_lignes_count,
-		sf::Vector2i background_sprite_size);*/
-	virtual void setCorners(sf::Sprite& top_left_corner_sprite,
+	virtual void mt_Set_Corners(sf::Sprite& top_left_corner_sprite,
 		sf::Sprite& top_right_corner_sprite,
 		sf::Sprite& bottom_right_corner_sprite,
 		sf::Sprite& bottom_left_corner_sprite,

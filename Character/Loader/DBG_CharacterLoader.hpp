@@ -12,10 +12,10 @@ public:
 	DBG_CharacterLoader(const std::string& element_name);
 
 protected:
-	bool isValid(const TiXmlElement& element);
-	bool checkSkills(const TiXmlElement& skills);
-	std::unique_ptr<ICharacter> load(const TiXmlElement& element, SkillManager& sm);
-	std::vector<std::string> loadSkills(const TiXmlElement& skills_element);
+	bool mt_Is_Valid(const TiXmlElement& element);
+	bool mt_Check_Skills(const TiXmlElement& skills);
+	std::unique_ptr<ICharacter> mt_Load(const TiXmlElement& element, SkillManager& sm);
+	std::vector<std::string> mt_Load_Skills(const TiXmlElement& skills_element);
 };
 
 

@@ -7,40 +7,60 @@
 
 
 BasicMap::BasicMap()
-	: m_background(),
-	m_middleground(),
-	m_foreground(),
+	: m_tiles(),
 	m_linked_maps(),
 	m_ambiant_music()
 {}
 
-IMap* BasicMap::run(Environment& environment)
+BasicMap::BasicMap(const BasicMap& cp)
+	: m_tiles(),
+	m_linked_maps(cp.m_linked_maps),
+	m_ambiant_music(cp.m_ambiant_music)
+{
+	for (auto l_it = cp.m_layers.begin(); l_it != cp.m_layers.end(); l_it++)
+	{
+		sf::Sprite l_sprite;
+
+		l_sprite.setTexture(l_it->second.getTexture());
+		m_layers[l_it->first].create(l_it->second.getTexture().getSize().x, l_it->second.getTexture().getSize().y);
+		m_layers[l_it->first].draw(l_sprite);
+	}
+}
+
+IMap* BasicMap::mt_Run(Environment& environment)
 {
 	sf::RenderWindow window(sf::VideoMode(640, 480), m_id);
 	unsigned int l_col, l_row;
-	
+	float l_scale(1.0f);
+
 	window.setFramerateLimit(5);
 
-	environment.m_music_manager.play(m_ambiant_music);
+	environment.m_music_manager.mt_Play(m_ambiant_music);
 
 	while (window.isOpen())
 	{
 		sf::Event event;
-		sf::Vector2u size(m_background.size());
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			if (event.type == sf::Event::MouseWheelMoved)
+			{
+				int delta(event.mouseWheel.delta);
+				if (	(l_scale > 0.5f && delta < 0)
+					||	(delta > 0 && l_scale < 3.0f))
+					l_scale += delta * 0.5f;
+			}
 		}
 
 		window.clear(sf::Color::Magenta);
-		// puis, dans la boucle de dessin, entre window.clear() et window.display()
 
-		for(l_col = 0; l_col < size.x; l_col++)
-			for (l_row = 0; l_row < size.y; l_row++)
-			{
-				window.draw(m_background[l_col][l_row]);
-			}
+		sf::Sprite l_sprite;
+
+		l_sprite.setTexture(m_layers.begin()->second.getTexture());
+		l_sprite.setScale(l_scale, l_scale);
+
+		window.draw(l_sprite);
 
 		window.display();
 	}
@@ -48,81 +68,35 @@ IMap* BasicMap::run(Environment& environment)
 	return nullptr;
 }
 
-void BasicMap::load(const TiXmlElement& element, const TilesetManager& tm)
-{
-	std::map<std::string, Grid<Tile>*> l_grounds;
-	std::map<std::string, Grid<Tile>*>::iterator l_it;
-
-	l_grounds["Background"] = &m_background;
-	l_grounds["Middleground"] = &m_middleground;
-	l_grounds["Foreground"] = &m_foreground;
-
-	element.QueryStringAttribute("id", &m_id);
-
-	for (const TiXmlElement* l_child = element.FirstChildElement(); l_child != nullptr; l_child = l_child->NextSiblingElement())
-	{
-		l_it = l_grounds.find(l_child->Value());
-		if (l_it != l_grounds.end())
-		{
-			loadGround(*l_child, tm, *l_it->second);
-		}
-		else if (l_child->ValueStr() == "LinkedMaps")
-		{
-			loadLinkedMaps(*l_child);
-		}
-		else if (l_child->ValueStr() == "AmbiantMusic")
-		{
-			l_child->QueryStringAttribute("id", &m_ambiant_music);
-		}
-	}
-}
-
-void BasicMap::initialize(MapManager& map_manager)
+void BasicMap::mt_Initialize(MapManager& map_manager)
 {
 	//
 }
 
-void BasicMap::save(TiXmlElement& element)
+void BasicMap::mt_Save(TiXmlElement& element)
 {}
 
-const std::string& BasicMap::getId() const
+const std::string& BasicMap::mt_Get_Id() const
 {
 	return m_id;
 }
 
-std::unique_ptr<IMap> BasicMap::clone(void) const
+std::unique_ptr<IMap> BasicMap::mt_Clone(void) const
 {
 	return std::unique_ptr<IMap>(new BasicMap(*this));
 }
 
-void BasicMap::loadGround(const TiXmlElement& element_ground, const TilesetManager& tm, Grid<Tile>& ground)
+const TileInfo* BasicMap::mt_Get_Tile_Infos(int x_index, int y_index, int elevation) const
 {
-	std::vector<std::pair<std::string, unsigned int*>> l_attributes;
-	unsigned int l_cell_col, l_cell_row, l_tileset_col, l_tileset_row;
-	std::string l_tileset_id;
-	sf::Vector2u l_tile_size;
+	const TileInfo* l_ret(nullptr);
+	std::map<int, misc::Grid<Tile>>::const_iterator l_it;
 
-	l_attributes.push_back(std::make_pair("cell_col", &l_cell_col));
-	l_attributes.push_back(std::make_pair("cell_row", &l_cell_row));
-	l_attributes.push_back(std::make_pair("tileset_col", &l_tileset_col));
-	l_attributes.push_back(std::make_pair("tileset_row", &l_tileset_row));
+	l_it = m_tiles.find(elevation);
 
-	for (const TiXmlElement* l_cell = element_ground.FirstChildElement("Cell"); l_cell != nullptr; l_cell = l_cell->NextSiblingElement("Cell"))
+	if ((l_it != m_tiles.end()) && (x_index < l_it->second.mt_Size().x ) && (y_index < l_it->second.mt_Size().y))
 	{
-		for (auto& a : l_attributes)
-			l_cell->QueryUnsignedAttribute(a.first.c_str(), a.second);
-		l_cell->QueryValueAttribute("tileset_id", &l_tileset_id);
-		l_tile_size = tm.getTileSize(l_tileset_id);
-
-		ground.insert(l_cell_col - 1, l_cell_row - 1, tm.getTile(l_tileset_id, l_tileset_col - 1, l_tileset_row - 1));
-		ground[l_cell_col - 1][l_cell_row - 1].setPosition((l_cell_col - 1) * l_tile_size.x, (l_cell_row - 1) * l_tile_size.y);
+		l_ret = &l_it->second.mt_At(x_index, y_index).m_infos;
 	}
-}
 
-void BasicMap::loadLinkedMaps(const TiXmlElement& linked_maps)
-{
-	for (const TiXmlElement* l_child = linked_maps.FirstChildElement("LinkedMap"); l_child != nullptr; l_child = l_child->NextSiblingElement("LinkedMap"))
-	{
-		//
-	}
+	return l_ret;
 }

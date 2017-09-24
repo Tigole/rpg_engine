@@ -10,7 +10,7 @@ class IException
 public:
 	virtual ~IException();
 
-	virtual const char* what(void) const = 0;
+	virtual const char* mt_What(void) const = 0;
 };
 
 class Exception : public IException
@@ -18,7 +18,7 @@ class Exception : public IException
 public:
 	Exception(const std::string& str);
 
-	const char* what(void) const;
+	const char* mt_What(void) const;
 
 protected:
 	std::string m_what;

@@ -13,7 +13,7 @@ public:
 	EffectLoader(const std::string& element_name);
 	virtual ~EffectLoader();
 
-	virtual std::unique_ptr<IEffect> load(const TiXmlElement& element) = 0;
+	virtual std::unique_ptr<IEffect> mt_Load(const TiXmlElement& element) = 0;
 };
 
 #endif // !_EFFECT_LOADER_HPP

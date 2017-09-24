@@ -12,7 +12,7 @@ DBG_DamageSkillLoader::DBG_DamageSkillLoader(const std::string& element_name)
 	/** Nothing **/
 }
 
-std::unique_ptr<ISkill> DBG_DamageSkillLoader::load(const TiXmlElement& element)
+std::unique_ptr<ISkill> DBG_DamageSkillLoader::mt_Load(const TiXmlElement& element)
 {
 	std::unique_ptr<ISkill> l_ret(nullptr);
 	int l_query_return(TIXML_SUCCESS);
@@ -30,7 +30,7 @@ std::unique_ptr<ISkill> DBG_DamageSkillLoader::load(const TiXmlElement& element)
 	if (element.QueryStringAttribute("operator", &skill_operator_str) != TIXML_SUCCESS)
 		throw ExceptionXMLLoadingAttributeMissing(element, "operator");
 
-	skill_operator = DamageSkill::stringToOperator(skill_operator_str);
+	skill_operator = DamageSkill::mt_String_To_Operator(skill_operator_str);
 
 	l_ret.reset(new DBG_DamageSkill(skill_name, skill_damages, skill_operator));
 

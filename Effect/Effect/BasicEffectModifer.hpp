@@ -8,9 +8,9 @@ class BasicEffectModifier : public Effect
 public:
 	BasicEffectModifier(const std::string& target_attribute, const std::string& formula);
 
-	virtual void affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target);
+	virtual void mt_Affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target);
 
-	std::unique_ptr<IEffect> clone(void) const;
+	std::unique_ptr<IEffect> mt_Clone(void) const;
 
 private:
 	std::string m_formula;

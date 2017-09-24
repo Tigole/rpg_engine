@@ -12,7 +12,7 @@ MenuNavigationState_Child::MenuNavigationState_Child(MenuNavigation& parent, std
 	/** Nothing **/
 }
 
-bool MenuNavigationState_Child::process(void)
+bool MenuNavigationState_Child::mt_Process(void)
 {
 	bool l_b_ret(false);
 	int child_return;
@@ -20,11 +20,11 @@ bool MenuNavigationState_Child::process(void)
 	if (m_target_object != m_navigation_objects.end())
 	{
 		l_b_ret = true;
-		child_return = (*m_target_object)->callback(&m_parent);
+		child_return = (*m_target_object)->mt_Callback(&m_parent);
 		if (child_return == fsm::SequentialFSM::SEQUENTIAL_STOP_STATE_REACHED)
-			m_trans_child_cancel.setFlag();
+			m_trans_child_cancel.mt_Set_Flag();
 		else if (child_return == fsm::StatusHandlerFSM::STATUS_FSM_ERROR)
-			m_trans_child_cancel.setFlag();
+			m_trans_child_cancel.mt_Set_Flag();
 	}
 
 	return l_b_ret;

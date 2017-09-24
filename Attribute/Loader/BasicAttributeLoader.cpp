@@ -27,7 +27,7 @@ BasicAttributeLoader::~BasicAttributeLoader()
 	/** Nothing **/
 }
 
-std::unique_ptr<IAttribute> BasicAttributeLoader::load(const TiXmlElement& element)
+std::unique_ptr<IAttribute> BasicAttributeLoader::mt_Load(const TiXmlElement& element)
 {
 	std::unique_ptr<IAttribute> l_ret(nullptr);
 	int tixml_ret(TIXML_SUCCESS);

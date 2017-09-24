@@ -12,7 +12,7 @@ DLL_Loader::~DLL_Loader()
 	}
 }
 
-DLL_Loader::NativeDllHandleType DLL_Loader::getHandle(const std::string& dll_name)
+DLL_Loader::NativeDllHandleType DLL_Loader::mt_Get_Handle(const std::string& dll_name)
 {
 	DLL_Loader::NativeDllHandleType l_ret(nullptr);
 	auto l_it(m_dll.find(dll_name));

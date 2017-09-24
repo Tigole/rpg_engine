@@ -7,12 +7,12 @@ class Character : public BasicCharacter
 {
 public:
 	Character(const std::string& name, int hp);
-	virtual void selectSkill(void);
-	virtual void useSkill(void);
+	virtual void mt_Select_Skill(void);
+	virtual void mt_Use_Skill(void);
 
 protected:
-	void chooseTarget(void);
-	
+	void mt_Choose_Target(void);
+
 
 	std::vector<ICharacter*> m_fighters;
 

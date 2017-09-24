@@ -8,7 +8,7 @@ class IEvent
 public:
 	IEvent(const sf::Event& event) : m_sfml_event(event){}
 	virtual ~IEvent(){}
-	const sf::Event& getSFMLEvent(void) const { return m_sfml_event; }
+	const sf::Event& mt_Get_SFML_Event(void) const { return m_sfml_event; }
 private:
 	sf::Event m_sfml_event;
 };

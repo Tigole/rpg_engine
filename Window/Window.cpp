@@ -10,17 +10,27 @@ Window::~Window()
 	//
 }
 
-void Window::beginDraw(void)
+void Window::mt_Begin_Draw(void)
 {
 	//
 }
 
-void Window::endDraw(void)
+void Window::mt_End_Draw(void)
 {
 	//
 }
 
-void Window::update(void)
+void Window::mt_Update(void)
 {
 	//
+}
+
+sf::RenderWindow* Window::mt_Get_Renderer_Window(void)
+{
+	return &m_renderer_window;
+}
+
+sf::FloatRect Window::mt_Get_View_Space(void) const
+{
+	return m_renderer_window.getView().getViewport();
 }

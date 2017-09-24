@@ -7,7 +7,7 @@ TilesetManager::TilesetManager(const std::string& resource_path)
 	:	m_resources_path(resource_path)
 {}
 
-void TilesetManager::load(const std::string& file_path)
+void TilesetManager::mt_Load(const std::string& file_path)
 {
 	TiXmlDocument l_doc(file_path);
 	TiXmlElement* l_root(nullptr);
@@ -20,28 +20,28 @@ void TilesetManager::load(const std::string& file_path)
 	{
 		Tileset l_tileset;
 
-		l_tileset.load(*a, m_resources_path);
+		l_tileset.mt_Load(*a, m_resources_path);
 
-		if (m_tilesets.find(l_tileset.getId()) != m_tilesets.end())
-			throw ExceptionResourceAlradeyExists(l_tileset.getId(), FUNCTION_NAME);
+		if (m_tilesets.find(l_tileset.mt_Get_Id()) != m_tilesets.end())
+			throw ExceptionResourceAlradeyExists(l_tileset.mt_Get_Id(), FUNCTION_NAME);
 
-		m_tilesets[l_tileset.getId()] = l_tileset;
+		m_tilesets[l_tileset.mt_Get_Id()] = l_tileset;
 	}
 
 
 }
 
-Tile TilesetManager::getTile(const std::string& tileset_id, unsigned int col, unsigned int row) const
+Tile TilesetManager::mt_Get_Tile(const std::string& tileset_id, unsigned int col, unsigned int row) const
 {
-	return getTileset(tileset_id, FUNCTION_NAME)->second.getTile(col, row);
+	return mt_Get_Tileset(tileset_id, FUNCTION_NAME)->second.mt_Get_Tile(col, row);
 }
 
-sf::Vector2u TilesetManager::getTileSize(const std::string& tileset_id) const
+sf::Vector2u TilesetManager::mt_Get_Tile_Size(const std::string& tileset_id) const
 {
-	return getTileset(tileset_id, FUNCTION_NAME)->second.getTileSize();
+	return mt_Get_Tileset(tileset_id, FUNCTION_NAME)->second.mt_Get_Tile_Size();
 }
 
-std::map<std::string, Tileset>::const_iterator TilesetManager::getTileset(const std::string& tileset_id, const std::string& calling_function) const
+std::map<std::string, Tileset>::const_iterator TilesetManager::mt_Get_Tileset(const std::string& tileset_id, const std::string& calling_function) const
 {
 	std::map<std::string, Tileset>::const_iterator l_it;
 

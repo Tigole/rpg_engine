@@ -6,7 +6,7 @@ SkillLoaderFactory::SkillLoaderFactory(AttributeLoaderFactory& attribute_factory
 {
 	BasicSkillLoader basic_loader;
 
-	basic_loader.setAttributeLoaderFactory(&attribute_factory);
+	basic_loader.mt_Set_AttributeLoaderFactory(&attribute_factory);
 
-	m_creators[basic_loader.getElementName()] = LoaderCreator<SkillLoader>(&createBasicSkillLoader, &deleteBasicSkillLoader);
+	m_creators[basic_loader.mt_Get_Element_Name()] = LoaderCreator<SkillLoader>(&createBasicSkillLoader, &deleteBasicSkillLoader);
 }

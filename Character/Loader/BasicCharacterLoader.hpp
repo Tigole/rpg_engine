@@ -11,13 +11,13 @@ class BasicCharacterLoader : public CharacterLoader
 public:
 	BasicCharacterLoader();
 
-	void setAttributeLoaderFactory(AttributeLoaderFactory* attribute_loader_factory);
-	virtual std::unique_ptr<ICharacter> load(const TiXmlElement& element, SkillManager& sm);
+	void mt_Set_AttributeLoaderFactory(AttributeLoaderFactory* attribute_loader_factory);
+	virtual std::unique_ptr<ICharacter> mt_Load(const TiXmlElement& element, SkillManager& sm);
 
 protected:
 
-	void loadSkillList(const TiXmlElement& element, std::vector<std::string>& skill_id);
-	void loadAttributList(const TiXmlElement& element, BasicCharacter& character);
+	void mt_Load_SkillList(const TiXmlElement& element, std::vector<std::string>& skill_id);
+	void mt_Load_AttributList(const TiXmlElement& element, BasicCharacter& character);
 
 	AttributeLoaderFactory* m_attribute_loader_factory;
 };

@@ -12,9 +12,9 @@ class IDialogBox : public sf::Drawable
 public:
 	virtual ~IDialogBox();
 
-	virtual void hide(bool hide) = 0;
-	virtual void setScreenPosition(unsigned int top_px, unsigned int left_px) = 0;
-	virtual void setDimensions(unsigned int width_px, unsigned int height_px) = 0;
+	virtual void mt_Hide(bool hide) = 0;
+	virtual void mt_Set_Screen_Position(unsigned int top_px, unsigned int left_px) = 0;
+	virtual void mt_Set_Dimensions(unsigned int width_px, unsigned int height_px) = 0;
 };
 
 class BasicDialogBox : public IDialogBox
@@ -26,11 +26,11 @@ public:
 	BasicDialogBox(std::unique_ptr<IGUIBackground>& background, unsigned int left_px, unsigned int top_px, unsigned int width_px, unsigned int height_px);
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-	virtual void hide(bool hide);
-	virtual void setScreenPosition(unsigned int left_px, unsigned int top_px);
-	virtual void setDimensions(unsigned int width_px, unsigned int height_px);
-	void setBackground(std::unique_ptr<IGUIBackground>& new_background);
-	sf::IntRect getInsideDimensions(void) const;
+	virtual void mt_Hide(bool hide);
+	virtual void mt_Set_Screen_Position(unsigned int left_px, unsigned int top_px);
+	virtual void mt_Set_Dimensions(unsigned int width_px, unsigned int height_px);
+	void mt_Set_Background(std::unique_ptr<IGUIBackground>& new_background);
+	sf::IntRect mt_Get_Inside_Dimensions(void) const;
 protected:
 	std::vector<sf::Drawable*> m_drawable;
 private:
@@ -57,12 +57,12 @@ public:
 	TextDialogBox(std::unique_ptr<IGUIBackground>& background, const TextData& text_data, unsigned int left_px, unsigned int top_px);
 	TextDialogBox(std::unique_ptr<IGUIBackground>& background, const TextData& text_data, unsigned int left_px, unsigned int top_px, const std::string& text);
 
-	virtual void setText(const std::string& text);
-	virtual void setText(const std::vector<std::string>& text);
+	virtual void mt_Set_Text(const std::string& text);
+	virtual void mt_Set_Text(const std::vector<std::string>& text);
 
 protected:
 
-	void initialize(const TextData& text_data);
+	void mt_Initialize(const TextData& text_data);
 
 	sf::Text m_text;
 	sf::Font m_font;

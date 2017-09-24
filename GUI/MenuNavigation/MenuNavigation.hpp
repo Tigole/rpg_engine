@@ -16,17 +16,17 @@ class MenuNavigation : public BasicActionable, public fsm::SequentialFSM, public
 public:
 	MenuNavigation();
 
-	void onValidate(void);
-	void onCancel(void);
-	void onLeft(void);
-	void onRight(void);
-	void onUp(void);
-	void onBottom(void);
+	void mt_On_Validate(void);
+	void mt_On_Cancel(void);
+	void mt_On_Left(void);
+	void mt_On_Right(void);
+	void mt_On_Up(void);
+	void mt_On_Bottom(void);
 
-	void setNavigatioObjects(std::vector<INavigationObject*>& navigation_objects, unsigned int row_number, unsigned int column_number);
+	void mt_Set_Navigation_Objects(std::vector<INavigationObject*>& navigation_objects, unsigned int row_number, unsigned int column_number);
 
 protected:
-	void manageDrawing(void);
+	void mt_Manage_Drawing(void);
 
 	std::vector<INavigationObject*> m_navigation_objects;
 	std::vector<INavigationObject*>::iterator m_target_object;

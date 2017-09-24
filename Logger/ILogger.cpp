@@ -3,11 +3,8 @@
 #include "XMLLogger.h"
 #include "DummyLogger.h"
 
-#define STRINGIZE(X)	#X
-
-
 #if LOG_XML == 1
-static XMLLogger gs_logger(STRINGIZE(LOG_FILE), "rpg_engine");
+static XMLLogger gs_logger("log.xml", "rpg_engine");
 #else
 static DummyLogger gs_logger;
 #endif
@@ -21,22 +18,22 @@ ILogger::ILogger()
 {}
 ILogger::~ILogger()
 {}
-ILogger& ILogger::log(bool b)
+ILogger& ILogger::mt_Log(bool b)
 {
     std::stringstream ss;
     ss << std::boolalpha;
     ss << b;
-    log(ss.str());
+    mt_Log(ss.str());
     return *this;
 }
-ILogger& ILogger::log(const char* msg)
+ILogger& ILogger::mt_Log(const char* msg)
 {
-    log(std::string(msg));
+    mt_Log(std::string(msg));
     return *this;
 }
-ILogger& ILogger::log(char* msg)
+ILogger& ILogger::mt_Log(char* msg)
 {
-    log(std::string(msg));
+    mt_Log(std::string(msg));
     return *this;
 }
 
@@ -57,48 +54,48 @@ Logger::~Logger()
         m_file.close();
 }
 
-bool Logger::isValid(void)
+bool Logger::mt_Is_Valid(void)
 {
     return m_file.is_open();
 }
 
-void Logger::entranceFunction(const char* function_name)
+void Logger::mt_Entrance_Function(const char* function_name)
 {
-    m_stack_entries.push(&Logger::exitFunction);
-	manageFormatEntrance(function_name, m_functions, &Logger::FormatEntranceFunction);
+    m_stack_entries.push(&Logger::mt_Exit_Function);
+	mt_Manage_Format_Entrance(function_name, m_functions, &Logger::mt_Format_Entrance_Function);
 }
 
-void Logger::exitFunction(void)
+void Logger::mt_Exit_Function(void)
 {
-	manageFormatExit(m_functions, &Logger::FormatExiteFunction);
+	mt_Manage_Format_Exit(m_functions, &Logger::mt_Format_Exit_Function);
     m_stack_entries.pop();
 }
 
-void Logger::onEvent(const char* event_name)
+void Logger::mt_On_Event(const char* event_name)
 {
-    m_stack_entries.push(&Logger::stopEvent);
-	manageFormatEntrance(event_name, m_events, &Logger::FormatOnEvenement);
+    m_stack_entries.push(&Logger::mt_Stop_Event);
+	mt_Manage_Format_Entrance(event_name, m_events, &Logger::mt_Format_On_Evenement);
 }
 
-void Logger::stopEvent(void)
+void Logger::mt_Stop_Event(void)
 {
-	manageFormatExit(m_events, &Logger::FormatStopEvenement);
+	mt_Manage_Format_Exit(m_events, &Logger::mt_Format_Stop_Evenement);
     m_stack_entries.pop();
 }
 
-void Logger::startBlock(const char* block_name)
+void Logger::mt_Start_Block(const char* block_name)
 {
-    m_stack_entries.push(&Logger::endBlock);
-	manageFormatEntrance(block_name, m_blocks, &Logger::FormatStartBlock);
+    m_stack_entries.push(&Logger::mt_End_Block);
+	mt_Manage_Format_Entrance(block_name, m_blocks, &Logger::mt_Format_Start_Block);
 }
 
-void Logger::endBlock(void)
+void Logger::mt_End_Block(void)
 {
-	manageFormatExit(m_blocks, &Logger::FormatEndBlock);
+	mt_Manage_Format_Exit(m_blocks, &Logger::mt_Format_End_Block);
     m_stack_entries.pop();
 }
 
-void Logger::unstackEntriesForStopLog(void)
+void Logger::mt_Unstack_Entries_For_Stop_Log(void)
 {
     while (m_stack_entries.size())
     {
@@ -106,13 +103,13 @@ void Logger::unstackEntriesForStopLog(void)
     }
 }
 
-void Logger::manageFormatEntrance(const char* name, std::stack<std::string>& stack, void(Logger::*function)(const char*))
+void Logger::mt_Manage_Format_Entrance(const char* name, std::stack<std::string>& stack, void(Logger::*function)(const char*))
 {
     (this->*function)(name);
 	stack.push(name);
 }
 
-void Logger::manageFormatExit(std::stack<std::string>& stack, void(Logger::*function)(const char*))
+void Logger::mt_Manage_Format_Exit(std::stack<std::string>& stack, void(Logger::*function)(const char*))
 {
     if (stack.size())
     {

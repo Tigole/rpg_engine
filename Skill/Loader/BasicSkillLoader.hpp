@@ -12,11 +12,11 @@ class BasicSkillLoader : public SkillLoader
 public:
 	BasicSkillLoader();
 
-	void setAttributeLoaderFactory(const AttributeLoaderFactory* attribute_loader_factory);
-	std::unique_ptr<ISkill> load(const TiXmlElement& element);
+	void mt_Set_AttributeLoaderFactory(const AttributeLoaderFactory* attribute_loader_factory);
+	std::unique_ptr<ISkill> mt_Load(const TiXmlElement& element);
 
 protected:
-	void loadAttributes(const TiXmlElement& element, ISkill& skill) const;
+	void mt_Load_Attributes(const TiXmlElement& element, ISkill& skill) const;
 
 	const AttributeLoaderFactory* m_attribute_loader_factory;
 	std::vector<std::string> m_attributes;

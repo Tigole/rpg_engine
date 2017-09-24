@@ -2,51 +2,56 @@
 
 #include <tinyxml.h>
 
-ComponentPosition::Position::Position(int x, int y, int layer)
- :	m_x(x),
-	m_y(y),
-	m_layer(layer)
-{}
-
-ComponentPosition::ComponentPosition()
- :	ECS_Component(getComponentId()),
- 	m_current_position(Position(0, 0, 0)),
-	m_previous_position(Position(0, 0, 0))
-{}
-
-std::string ComponentPosition::getComponentId(void)
+const ECS_ComponentId& ComponentPosition::mt_Get_Component_Id(void)
 {
-	return "ComponentPosition";
+	return ECS_ComponentId::POSITION;
 }
 
-void ComponentPosition::load(const TiXmlElement& element)
+void ComponentPosition::mt_Load(const TiXmlElement& element)
 {
-	if (element.ValueStr() == getComponentId())
+	/*if (element.ValueStr() == getComponentId())
 	{
 		element.QueryIntAttribute("x", &m_current_position.m_x);
 		element.QueryIntAttribute("y", &m_current_position.m_y);
 		element.QueryIntAttribute("layer", &m_current_position.m_layer);
-	}
+	}*/
 }
 
-void ComponentPosition::getCurrentPosition(Position& current_position)
+sf::Vector2f ComponentPosition::mt_Get_Current_Position(void)
 {
-	current_position = m_current_position;
+	return m_current_world_position_px.first;
 }
 
-void ComponentPosition::setCurrentPosition(const Position& current_position)
+void ComponentPosition::mt_Set_Current_Position(const sf::Vector2f& new_world_position_px)
 {
-	m_previous_position = m_current_position;
-	m_current_position = current_position;
+	m_previous_world_position_px.first = m_current_world_position_px.first;
+	m_current_world_position_px.first = new_world_position_px;
 }
 
-void ComponentPosition::getPreviousPosition(Position& previous_position)
+void ComponentPosition::mt_Set_Current_Position(const sf::Vector2f& new_world_position_px, int new_layer)
 {
-	previous_position = m_previous_position;
+	mt_Set_Current_Position(new_world_position_px);
+	m_previous_world_position_px.second = m_current_world_position_px.second;
+	m_current_world_position_px.second = new_layer;
 }
 
-void ComponentPosition::moveBy(int dx, int dy, int d_layer)
+sf::Vector2f ComponentPosition::mt_Get_Previous_Position(void)
 {
-	Position new_position(m_current_position.m_x + dx, m_current_position.m_y + dy, m_current_position.m_layer + d_layer);
-	setCurrentPosition(new_position);
+	return m_previous_world_position_px.first;
+}
+
+void ComponentPosition::mt_Move_By(sf::Vector2f delta_px)
+{
+	mt_Set_Current_Position(m_current_world_position_px.first + delta_px);
+}
+
+void ComponentPosition::mt_Set_Layer(int layer)
+{
+	m_previous_world_position_px.second = m_current_world_position_px.second;
+	m_current_world_position_px.second = layer;
+}
+
+int ComponentPosition::mt_Get_Current_Layer(void)
+{
+	return m_current_world_position_px.second;
 }

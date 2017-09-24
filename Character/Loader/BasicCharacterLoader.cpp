@@ -11,12 +11,12 @@ BasicCharacterLoader::BasicCharacterLoader()
 	/** Nothing **/
 }
 
-void BasicCharacterLoader::setAttributeLoaderFactory(AttributeLoaderFactory* attribute_loader_factory)
+void BasicCharacterLoader::mt_Set_AttributeLoaderFactory(AttributeLoaderFactory* attribute_loader_factory)
 {
 	m_attribute_loader_factory = attribute_loader_factory;
 }
 
-std::unique_ptr<ICharacter> BasicCharacterLoader::load(const TiXmlElement& element, SkillManager& skill_manager)
+std::unique_ptr<ICharacter> BasicCharacterLoader::mt_Load(const TiXmlElement& element, SkillManager& skill_manager)
 {
 	BasicCharacter* l_ret(nullptr);
 	bool b(false);
@@ -37,14 +37,14 @@ std::unique_ptr<ICharacter> BasicCharacterLoader::load(const TiXmlElement& eleme
 		{
 			if (l_element->ValueStr() == "SkillList")
 			{
-				loadSkillList(*l_element, skill_ids);
+				mt_Load_SkillList(*l_element, skill_ids);
 
 				for (auto& skill_id : skill_ids)
-					l_ret->addSkill(skill_id, skill_manager);
+					l_ret->mt_Add_Skill(skill_id, skill_manager);
 			}
 			else if (l_element->ValueStr() == "AttributeList")
 			{
-				loadAttributList(*l_element, *l_ret);
+				mt_Load_AttributList(*l_element, *l_ret);
 			}
 		}
 	}
@@ -52,7 +52,7 @@ std::unique_ptr<ICharacter> BasicCharacterLoader::load(const TiXmlElement& eleme
 	return std::unique_ptr<ICharacter>(l_ret);
 }
 
-void BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vector<std::string>& skill_id)
+void BasicCharacterLoader::mt_Load_SkillList(const TiXmlElement& element, std::vector<std::string>& skill_id)
 {
 	std::string tmp;
 
@@ -74,15 +74,15 @@ void BasicCharacterLoader::loadSkillList(const TiXmlElement& element, std::vecto
 			}
 			else
 			{
-				log().entranceFunction(FUNCTION_NAME);
+				log().mt_Entrance_Function(FUNCTION_NAME);
 				log() << "Unexpected element \"" << l_element->Value() << "\" in AttributeList\n";
-				log().exitFunction();
+				log().mt_Exit_Function();
 			}
 		}
 	}
 }
 
-void BasicCharacterLoader::loadAttributList(const TiXmlElement& element, BasicCharacter& character)
+void BasicCharacterLoader::mt_Load_AttributList(const TiXmlElement& element, BasicCharacter& character)
 {
 	if (element.NoChildren() == true)
 		throw ExceptionXMLLoadingElementHasNoChild(element);

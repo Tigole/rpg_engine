@@ -20,8 +20,8 @@ class TrueTransition : public Transition
 public:
 	TrueTransition(){}
 
-	IState* check(IState* current_state) {UNUSED_PARAMETER(current_state); return m_target_state;}
-	bool reset(void) { return true; }
+	IState* mt_Check(IState* current_state) {UNUSED_PARAMETER(current_state); return m_target_state;}
+	bool mt_Reset(void) { return true; }
 };
 
 class TogglableTransition : public Transition
@@ -29,9 +29,9 @@ class TogglableTransition : public Transition
 public:
 	TogglableTransition() : m_transition_flag(false){}
 
-	IState* check(IState* current_state) { if (m_transition_flag == true) current_state = m_target_state; m_transition_flag = false; return current_state; }
-	bool reset(void) { m_transition_flag = false; return true; }
-	void setFlag(void) { m_transition_flag = true; }
+	IState* mt_Check(IState* current_state) { if (m_transition_flag == true) current_state = m_target_state; m_transition_flag = false; return current_state; }
+	bool mt_Reset(void) { m_transition_flag = false; return true; }
+	void mt_Set_Flag(void) { m_transition_flag = true; }
 protected:
 	bool m_transition_flag;
 };

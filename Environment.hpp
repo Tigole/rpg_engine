@@ -7,6 +7,8 @@
 #include "Character/CharacterManager.hpp"
 #include "Skill/SkillManager.hpp"
 #include "GUI/TextureManager.hpp"
+#include "ECS_Core/ECS_SystemManager.hpp"
+#include "ECS_Core/ECS_EntityManager.hpp"
 
 #include <string>
 #include <utility>
@@ -17,7 +19,7 @@ class Environment
 public:
 	Environment(const std::string& resource_path);
 
-	void load();
+	void mt_Load();
 
 	MusicManager m_music_manager;
 	TilesetManager m_tileset_manager;
@@ -25,6 +27,8 @@ public:
 	CharacterManager m_character_manager;
 	SkillManager m_skill_manager;
 	TextureManager m_texture_manager;
+	ECS_SystemManager m_system_manager;
+	ECS_EntityManager m_entity_manager;
 
 private:
 	std::string m_resource_path;

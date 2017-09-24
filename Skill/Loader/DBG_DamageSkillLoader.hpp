@@ -8,7 +8,7 @@ class DBG_DamageSkillLoader : public SkillLoader
 public:
 	DBG_DamageSkillLoader(const std::string& element_name);
 
-	std::unique_ptr<ISkill> load(const TiXmlElement& element);
+	std::unique_ptr<ISkill> mt_Load(const TiXmlElement& element);
 };
 
 #endif // _DBG_DAMAGESKILLLOADER_HPP

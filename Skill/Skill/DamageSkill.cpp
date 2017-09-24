@@ -7,7 +7,7 @@
 
 std::map<DamageSkill::DamageSkillOperator, int (DamageSkill::*)(int, int)> DamageSkill::m_operator_map;
 
-DamageSkill::DamageSkillOperator DamageSkill::stringToOperator(const std::string& op)
+DamageSkill::DamageSkillOperator DamageSkill::mt_String_To_Operator(const std::string& op)
 {
 	DamageSkill::DamageSkillOperator l_ret(DSO_ERROR);
 	std::map<std::string, DamageSkillOperator> l_map;
@@ -34,12 +34,12 @@ DamageSkill::DamageSkill(const std::string& name, int damages, DamageSkillOperat
 {
 	if (m_operator_map.size() != 6)
 	{
-		m_operator_map[DSO_ADD] = &DamageSkill::manage_DSO_ADD;
-		m_operator_map[DSO_MINUS] = &DamageSkill::manage_DSO_MINUS;
-		m_operator_map[DSO_PERCENT] = &DamageSkill::manage_DSO_PERCENT;
-		m_operator_map[DSO_RAW] = &DamageSkill::manage_DSO_RAW;
-		m_operator_map[DSO_MULTIPLY] = &DamageSkill::manage_DSO_MULTIPLY;
-		m_operator_map[DSO_DIVIDE] = &DamageSkill::manage_DSO_DIVIDE;
+		m_operator_map[DSO_ADD] = &DamageSkill::mt_Manage_DSO_ADD;
+		m_operator_map[DSO_MINUS] = &DamageSkill::mt_Manage_DSO_MINUS;
+		m_operator_map[DSO_PERCENT] = &DamageSkill::mt_Manage_DSO_PERCENT;
+		m_operator_map[DSO_RAW] = &DamageSkill::mt_Manage_DSO_RAW;
+		m_operator_map[DSO_MULTIPLY] = &DamageSkill::mt_Manage_DSO_MULTIPLY;
+		m_operator_map[DSO_DIVIDE] = &DamageSkill::mt_Manage_DSO_DIVIDE;
 	}
 }
 
@@ -48,42 +48,42 @@ DamageSkill::~DamageSkill()
 	/** Nothing **/
 }
 
-int DamageSkill::affectCharacter(ICharacter& target)
+int DamageSkill::mt_Affect_Character(ICharacter& target)
 {
 	int damages;
 	int tmp;
 	auto it(m_operator_map.find(m_operator));
 	ICharacterAttribute* attribute(nullptr);
 
-	log().entranceFunction(FUNCTION_NAME);
+	log().mt_Entrance_Function(FUNCTION_NAME);
 
 	assert(it != m_operator_map.end());
 
-	attribute = m_owner->getAttribute("attack");
+	attribute = m_owner->mt_Get_Attribute("attack");
 
 	assert(attribute != nullptr);
-	assert(attribute->getValue("attack", tmp) == true);
+	assert(attribute->mt_Get_Value("attack", tmp) == true);
 
 	log() << "name : " << m_id << "\n";
-	log() << "m_owner->getAttribute(\"attack\", tmp) : " << tmp << "\n";
+	log() << "m_owner->mt_Get_Attribute(\"attack\", tmp) : " << tmp << "\n";
 	log() << "m_damages : " << m_damages << "\n";
 
 	damages = (this->*(it->second))(tmp, m_damages);
 
 	log() << "damages : " << damages << "\n";
 
-	attribute = target.getAttribute("hp");
+	attribute = target.mt_Get_Attribute("hp");
 	assert(attribute != nullptr);
-	assert(attribute->getValue("hp", tmp) == true);
+	assert(attribute->mt_Get_Value("hp", tmp) == true);
 
 	tmp -= damages;
 
-	attribute = target.getAttribute("hp");
+	attribute = target.mt_Get_Attribute("hp");
 	assert(attribute != nullptr);
-	assert(attribute->getValue("hp", tmp));
+	assert(attribute->mt_Get_Value("hp", tmp));
 
 
-	log().exitFunction();
+	log().mt_Exit_Function();
 
 	return damages;
 }

@@ -17,12 +17,12 @@ class DLL_Loader
 public:
 	~DLL_Loader();
 	template <typename FunctionPointer>
-	FunctionPointer getFunction(const std::string& dll_name, const std::string& function_name)
+	FunctionPointer mt_Get_Function(const std::string& dll_name, const std::string& function_name)
 	{
 		FunctionPointer l_ret(nullptr);
 		NativeDllHandleType dll_handle(nullptr);
 
-		dll_handle = getHandle(dll_name);
+		dll_handle = mt_Get_Handle(dll_name);
 
 		if (dll_handle != nullptr)
 		{
@@ -42,7 +42,7 @@ protected:
 #elif (PLATFORM == PLATFORM_LINUX)
 	typedef void* NativeDllHandleType;
 #endif
-	NativeDllHandleType getHandle(const std::string& dll_name);
+	NativeDllHandleType mt_Get_Handle(const std::string& dll_name);
 
 	std::map<std::string, NativeDllHandleType> m_dll;
 };

@@ -14,10 +14,10 @@ BasicFSM::BasicFSM()
 
 BasicFSM::~BasicFSM()
 {
-	reset();
+	mt_Reset();
 }
 
-bool BasicFSM::reset(void)
+bool BasicFSM::mt_Reset(void)
 {
 	for (auto& a : m_arr_states)
 		if (a.second)

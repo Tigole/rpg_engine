@@ -19,12 +19,12 @@ VariableList::VariableList(const std::string& var_name, const std::string& var_v
 	m_variables[var_name] = var_value;
 }
 
-void VariableList::setVariable(const std::string& var_name, std::string var_value)
+void VariableList::mt_Set_Variable(const std::string& var_name, std::string var_value)
 {
 	m_variables[var_name] = var_value;
 }
 
-bool VariableList::getVariable(const std::string& var_name, std::string& var_value) const
+bool VariableList::mt_Get_Variable(const std::string& var_name, std::string& var_value) const
 {
 	bool l_ret(false);
 	std::map<std::string, std::string>::const_iterator it;

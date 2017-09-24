@@ -15,7 +15,7 @@ public:
 	SkillLoader(const std::string& element_name);
 	virtual ~SkillLoader();
 
-	virtual std::unique_ptr<ISkill> load(const TiXmlElement& element) = 0;
+	virtual std::unique_ptr<ISkill> mt_Load(const TiXmlElement& element) = 0;
 };
 
 #endif // !_SKILL_LOADER_HPP

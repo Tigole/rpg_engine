@@ -64,7 +64,7 @@ public:
 	StatusHandlerFSM& operator=(const StatusHandlerFSM& sh);
 	virtual ~StatusHandlerFSM();
 
-	virtual const char* formatStatus(int status) const;
+	virtual const char* mt_Format_Status(int status) const;
 
 protected:
 

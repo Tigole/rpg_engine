@@ -13,7 +13,7 @@ SkillManager::SkillManager()
     /** Nothing **/
 }
 
-void SkillManager::load(const std::string& file_path, const std::map<std::string, std::unique_ptr<SkillLoader>>& loaders)
+void SkillManager::mt_Load(const std::string& file_path, const std::map<std::string, std::unique_ptr<SkillLoader>>& loaders)
 {
 	TiXmlDocument l_doc;
 	TiXmlAttribute* l_attribute(nullptr);
@@ -21,7 +21,7 @@ void SkillManager::load(const std::string& file_path, const std::map<std::string
 	std::map<std::string, std::unique_ptr<SkillLoader>>::const_iterator l_it(loaders.end());
 	std::unique_ptr<ISkill> l_tmp_skill(nullptr);
 
-	log().entranceFunction(FUNCTION_NAME);
+	log().mt_Entrance_Function(FUNCTION_NAME);
 
 	if (l_doc.LoadFile(file_path) == false)
 		throw Exception(std::string(FUNCTION_NAME) + " : \"l_doc.LoadFile(" + file_path + ")\"");
@@ -38,13 +38,13 @@ void SkillManager::load(const std::string& file_path, const std::map<std::string
 		if (l_it == loaders.end())
 			throw ExceptionXMLLoadingNoLoader(l_element->ValueStr());
 
-		l_tmp_skill = (l_it->second)->load(*l_element);
+		l_tmp_skill = (l_it->second)->mt_Load(*l_element);
 
-		m_skills[l_tmp_skill->getName()] = std::move(l_tmp_skill);
+		m_skills[l_tmp_skill->mt_Get_Name()] = std::move(l_tmp_skill);
 	}
 }
 
-std::unique_ptr<ISkill> SkillManager::getSkill(const std::string& skill_name, ICharacter& skill_owner) const
+std::unique_ptr<ISkill> SkillManager::mt_Get_Skill(const std::string& skill_name, ICharacter& skill_owner) const
 {
 	std::unique_ptr<ISkill> l_ret(nullptr);
 	std::map<std::string, std::unique_ptr<ISkill>>::const_iterator l_it(m_skills.find(skill_name));
@@ -52,9 +52,9 @@ std::unique_ptr<ISkill> SkillManager::getSkill(const std::string& skill_name, IC
 	if (l_it == m_skills.end())
 		throw ExceptionResourceDoesNotExists(skill_name, FUNCTION_NAME);
 
-	l_ret = std::move(l_it->second->clone());
+	l_ret = std::move(l_it->second->mt_Clone());
 
-	l_ret->setOwner(skill_owner);
+	l_ret->mt_Set_Owner(skill_owner);
 
 	return l_ret;
 }

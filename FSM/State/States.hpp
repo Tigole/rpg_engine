@@ -32,15 +32,15 @@ namespace fsm
 	public:
 		State();
 		virtual ~State();
-		IState* callProcess(void);
-		bool reset(void);
+		IState* mt_Call_Process(void);
+		bool mt_Reset(void);
 		std::vector<std::pair<ITransition*, bool>> m_arr_transitions;
 	protected:
-		virtual bool process(void) = 0;
+		virtual bool mt_Process(void) = 0;
 
 	};
 
-	/** 
+	/**
 		\class EntryExitState
 		\brief Class managing OnEntry and OnExit call when entering and leaving the state
 
@@ -73,12 +73,12 @@ namespace fsm
 	public:
 		EntryExitState();
 		virtual ~EntryExitState();
-		IState* callProcess(void);
-		virtual bool reset(void);
+		IState* mt_Call_Process(void);
+		virtual bool mt_Reset(void);
 
 	protected:
-		virtual bool onEntry(void);
-		virtual bool onExit(void);
+		virtual bool mt_On_Entry(void);
+		virtual bool mt_On_Exit(void);
 		bool m_b_on_entry_must_be_done;
 	};
 

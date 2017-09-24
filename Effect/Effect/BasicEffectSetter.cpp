@@ -13,7 +13,7 @@ BasicEffectSetter::BasicEffectSetter(const std::string& target_attribute, const 
 	/** Nothing **/
 }
 
-void BasicEffectSetter::affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
+void BasicEffectSetter::mt_Affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
 {
 	bool l_ret(true);
 	std::vector<std::string> var_names;
@@ -22,34 +22,34 @@ void BasicEffectSetter::affect(ISkill& skill_owner, ICharacter& char_owner, ICha
 	int attribute_value;
 	std::string affected_name, affected_attribute;
 
-	getVariables(m_formula, var_names);
+	mt_Get_Variables(m_formula, var_names);
 
-	getVariables(skill_owner, char_owner, char_target, var_names, var_list);
+	mt_Get_Variables(skill_owner, char_owner, char_target, var_names, var_list);
 
-	if (parser.parse(m_formula, var_list) == false)
+	if (parser.mt_Parse(m_formula, var_list) == false)
 		throw Exception("\"parser.parse(" + m_formula + ", var_list) == false\"");
 
-	if (parser.getResult(attribute_value) == false)
+	if (parser.mt_Get_Result(attribute_value) == false)
 		throw Exception("Failed when getting result in \"" + std::string(FUNCTION_NAME) + "\"");
 
-	splitNameAndAttribute(m_target_attribute, affected_name, affected_attribute);
+	mt_Split_Name_And_Attribute(m_target_attribute, affected_name, affected_attribute);
 
 	if (affected_name == "skill")
-		affect(skill_owner, affected_attribute, attribute_value);
+		mt_Affect(skill_owner, affected_attribute, attribute_value);
 	else if (affected_name == "owner")
-		affect(char_owner, affected_attribute, attribute_value);
+		mt_Affect(char_owner, affected_attribute, attribute_value);
 	else if (affected_name == "target")
-		affect(char_target, affected_attribute, attribute_value);
+		mt_Affect(char_target, affected_attribute, attribute_value);
 	else
 		throw ExceptionResourceDoesNotExists(affected_name, FUNCTION_NAME);
 }
 
-std::unique_ptr<IEffect> BasicEffectSetter::clone(void) const
+std::unique_ptr<IEffect> BasicEffectSetter::mt_Clone(void) const
 {
 	return std::unique_ptr<IEffect>(new BasicEffectSetter(*this));
 }
 
-void BasicEffectSetter::getVariables(const std::string& formula, std::vector<std::string>& variables)
+void BasicEffectSetter::mt_Get_Variables(const std::string& formula, std::vector<std::string>& variables)
 {
 	std::string current_variable;
 	std::vector<char> c;
@@ -85,7 +85,7 @@ void BasicEffectSetter::getVariables(const std::string& formula, std::vector<std
 	}
 }
 
-void BasicEffectSetter::splitNameAndAttribute(const std::string& str, std::string& name, std::string& attribute)
+void BasicEffectSetter::mt_Split_Name_And_Attribute(const std::string& str, std::string& name, std::string& attribute)
 {
 	bool l_ret(false);
 	std::string::size_type dot_pos;
@@ -98,25 +98,25 @@ void BasicEffectSetter::splitNameAndAttribute(const std::string& str, std::strin
 	attribute = str.substr(dot_pos + 1);
 }
 
-void BasicEffectSetter::getVariables(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target, const std::vector<std::string>& variables_names, VariableList& var_list)
+void BasicEffectSetter::mt_Get_Variables(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target, const std::vector<std::string>& variables_names, VariableList& var_list)
 {
 	std::string formula_target_name, formula_target_attribute;
 	int attribute_value;
 
 	for (unsigned int i = 0; i < variables_names.size(); i++)
 	{
-		splitNameAndAttribute(variables_names[i], formula_target_name, formula_target_attribute);
+		mt_Split_Name_And_Attribute(variables_names[i], formula_target_name, formula_target_attribute);
 
 		if (formula_target_name == "skill")
-			getValue(skill_owner, formula_target_attribute, attribute_value);
+			mt_Get_Value(skill_owner, formula_target_attribute, attribute_value);
 		else if (formula_target_name == "owner")
-			getValue(char_owner, formula_target_attribute, attribute_value);
+			mt_Get_Value(char_owner, formula_target_attribute, attribute_value);
 		else if (formula_target_name == "target")
-			getValue(char_target, formula_target_attribute, attribute_value);
+			mt_Get_Value(char_target, formula_target_attribute, attribute_value);
 		else
 			throw ExceptionResourceDoesNotExists(formula_target_name, FUNCTION_NAME);
 
-		var_list.setVariable(variables_names[i], misc::numberToString(attribute_value));
+		var_list.mt_Set_Variable(variables_names[i], misc::fn_Number_To_String(attribute_value));
 	}
 }
 

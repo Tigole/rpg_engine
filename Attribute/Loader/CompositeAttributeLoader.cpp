@@ -29,7 +29,7 @@ CompositeAttributeLoader::~CompositeAttributeLoader()
 	/** Nothing **/
 }
 
-std::unique_ptr<IAttribute> CompositeAttributeLoader::load(const TiXmlElement& element)
+std::unique_ptr<IAttribute> CompositeAttributeLoader::mt_Load(const TiXmlElement& element)
 {
 	std::unique_ptr<IAttribute> l_ret(nullptr);
 	CompositeAttribute* l_tmp(nullptr);
@@ -50,12 +50,12 @@ std::unique_ptr<IAttribute> CompositeAttributeLoader::load(const TiXmlElement& e
 		{
 			std::unique_ptr<IAttribute> l_sub_attribute(nullptr);
 
-			if (l_element->Value() == getElementName())
-				l_sub_attribute = load(*l_element);
-			else if (l_element->Value() == m_basic_loader.getElementName())
-				l_sub_attribute = m_basic_loader.load(*l_element);
+			if (l_element->Value() == mt_Get_Element_Name())
+				l_sub_attribute = mt_Load(*l_element);
+			else if (l_element->Value() == m_basic_loader.mt_Get_Element_Name())
+				l_sub_attribute = m_basic_loader.mt_Load(*l_element);
 
-			l_tmp->addAttributes(l_sub_attribute);
+			l_tmp->mt_Add_Attributes(l_sub_attribute);
 		}
 	}
 

@@ -16,7 +16,7 @@ public:
 	CharacterLoader(const std::string& element_name);
 	virtual ~CharacterLoader();
 
-	virtual std::unique_ptr<ICharacter> load(const TiXmlElement& element, SkillManager& sm) = 0;
+	virtual std::unique_ptr<ICharacter> mt_Load(const TiXmlElement& element, SkillManager& sm) = 0;
 };
 
 #endif // _CHARACTER_LOADER_HPP

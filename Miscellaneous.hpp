@@ -8,23 +8,11 @@
 #include <memory>
 #include <map>
 
-#define PLATFORM_WINDOWS 1
-#define PLATFORM_LINUX 2
+#include "Platform.h"
 
-
-#if defined(_WIN32)
-#define PLATFORM PLATFORM_WINDOWS
-//#warning PLATFORM_WINDOWS
-#elif defined(__gnu_linux__)
-#define PLATFORM PLATFORM_LINUX
-#warning PLATFORM_LINUX
-#else
-#error Your platform is not usable for now
-#endif
-
-#if PLATFORM == PLATFORM_WINDOWS
+#if (PLATFORM == PLATFORM_WINDOWS)
 #define FUNCTION_NAME __FUNCSIG__
-#elif PLATFORM == PLATFORM_LINUX
+#elif (PLATFORM == PLATFORM_LINUX)
 #define FUNCTION_NAME __PRETTY_FUNCTION__
 #endif // PLATFORM
 
@@ -38,21 +26,17 @@
 
 #include "Exception/Exception.hpp"
 
+#include <SFML/System/Vector2.hpp>
+
 class TiXmlElement;
 class ILogger;
 
 namespace misc
 {
-	class Dumpable
-	{
-	public:
-		virtual ~Dumpable(){ /** Nothing **/ }
-		virtual void dump(ILogger& l) = 0;
-	};
 	/** \class Resetable
 		\brief Base class for objects that can be reset by an external event
 
-		\fn bool reset(void)
+		\fn bool mt_Reset(void)
 		\brief Method used to reset the object
 		\return true on success, false otherwise
 	**/
@@ -61,174 +45,69 @@ namespace misc
 	public:
 		virtual ~Resetable(){}
 
-		virtual bool reset(void) = 0;
+		virtual bool mt_Reset(void) = 0;
 	};
 
 	template<typename T>
-	class PointerCollection
+	class Grid
 	{
 	public:
-		PointerCollection();
-
-	};
-
-	template<typename T, typename U>
-	T* dynamicCast(U* pointer)
-	{
-		T* l_ret;
-
-		l_ret = dynamic_cast<T*>(pointer);
-
-		if (l_ret == nullptr)
-			throw ExceptionDynamicCastFailed();
-
-		return l_ret;
-	}
-
-	template<typename MessageType>
-	class Observer
-	{
-	public:
-		Observer(){}
-		virtual ~Observer(){}
-
-		virtual void notify(const MessageType& msg) = 0;
-	};
-
-	template<typename MessageType>
-	class MessageHandler
-	{
-	public:
-		void addObserver(Observer<MessageType>* observer)
+		Grid() : m_data() {}
+		Grid(const Grid& cp) : m_data(cp.m_data) {}
+		void mt_Insert(unsigned int col, unsigned int row, const T& data)
 		{
-			if ((observer != nullptr) && (std::find(m_observers.begin(), m_observers.end(), observer) == m_observers.end()))
+			unsigned int l_col(m_data.size()), l_row(0);
+			if (m_data.size() != 0)
+				l_row = m_data[0].size();
+			if ((l_col == 0) && (l_row == 0))
 			{
-				m_observers.push_back(observer);
+				l_col = 1;
+				l_row = 1;
+				mt_Resize(l_col, l_row);
+			}
+			if ((col >= l_col) || (row >= l_row))
+			{
+				if (col >= l_col)
+					l_col = col + 1;
+				if (row >= l_row)
+					l_row = row + 1;
+				mt_Resize(l_col, l_row);
+			}
+			m_data[col][row] = data;
+		}
+		std::vector<T>& operator[](unsigned int col)
+		{
+			return m_data[col];
+		}
+		sf::Vector2u mt_Size() const
+		{
+			sf::Vector2u l_ret(0, 0);
+
+			l_ret.x = m_data.size();
+			if (l_ret.x != 0)
+				l_ret.y = m_data[0].size();
+
+			return l_ret;
+		}
+		const T& mt_At(unsigned int col, unsigned int row) const
+		{
+			return m_data[col][row];
+		}
+		T& mt_At(unsigned int col, unsigned int y)
+		{
+			return m_data[col][row];
+		}
+	private:
+		void mt_Resize(unsigned int col, unsigned int row)
+		{
+			m_data.resize(col);
+			for (auto& a : m_data)
+			{
+				a.resize(row);
 			}
 		}
-		void removeObserver(Observer<MessageType>* observer)
-		{
-			std::vector<Observer<MessageType>>::iterator l_it;
-
-			l_it = std::find(m_observers.begin(), m_observers.end(), observer);
-			if (l_it != m_observers.end())
-				m_observers.erase(l_it);
-		}
-		void broadcast(const MessageType& msg)
-		{
-			for (auto& o : m_observers)
-				o.notify(msg);
-		}
-	private:
-		std::vector<Observer<MessageType>> m_observers;
+		std::vector<std::vector<T>> m_data;
 	};
-
-	/*template<typename T>
-	class DLL_Pointer
-	{
-	public:
-		typedef void(*Deleter)(T*);
-		DLL_Pointer() :	m_object(nullptr), m_deleter(nullptr){}
-		DLL_Pointer(T* obj, void(*deleter)(T*)) : m_object(object), m_deleter(deleter){}
-		DLL_Pointer(const DLL_Pointer<T>& other) : m_object(other.m_object), m_deleter(other.m_deleter){}
-		DLL_Pointer& operator=(const DLL_Pointer<T>& other)
-		{
-			m_object = other.m_object;
-			m_deleter = other.m_deleter;
-			return *this;
-		}
-
-		T* get(void) const
-		{
-			return m_object;
-		}
-
-		Deleter getDeleter(void) const
-		{
-			return m_deleter;
-		}
-
-		/*void release(void)
-		{
-			m_object = nullptr;
-		}*/
-
-		/*void destroy(void)
-		{
-			m_deleter(m_object);
-		}* /
-
-	private:
-		T* m_object;
-		void(*m_deleter)(T*);
-	};
-
-	template<typename T>
-	class DLL_SmartPointer
-	{
-	public:
-		DLL_SmartPointer() : m_object(nullptr), m_deleter(nullptr) {}
-		DLL_SmartPointer(T* object, void(*deleter)(T*)) : m_object(object), m_deleter(deleter) {}
-		DLL_SmartPointer(const DLL_SmartPointer& other) = delete;/* : m_object(nullptr), m_deleter(other.m_deleter)
-		{
-			if (other.m_object != nullptr)
-				m_object = other.m_object->clone();
-		}* /
-		~DLL_SmartPointer()
-		{
-			destroy();
-		}
-		/*DLL_SmartPointer<T>& operator=(const DLL_SmartPointer<T>& other)
-		{
-			m_deleter = other.m_deleter;
-			if (other.m_object != nullptr)
-				m_object = other.m_object->clone();
-			return *this;
-		}* /
-		DLL_SmartPointer<T>& operator=(DLL_SmartPointer<T>& other)
-		{
-			from(other);
-			return *this;
-		}
-		void from(DLL_SmartPointer<T>& other)
-		{
-			destroy();
-			m_object = other.m_object;
-			m_deleter = other.m_deleter;
-			other.m_object = nullptr;
-		}
-		T* operator->(void) const
-		{
-			return m_object;
-		}
-		T* operator->(void)
-		{
-			return m_object;
-		}
-		T& operator*(void) const
-		{
-			return *m_object;
-		}
-		T& operator*(void)
-		{
-			return *m_object;
-		}
-		bool isValid(void)
-		{
-			return (m_object != nullptr);
-		}
-	private:
-		void destroy(void)
-		{
-			if ((m_deleter != nullptr) && (m_object != nullptr))
-				m_deleter(m_object);
-		}
-		T* m_object;
-		void(*m_deleter)(T*);
-	};*/
-
-	/*template<typename T>
-	using DLL_UniquePointer = std::unique_ptr<T, void(*)(T*)>;*/
 
 	/** \class Clonable
 		\brief Base class for objects that need to be cloned
@@ -243,57 +122,20 @@ namespace misc
 	public:
 		virtual ~Clonable(){}
 
-		virtual std::unique_ptr<T> clone(void) const = 0;
+		virtual std::unique_ptr<T> mt_Clone(void) const = 0;
 
 	};
 
 	template<typename T>
-	struct Gauge
-	{
-		Gauge(const T& actual_value, const T& max_value) : m_actual_value(actual_value), m_max_value(max_value){ /** Nothing **/ }
-		Gauge(const T& values) : m_actual_value(values), m_max_value(values){ /** Nothing **/ }
-		Gauge(const Gauge<T>& copy) : m_actual_value(copy.m_actual_value), m_max_value(copy.m_max_value){ /** Nothing **/ }
-		Gauge() : m_actual_value(), m_max_value() { /** Nothing **/ }
-
-		void restore(void) { m_actual_value = m_max_value; }
-		bool isEmpty(void) const { return m_actual_value <= (T)0; }
-		bool isFull(void) const { return m_actual_value == m_max_value; }
-
-		T m_actual_value;
-		T m_max_value;
-	};
-
-	template<typename T>
-	Gauge<T>& operator+=(Gauge<T>& g, const T& t)
-	{
-		g.m_actual_value += t;
-		if (g.m_actual_value > g.m_max_value)
-			g.m_actual_value = g.m_max_value;
-		return g;
-	}
-
-	template<typename T>
-	Gauge<T>& operator-=(Gauge<T>& g, const T& t)
-	{
-		g.m_actual_value -= t;
-		if (g.m_actual_value > g.m_max_value)
-			g.m_actual_value = g.m_max_value;
-		return g;
-	}
-
-	template<typename T>
-	std::string numberToString(T number)
+	std::string fn_Number_To_String(T number)
 	{
 		std::stringstream ss;
 		ss << number;
 		return ss.str();
 	}
 
-	/*std::string numberToString(unsigned char c);
-	std::string numberToString(char c);*/
-
 	template<typename T>
-	std::string numberToHexDec(T number)
+	std::string fn_Number_To_HexDec(T number)
 	{
 		std::stringstream ss;
 		std::string ret("[");
@@ -309,27 +151,6 @@ namespace misc
 
 		return ret;
 	}
-
-	class ILoader
-	{
-	public:
-		ILoader();
-		virtual ~ILoader();
-	protected:
-		bool checkAttributes(const TiXmlElement& element, const std::vector<std::string>& attributes);
-	};
-
-	class Loader : public ILoader
-	{
-	public:
-		Loader(const std::string& element_name);
-		virtual ~Loader();
-
-		const std::string& getElementName(void) const;
-	protected:
-		std::string m_element_name;
-	};
-
 
 	template <typename FunctionPointer>
 	class DLL_Loader
@@ -347,7 +168,7 @@ namespace misc
 #endif
 			}
 		}
-		FunctionPointer getFunction(const std::string& dll_name, const std::string& function_name)
+		FunctionPointer mt_Get_Function(const std::string& dll_name, const std::string& function_name)
 		{
 			FunctionPointer l_ret(nullptr);
 			NativeDllHandleType dll_handle(nullptr);

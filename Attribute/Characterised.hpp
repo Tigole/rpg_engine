@@ -20,7 +20,7 @@ public:
 		/** Nothing **/
 	}
 
-	AttributeType* getAttribute(const std::string& attribute_name)
+	AttributeType* mt_Get_Attribute(const std::string& attribute_name)
 	{
 		auto it(m_attributes.find(attribute_name));
 
@@ -30,14 +30,14 @@ public:
 		return it->second.get();
 	}
 
-	void addAttribute(std::unique_ptr<AttributeType>& attribute)
+	void mt_Add_Attribute(std::unique_ptr<AttributeType>& attribute)
 	{
-		auto it(m_attributes.find(attribute->getName()));
+		auto it(m_attributes.find(attribute->mt_Get_Name()));
 
 		if (it != m_attributes.end())
-			throw ExceptionAttributeAlreadyExists(attribute->getName(), "ICharacterised<AttributeType>");
+			throw ExceptionAttributeAlreadyExists(attribute->mt_Get_Name(), "ICharacterised<AttributeType>");
 
-		m_attributes[attribute->getName()] = std::move(attribute);
+		m_attributes[attribute->mt_Get_Name()] = std::move(attribute);
 	}
 
 protected:

@@ -17,7 +17,7 @@ namespace fight
 		public:
 			PartyTransition();
 			virtual ~PartyTransition();
-			bool reset(void);
+			bool mt_Reset(void);
 
 			std::vector<IParty*> m_target_parties;
 
@@ -25,13 +25,13 @@ namespace fight
 		class PartyDead : public PartyTransition
 		{
 		public:
-			fsm::IState* check(fsm::IState* current_state);
+			fsm::IState* mt_Check(fsm::IState* current_state);
 		};
 
 		class PartyAlive : public PartyTransition
 		{
 		public:
-			fsm::IState* check(fsm::IState* current_state);
+			fsm::IState* mt_Check(fsm::IState* current_state);
 		};
 	}
 }

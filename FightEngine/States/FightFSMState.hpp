@@ -16,7 +16,7 @@ namespace fight
 		public:
 			FightState(std::vector<ICharacter*>& characters);
 			virtual ~FightState();
-			bool reset(void);
+			bool mt_Reset(void);
 
 			std::vector<ICharacter*>& m_characters;
 		};
@@ -26,7 +26,7 @@ namespace fight
 		public:
 			SelectSkill(std::vector<ICharacter*>& characters);
 		protected:
-			bool process(void);
+			bool mt_Process(void);
 		private:
 			fsm::TrueTransition m_trans_true;
 		};
@@ -35,7 +35,7 @@ namespace fight
 		public:
 			UseSkill(std::vector<ICharacter*>& characters);
 		protected:
-			bool process(void);
+			bool mt_Process(void);
 		private:
 			transition::PartyDead m_trans_hero_dead;
 			transition::PartyDead m_trans_ennemy_dead;

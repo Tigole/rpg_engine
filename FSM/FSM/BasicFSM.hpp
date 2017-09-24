@@ -17,7 +17,7 @@ public:
 	BasicFSM& operator=(const BasicFSM& b_fsm);
 	virtual ~BasicFSM();
 
-	bool reset(void);
+	bool mt_Reset(void);
 
 protected:
 	IState* m_current_state;

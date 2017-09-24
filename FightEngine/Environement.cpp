@@ -7,10 +7,12 @@ Environment::Environment(const std::string& resource_path)
 	:m_music_manager(resource_path),
 	m_tileset_manager(resource_path),
 	m_resource_path(resource_path),
-	m_texture_manager(resource_path)
+	m_texture_manager(resource_path),
+	m_system_manager(),
+	m_entity_manager(m_system_manager)
 {}
 
-void Environment::load()
+void Environment::mt_Load()
 {
 	TiXmlDocument l_doc;
 	TiXmlHandle l_handle(&l_doc);
@@ -18,7 +20,7 @@ void Environment::load()
 	std::vector<std::pair<std::string, std::string>>::iterator l_it;
 	std::string l_input_file(m_resource_path + "Data/Environment.xml");
 	std::string l_path;
-	std::map<std::string, std::unique_ptr<MapLoader>> l_map_loaders;
+	std::map<std::string, std::unique_ptr<IMapLoader>> l_map_loaders;
 	std::map<std::string, std::unique_ptr<SkillLoader>> l_skill_loaders;
 	std::map<std::string, std::unique_ptr<CharacterLoader>> l_character_loaders;
 
@@ -48,16 +50,16 @@ void Environment::load()
 	for (const auto& a : l_data)
 	{
 		if (a.first == "Musics")
-			m_music_manager.load(m_resource_path + "Data/" + a.second);
+			m_music_manager.mt_Load(m_resource_path + "Data/" + a.second);
 		else if (a.first == "Tilesets")
-			m_tileset_manager.load(m_resource_path + "Data/" + a.second);
+			m_tileset_manager.mt_Load(m_resource_path + "Data/" + a.second);
 		else if (a.first == "Maps")
-			m_map_manager.load(m_resource_path + "Data/" + a.second, l_map_loaders, m_tileset_manager);
+			m_map_manager.mt_Load(m_resource_path + "Data/" + a.second, l_map_loaders, m_tileset_manager);
 		else if (a.first == "Characters")
-			m_character_manager.load(m_resource_path + "Data/" + a.second, l_character_loaders, m_skill_manager);
+			m_character_manager.mt_Load(m_resource_path + "Data/" + a.second, l_character_loaders, m_skill_manager);
 		else if (a.first == "Skills")
-			m_skill_manager.load(m_resource_path + "Data/" + a.second, l_skill_loaders);
+			m_skill_manager.mt_Load(m_resource_path + "Data/" + a.second, l_skill_loaders);
 		else if (a.first == "Textures")
-			m_texture_manager.load(m_resource_path + "Data/" + a.second);
+			m_texture_manager.mt_Load(m_resource_path + "Data/" + a.second);
 	}
 }

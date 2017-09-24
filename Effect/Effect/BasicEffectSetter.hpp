@@ -14,25 +14,25 @@ class BasicEffectSetter : public IEffect
 public:
 	BasicEffectSetter(const std::string& target_attribute, const std::string& formula);
 
-	void affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target);
-	std::unique_ptr<IEffect> clone(void) const;
+	void mt_Affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target);
+	std::unique_ptr<IEffect> mt_Clone(void) const;
 
 private:
 
-	void getVariables(const std::string& formula, std::vector<std::string>& variables);
-	void splitNameAndAttribute(const std::string& str, std::string& name, std::string& attribute);
-	void getVariables(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target, const std::vector<std::string>& variables_names, VariableList& var_list);
+	void mt_Get_Variables(const std::string& formula, std::vector<std::string>& variables);
+	void mt_Split_Name_And_Attribute(const std::string& str, std::string& name, std::string& attribute);
+	void mt_Get_Variables(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target, const std::vector<std::string>& variables_names, VariableList& var_list);
 
 	template<typename T>
-	void affect(T& target, const std::string& attribute_name, int value)
+	void mt_Affect(T& target, const std::string& attribute_name, int value)
 	{
-		target.getAttribute(attribute_name)->setValue(attribute_name, value);
+		target.mt_Get_Attribute(attribute_name)->mt_Set_Value(attribute_name, value);
 	}
 
 	template<typename T>
-	void getValue(T& target, const std::string& attribute_name, int& value)
+	void mt_Get_Value(T& target, const std::string& attribute_name, int& value)
 	{
-		target.getAttribute(attribute_name)->getValue(attribute_name, value);
+		target.mt_Get_Attribute(attribute_name)->mt_Get_Value(attribute_name, value);
 	}
 
 	std::string m_target_attribute;

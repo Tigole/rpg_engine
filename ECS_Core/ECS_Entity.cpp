@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#if 0
+
 std::string ECS_Entity::ms_xml_attribute_name("entity_id");
 
 ECS_Entity::ECS_Entity()
@@ -127,3 +129,5 @@ void ECS_EntityGenerator::add(ECS_EntityId e)
 		m_counter = e + 1;
 	}
 }
+
+#endif // 0

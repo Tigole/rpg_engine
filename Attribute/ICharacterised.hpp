@@ -10,7 +10,7 @@ public:
 		/** Nothing **/
 	}
 
-	virtual AttributeType* getAttribute(const std::string& attribute_name) = 0;
+	virtual AttributeType* mt_Get_Attribute(const std::string& attribute_name) = 0;
 };
 
 #endif // _ICHARACTERISED_HPP

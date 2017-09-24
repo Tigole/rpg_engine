@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 	vector<pair<string,void(*)(void)>> uut_functions;
 	//std::string old_local;
 
-	log().entranceFunction(FUNCTION_NAME);
+	log().mt_Entrance_Function(FUNCTION_NAME);
 
 	//std::locale::global(std::locale("fr-FR"));
 
@@ -46,6 +46,7 @@ int main(int argc, char** argv)
 	//uut_functions.push_back(uut_Fight_std);
 	//uut_functions.push_back(uut_Fight_obj);
 
+	uut_functions.push_back(make_pair("uut_Map", uut_Map));
 	uut_functions.push_back(make_pair("uut_TestLoadingSkills", uut_TestLoadingSkills));
 	uut_functions.push_back(make_pair("uut_Test_Sf_String", uut_Test_Sf_String));
 	uut_functions.push_back(make_pair("uut_Loading_Characters", uut_Loading_Characters));
@@ -57,11 +58,9 @@ int main(int argc, char** argv)
 	uut_functions.push_back(make_pair("uut_DialogBox", uut_DialogBox));
 	uut_functions.push_back(make_pair("uut_TextDialogBox", uut_TextDialogBox));
 	uut_functions.push_back(make_pair("uut_Tileset", uut_Tileset));
-	uut_functions.push_back(make_pair("uut_Map", uut_Map));
-	uut_functions.push_back(make_pair("uut_MapPManager", uut_MapPManager));
+	uut_functions.push_back(make_pair("uut_MapManager", uut_MapManager));
 	uut_functions.push_back(make_pair("uut_Environment", uut_Environment));
-	uut_functions.push_back(make_pair("uut_ECS_Entity", uut_ECS_Entity));
-	uut_functions.push_back(make_pair("uut_ECS", uut_ECS));
+	//uut_functions.push_back(make_pair("uut_ECS_Entity", uut_ECS_Entity));
 	uut_functions.push_back(make_pair("uut_XMLFileLoader", uut_XMLFileLoader));
 
 	for (auto& a : uut_functions)
@@ -73,12 +72,12 @@ int main(int argc, char** argv)
 		catch (std::exception& e)
 		{
 			cerr << "[" << a.first << "] : " << e.what() << "\n";
-			log().exitFunction();
+			log().mt_Exit_Function();
 		}
 		catch (const IException& e)
 		{
-			cerr << "[" << a.first << "] : " << e.what() << "\n";
-			log().exitFunction();
+			cerr << "[" << a.first << "] : " << e.mt_What() << "\n";
+			log().mt_Exit_Function();
 		}
 	}
 
@@ -91,7 +90,7 @@ int main(int argc, char** argv)
 
 	//setlocale(LC_ALL, old_local.c_str());
 
-	log().exitFunction();
+	log().mt_Exit_Function();
 
 	return 0;
 }

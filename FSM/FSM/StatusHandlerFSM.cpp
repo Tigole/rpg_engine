@@ -16,7 +16,7 @@ StatusHandlerFSM::~StatusHandlerFSM()
 	/** Nothing **/
 }
 
-const char* StatusHandlerFSM::formatStatus(int status) const
+const char* StatusHandlerFSM::mt_Format_Status(int status) const
 {
 	const char* l_pcstr_ret = m_str_status_unknown;
 	std::map<int, const char*>::const_iterator it;

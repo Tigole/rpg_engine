@@ -9,16 +9,16 @@ template<typename MessageType>
 class Communicator
 {
 public:
-	void addObserver(Observer<MessageType>& observer)
+	void mt_Add_Observer(Observer<MessageType>& observer)
 	{
 		if (m_observers.find(&observer) == m_observers.end())
 			m_observers.emplace(&observer);
 	}
-	void removeObserver(Observer<MessageType>& observer)
+	void mt_Remove_Observer(Observer<MessageType>& observer)
 	{
 		m_observers.erase(&observer);
 	}
-	void broadcast(const MessageType& msg)
+	void mt_Broadcast(const MessageType& msg)
 	{
 		for (auto o : m_observers)
 			o->notify(msg);

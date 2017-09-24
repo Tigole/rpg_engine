@@ -10,11 +10,11 @@ class IAttribute : public misc::Clonable<IAttribute>
 public:
 	virtual ~IAttribute(){}
 
-	virtual const std::string& getName(void) = 0;
-	virtual void getValue(const std::string& attribute_name, int& value) const = 0;
-	virtual void setValue(const std::string& attribute_name, int value) = 0;
-	virtual void save(TiXmlElement& parent) const = 0;
-	virtual void dump(ILogger& l) = 0;
+	virtual const std::string& mt_Get_Name(void) = 0;
+	virtual void mt_Get_Value(const std::string& attribute_name, int& value) const = 0;
+	virtual void mt_Set_Value(const std::string& attribute_name, int value) = 0;
+	virtual void mt_Save(TiXmlElement& parent) const = 0;
+	virtual void mt_Dump(ILogger& l) = 0;
 
 	/** \fn virtual const std::string& getName(void) = 0
 		\brief Get the name of the attribute

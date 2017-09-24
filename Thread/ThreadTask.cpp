@@ -1,7 +1,7 @@
 #include "Thread/ThreadTask.hpp"
 
 ThreadTask::ThreadTask()
- :	m_thread(&ThreadTask::work, this),
+ :	m_thread(&ThreadTask::mt_Work, this),
 	m_started(false),
 	m_done(true)
 {}
@@ -9,7 +9,7 @@ ThreadTask::ThreadTask()
 ThreadTask::~ThreadTask()
 {}
 
-void ThreadTask::start(void)
+void ThreadTask::mt_Start(void)
 {
 	if ((m_done == true) && (m_started == false))
 	{
@@ -19,17 +19,17 @@ void ThreadTask::start(void)
 	}
 }
 
-bool ThreadTask::hasStarted(void) const
+bool ThreadTask::mt_Has_Started(void) const
 {
 	return m_started;
 }
 
-bool ThreadTask::isDone(void) const
+bool ThreadTask::mt_Is_Done(void) const
 {
 	return m_done;
 }
 
-void ThreadTask::done(void)
+void ThreadTask::mt_Done(void)
 {
 	m_done = true;
 }

@@ -11,7 +11,7 @@ namespace fight
 		/** Nothing **/
 	}
 
-	void FightFSM::initialize(IParty& hero, std::vector<IParty*>& ennemies)
+	void FightFSM::mt_Initialize(IParty& hero, std::vector<IParty*>& ennemies)
 	{
 		states::SelectSkill* state_sel_skill(new states::SelectSkill(m_fighters));
 		states::UseSkill* state_use_skill(new states::UseSkill(m_fighters));
@@ -23,15 +23,15 @@ namespace fight
 		transition::PartyDead* trans_ennemy_dead(new transition::PartyDead());
 		transition::PartyAlive* trans_everybody_alive(new transition::PartyAlive());
 
-		reset();
+		mt_Reset();
 
 		/** Adding parties' characters to internal buffer for scheduling turns **/
 		{
-			for (auto& party_member : hero.getMembers())
+			for (auto& party_member : hero.mt_Get_Members())
 				m_fighters.push_back(party_member);
 
 			for (auto& ennemy_party : ennemies)
-				for (auto& party_member : ennemy_party->getMembers())
+				for (auto& party_member : ennemy_party->mt_Get_Members())
 					m_fighters.push_back(party_member);
 		}
 
@@ -49,7 +49,7 @@ namespace fight
 						party_ennemies.push_back(party);
 				}
 
-				current_party->setEnnemies(party_ennemies);
+				current_party->mt_Set_Ennemies(party_ennemies);
 			}
 		}
 
@@ -94,16 +94,16 @@ namespace fight
 			m_arr_states.push_back(std::make_pair(state_game_over, true));
 			m_arr_states.push_back(std::make_pair(state_won, true));
 
-			addStopState(state_won);
-			addStopState(state_game_over);
+			mt_Add_Stop_State(state_won);
+			mt_Add_Stop_State(state_game_over);
 
 			m_current_state = state_sel_skill;
 		}
 	}
 
-	bool FightFSM::reset(void)
+	bool FightFSM::mt_Reset(void)
 	{
 		m_fighters.resize(0);
-		return fsm::BasicFSM::reset();
+		return fsm::BasicFSM::mt_Reset();
 	}
 }

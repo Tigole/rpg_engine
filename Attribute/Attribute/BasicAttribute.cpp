@@ -22,12 +22,12 @@ BasicAttribute::BasicAttribute(const std::string& name)
 	/** Nothing **/
 }
 
-std::unique_ptr<IAttribute> BasicAttribute::clone(void) const
+std::unique_ptr<IAttribute> BasicAttribute::mt_Clone(void) const
 {
 	return std::unique_ptr<IAttribute>(new BasicAttribute(*this));
 }
 
-void BasicAttribute::save(TiXmlElement& parent) const
+void BasicAttribute::mt_Save(TiXmlElement& parent) const
 {
 	TiXmlElement* l_this(nullptr);
 
@@ -38,7 +38,7 @@ void BasicAttribute::save(TiXmlElement& parent) const
 	parent.LinkEndChild(l_this);
 }
 
-void BasicAttribute::getValue(const std::string& attribute_name, int& value) const
+void BasicAttribute::mt_Get_Value(const std::string& attribute_name, int& value) const
 {
 	if (attribute_name != m_name)
 		throw ExceptionAttributeNotFound(attribute_name, "BasicAttribute");
@@ -46,7 +46,7 @@ void BasicAttribute::getValue(const std::string& attribute_name, int& value) con
 	value = m_value;
 }
 
-void BasicAttribute::setValue(const std::string& attribute_name, int value)
+void BasicAttribute::mt_Set_Value(const std::string& attribute_name, int value)
 {
 	if (attribute_name != m_name)
 		throw ExceptionAttributeNotFound(attribute_name, "BasicAttribute");
@@ -54,7 +54,7 @@ void BasicAttribute::setValue(const std::string& attribute_name, int value)
 	m_value = value;
 }
 
-void BasicAttribute::dump(ILogger& l)
+void BasicAttribute::mt_Dump(ILogger& l)
 {
 	l << "name : \"" << m_name << "\"\n";
 	l << "value : \"" << m_value << "\"\n";

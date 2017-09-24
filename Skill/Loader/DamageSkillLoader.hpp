@@ -11,8 +11,8 @@ public:
 	DamageSkillLoader(const std::string& element_name);
 
 protected:
-	bool isValid(const TiXmlElement& element) const;
-	std::unique_ptr<ISkill> loadElement(const TiXmlElement& element);
+	bool mt_Is_Valid(const TiXmlElement& element) const;
+	std::unique_ptr<ISkill> mt_Load_Element(const TiXmlElement& element);
 };
 
 #endif // !_DAMAGE_SKILL_LOADER_HPP

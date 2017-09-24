@@ -14,12 +14,12 @@ public:
 	TextureManager(const std::string& resources_path);
 	~TextureManager();
 
-	void load(const std::string& file_path);
-	const sf::Texture& getTexture(const std::string& texture_id) const;
-	std::unique_ptr<IGUIBackground> getBackground(const std::string& background_id) const;
+	void mt_Load(const std::string& file_path);
+	const sf::Texture& mt_Get_Texture(const std::string& texture_id) const;
+	std::unique_ptr<IGUIBackground> mt_Get_Background(const std::string& background_id) const;
 
 protected:
-	void load(const TiXmlElement& texture);
+	void mt_Load(const TiXmlElement& texture);
 	std::string m_resources_path;
 	std::map<std::string, sf::Texture> m_textures;
 	std::map<std::string, std::unique_ptr<IGUIBackground>> m_background;

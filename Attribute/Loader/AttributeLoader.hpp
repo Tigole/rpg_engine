@@ -12,7 +12,7 @@ public:
 	AttributeLoader(const std::string& element_name);
 	virtual ~AttributeLoader();
 
-	virtual std::unique_ptr<IAttribute> load(const TiXmlElement& element) = 0;
+	virtual std::unique_ptr<IAttribute> mt_Load(const TiXmlElement& element) = 0;
 
 	/** \fn IAttribute* load(const TiXmlElement& element)
 		\brief Create an object of type IAttribute from the element

@@ -7,15 +7,11 @@
 	\class IFSM
 	\brief Provide basic methods to process and reset the state machine
 
-	\fn bool reset(void)
-	\brief Method used to reset the state machine in its initial state
-	\return true if reset succeeded, false otherwise
-
-	\fn int process(void)
+	\fn int mt_Process(void)
 	\brief Method used to process one step on the state machine
 	\return an int representing the status of the state machine (implementation dependent)
 
-	\fn const char* formatStatus(int status) const
+	\fn const char* mt_Format_Status(int status) const
 	\brief Methode used to parse status returned by method "process"
 	\return the human understandable status of the state machine
 **/
@@ -28,8 +24,8 @@ class IFSM : public misc::Resetable
 public:
 	virtual ~IFSM(){}
 
-	virtual int process(void) = 0;
-	virtual const char* formatStatus(int status) const = 0;
+	virtual int mt_Process(void) = 0;
+	virtual const char* mt_Format_Status(int status) const = 0;
 };
 
 }

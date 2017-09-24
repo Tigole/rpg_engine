@@ -8,9 +8,7 @@
 
 class TiXmlElement;
 class ECS_EntityGenerator;
-
-using ECS_EntityId = uint32_t;
-
+/*
 class ECS_Entity
 {
 public:
@@ -44,6 +42,6 @@ private:
 	ECS_EntityId getId();
 	ECS_EntityId m_counter;
 	std::vector<ECS_EntityId> m_removed_ids;
-};
+};*/
 
 #endif // !_ECS_ENTITY_HPP

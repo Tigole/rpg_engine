@@ -30,7 +30,7 @@ class LoaderFactory : public ILoader
 public:
 	LoaderFactory() : m_creators(){ /** Nothing **/ }
 	virtual ~LoaderFactory(){ /** Nothing **/ }
-	LoaderCreator<LoadedType> getLoader(const std::string& element_name) const
+	LoaderCreator<LoadedType> mt_Get_Loader(const std::string& element_name) const
 	{
 		bool l_ret(false);
 		auto it(m_creators.find(element_name));
@@ -41,7 +41,7 @@ public:
 		return it->second;
 	}
 
-	void load(const TiXmlElement& element, misc::DLL_Loader<LoadedType>& dll_loader)
+	void mt_Load(const TiXmlElement& element, misc::DLL_Loader<LoadedType>& dll_loader)
 	{
 		std::vector<std::pair<std::string, std::string*>> attributes;
 		std::string element_name, library_name, creator_name, deleter_name;
@@ -56,21 +56,21 @@ public:
 		for (auto& a : attributes)
 		{
 			if (element.QueryStringAttribute(a.first.c_str(), a.second) != TIXML_SUCCESS)
-				throw XMLLoadingExceptionAttributeMissing(element, a.first);
+				throw ExceptionXMLLoadingAttributeMissing(element, a.first);
 		}
 
 		creator = dll_loader.getFunction(library_name, creator_name);
 		if (creator == nullptr)
-			throw DLLFunctionNotFound(library_name, creator_name);
+			throw ExceptionDLLFunctionNotFound(library_name, creator_name);
 
 		deleter = dll_loader.getFunction(library_name, deleter_name);
 		if (deleter == nullptr)
-			throw DLLFunctionNotFound(library_name, deleter_name);
+			throw ExceptionDLLFunctionNotFound(library_name, deleter_name);
 
 		if (m_creators.find(element_name) == m_creators.end())
 			m_creators[element_name] = LoaderCreator<LoadedType>(creator, deleter);
 		else
-			throw ResourceAlradeyExists(element_name, FUNCTION_NAME);
+			throw ExceptionResourceAlradeyExists(element_name, FUNCTION_NAME);
 	}
 protected:
 	std::map<std::string, LoaderCreator<LoadedType>> m_creators;

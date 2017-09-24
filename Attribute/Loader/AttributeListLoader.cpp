@@ -13,7 +13,7 @@ AttributeListLoader::AttributeListLoader(const AttributeLoaderFactory& attribute
 	/** Nothing **/
 }
 
-void AttributeListLoader::load(const TiXmlElement& element, std::vector<std::unique_ptr<IAttribute>>& attributes)
+void AttributeListLoader::mt_Load(const TiXmlElement& element, std::vector<std::unique_ptr<IAttribute>>& attributes)
 {
 	LoaderCreator<AttributeLoader> attribute_loader_creator;
 
@@ -26,11 +26,11 @@ void AttributeListLoader::load(const TiXmlElement& element, std::vector<std::uni
 
 		if (l_element != nullptr)
 		{
-			attribute_loader_creator = m_attribute_loader_factory.getLoader(l_element->Value());
+			attribute_loader_creator = m_attribute_loader_factory.mt_Get_Loader(l_element->Value());
 
 			std::unique_ptr<AttributeLoader> attribute_loader(attribute_loader_creator.m_creator());
 
-			m_attributes.second.push_back(std::move(attribute_loader->load(*l_element)));
+			m_attributes.second.push_back(std::move(attribute_loader->mt_Load(*l_element)));
 		}
 	}
 }

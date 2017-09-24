@@ -8,7 +8,7 @@ class IBattleGroundWrapper
 public:
 	virtual ~IBattleGroundWrapper(){}
 
-	virtual ICharacter* getCharacter(void) = 0;
+	virtual ICharacter* mt_Get_Character(void) = 0;
 };
 
 #endif // !_IBATTLEGROUND_WRAPPER_H

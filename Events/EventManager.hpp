@@ -16,7 +16,7 @@ class EventManager
 public:
 	EventManager();
 	template<class T>
-	void addCallback(const EventType& event_type, void(T::*callback)(EventData*), T* object)
+	void mt_Add_Callback(const EventType& event_type, void(T::*callback)(EventData*), T* object)
 	{
 		EventCallBacks::iterator l_event_it;
 		std::set<std::function<void(EventData*)>>::iterator l_callback_it;
@@ -39,9 +39,9 @@ public:
 			}
 		}
 	}
-	void handleEvent(const sf::Event& sfml_event);
-	void update(void);
-	void setState(GameState* active_state);
+	void mt_Handle_Event(const sf::Event& sfml_event);
+	void mt_Update(void);
+	void mt_Set_State(GameState* active_state);
 
 private:
 	using EventCallBacks = std::map<EventType, std::set<std::function<void(EventData*)>>>;

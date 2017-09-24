@@ -8,28 +8,28 @@
 #include "VariableList.hpp"
 
 template<typename T>
-bool evaluatePlus(T a, T b, T& res)
+bool fn_Evaluate_Plus(T a, T b, T& res)
 {
 	res = a + b;
 	return true;
 }
 
 template<typename T>
-bool evaluateMinus(T a, T b, T& res)
+bool fn_Evaluate_Minus(T a, T b, T& res)
 {
 	res = a - b;
 	return true;
 }
 
 template<typename T>
-bool evaluateMultiply(T a, T b, T& res)
+bool fn_Evaluate_Multiply(T a, T b, T& res)
 {
 	res = a * b;
 	return true;
 }
 
 template<typename T>
-bool evaluateDivide(T a, T b, T& res)
+bool fn_Evaluate_Divide(T a, T b, T& res)
 {
 	bool l_ret(false);
 	if (b != 0)
@@ -41,14 +41,14 @@ bool evaluateDivide(T a, T b, T& res)
 }
 
 template<typename T>
-bool evaluatePower(T a, T b, T& res)
+bool fn_Evaluate_Power(T a, T b, T& res)
 {
 	res = (T)std::pow((double)a, (double)b);
 	return true;
 }
 
 template<typename T>
-bool evaluateModulo(T a, T b, T& res)
+bool fn_Evaluate_Modulo(T a, T b, T& res)
 {
 	res = a%b;
 	return true;
@@ -64,16 +64,16 @@ public:
 		m_operators(),
 		m_result()
 	{
-		m_operators['+'] = Operator<T>('+', 1, 0, &evaluatePlus);
-		m_operators['-'] = Operator<T>('-', 1, 0, &evaluateMinus);
-		m_operators['*'] = Operator<T>('*', 2, 1, &evaluateMultiply);
-		m_operators['/'] = Operator<T>('/', 2, 1, &evaluateDivide);
-		m_operators['^'] = Operator<T>('^', 3, 1, &evaluatePower);
-		m_operators['%'] = Operator<T>('%', 3, 1, &evaluateModulo);
+		m_operators['+'] = Operator<T>('+', 1, 0, &fn_Evaluate_Plus);
+		m_operators['-'] = Operator<T>('-', 1, 0, &fn_Evaluate_Minus);
+		m_operators['*'] = Operator<T>('*', 2, 1, &fn_Evaluate_Multiply);
+		m_operators['/'] = Operator<T>('/', 2, 1, &fn_Evaluate_Divide);
+		m_operators['^'] = Operator<T>('^', 3, 1, &fn_Evaluate_Power);
+		m_operators['%'] = Operator<T>('%', 3, 1, &fn_Evaluate_Modulo);
 		m_operators['('] = Operator<T>('(', 0, 0, nullptr);
 	}
 
-	bool parse(const std::string& expression, const VariableList& var_list)
+	bool mt_Parse(const std::string& expression, const VariableList& var_list)
 	{
 		bool l_ret(true);
 		std::string numeric_expression(expression);
@@ -84,15 +84,15 @@ public:
 		/** Transform variables into their values **/
 		for (auto it = numeric_expression.begin(); (l_ret == true) && (it != numeric_expression.end()); it++)
 		{
-			if (isWhiteSpace(*it) == false)
+			if (mt_Is_White_Space(*it) == false)
 			{
-				if ((isOperator(*it) == false) && (*it != ')') && ((*it > '9') || (*it < '0')))
+				if ((mt_Is_Operator(*it) == false) && (*it != ')') && ((*it > '9') || (*it < '0')))
 				{
 					var_name.push_back(*it);
 				}
 				else if (var_name.size() != 0)
 				{
-					l_ret = var_list.getVariable(var_name, var_value);
+					l_ret = var_list.mt_Get_Variable(var_name, var_value);
 					if (l_ret == true)
 					{
 						var_pos = numeric_expression.find(var_name);
@@ -111,7 +111,7 @@ public:
 
 		if (var_name.size() != 0)
 		{
-			l_ret = var_list.getVariable(var_name, var_value);
+			l_ret = var_list.mt_Get_Variable(var_name, var_value);
 			if (l_ret == true)
 			{
 				var_pos = numeric_expression.find(var_name);
@@ -126,12 +126,12 @@ public:
 		}
 
 		if (l_ret == true)
-			l_ret = parse(numeric_expression);
+			l_ret = mt_Parse(numeric_expression);
 
 		return l_ret;
 	}
 
-	bool parse(const std::string& expression)
+	bool mt_Parse(const std::string& expression)
 	{
 		bool l_ret(true);
 		std::stack<Operator<int>> stack;
@@ -139,7 +139,7 @@ public:
 		typename std::map<char, Operator<int>>::iterator it;
 
 
-		log().entranceFunction(FUNCTION_NAME);
+		log().mt_Entrance_Function(FUNCTION_NAME);
 
 		if (expression.size() == 0)
 		{
@@ -160,12 +160,12 @@ public:
 		{
 			while ((l_ret == true) && (i < expression.size()))
 			{
-				/*log().startBlock(&expression[i]);
+				/*log().mt_Start_Block(&expression[i]);
 				log() << "m_postfix_expression.size() : " << m_postfix_expression.size() << "\n";
 				log() << "m_postfix_expression.back() : " << m_postfix_expression.back() << "\n";
 				log() << "stack.size() : " << stack.size() << "\n";
 				log() << "expression[i] : " << expression[i] << "\n";*/
-				if (isWhiteSpace(expression[i]) == false)
+				if (mt_Is_White_Space(expression[i]) == false)
 				{
 					if (std::isdigit(expression[i]))
 						m_postfix_expression.back() += expression[i];
@@ -221,7 +221,7 @@ public:
 					}
 				}
 				i++;
-				//log().endBlock();
+				//log().mt_End_Block();
 			}
 
 			bool stop_unstack(stack.size() == 0);
@@ -246,17 +246,17 @@ public:
 			}
 		}
 
-		log().exitFunction();
+		log().mt_Exit_Function();
 
 		return l_ret;
 	}
 
-	const std::string& getError(void) const
+	const std::string& mt_Get_Error(void) const
 	{
 		return m_error;
 	}
 
-	bool getResult(T& res)
+	bool mt_Get_Result(T& res)
 	{
 		std::stack<std::string> operands;
 		std::string str_a, str_b;
@@ -271,7 +271,7 @@ public:
 
 		for (auto it = m_postfix_expression.begin(); (it != m_postfix_expression.end()) && (l_ret == true); it++)
 		{
-			if (isOperator(*it) == true)
+			if (mt_Is_Operator(*it) == true)
 			{
 				auto l_it = m_operators.find((*it)[0]);
 
@@ -279,7 +279,7 @@ public:
 				operands.pop();
 				if (operands.size() < 1)	/** "-6+5" -> "6 - 5 +" -> "0 6 - 5 +" -> "0-6+5" **/
 				{
-					str_a = misc::numberToString(l_it->second.m_null_element);
+					str_a = misc::fn_Number_To_String(l_it->second.m_null_element);
 				}
 				else
 				{
@@ -287,13 +287,13 @@ public:
 					operands.pop();
 				}
 
-				stringToT(str_a, t_a);
-				stringToT(str_b, t_b);
+				mt_String_To_T(str_a, t_a);
+				mt_String_To_T(str_b, t_b);
 
 				l_ret = l_it->second.m_evaluate(t_a, t_b, res);
 				if (l_ret == true)
 				{
-					TtoString(res, str_a);
+					mt_T_To_String(res, str_a);
 					operands.push(str_a);
 				}
 				else
@@ -306,12 +306,12 @@ public:
 				operands.push(*it);
 			}
 		}
-		stringToT(operands.top(), res);
+		mt_String_To_T(operands.top(), res);
 		return l_ret;
 	}
 
 private:
-	bool isWhiteSpace(char c)
+	bool mt_Is_White_Space(char c)
 	{
 		bool l_ret(false);
 
@@ -344,27 +344,27 @@ private:
 		bool(*m_evaluate)(Type a, Type b, Type& res);
 	};
 
-	bool isOperator(char c) const
+	bool mt_Is_Operator(char c) const
 	{
 		return (m_operators.find(c) != m_operators.end());
 	}
 
-	bool isOperator(const std::string& str) const
+	bool mt_Is_Operator(const std::string& str) const
 	{
 		bool l_ret(false);
 		if (str.size() == 1)
-			l_ret = isOperator(str[0]);
+			l_ret = mt_Is_Operator(str[0]);
 		return l_ret;
 	}
 
-	void stringToT(const std::string& str, T& t) const
+	void mt_String_To_T(const std::string& str, T& t) const
 	{
 		std::stringstream ss;
 		ss << str;
 		ss >> t;
 	}
 
-	void TtoString(T t, std::string& str) const
+	void mt_T_To_String(T t, std::string& str) const
 	{
 		std::stringstream ss;
 		ss << t;

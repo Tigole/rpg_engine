@@ -13,7 +13,7 @@ class BasicAttributeLoader : public AttributeLoader
 public:
 	BasicAttributeLoader();
 	~BasicAttributeLoader();
-	std::unique_ptr<IAttribute> load(const TiXmlElement& element);
+	std::unique_ptr<IAttribute> mt_Load(const TiXmlElement& element);
 };
 
 #endif // !_BASIC_ATTRIBUTE_LOADER_HPP

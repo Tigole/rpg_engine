@@ -8,10 +8,10 @@ class Party : public IParty
 public:
 	Party();
 	virtual ~Party();
-	virtual void setEnnemies(const std::vector<IParty*>& ennemies);
+	virtual void mt_Set_Ennemies(const std::vector<IParty*>& ennemies);
 
-	virtual std::vector<ICharacter*>& getMembers(void);
-	virtual void addMember(ICharacter* new_party_member);
+	virtual std::vector<ICharacter*>& mt_Get_Members(void);
+	virtual void mt_Add_Member(ICharacter* new_party_member);
 
 protected:
 	std::vector<ICharacter*> m_members;

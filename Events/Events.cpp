@@ -29,7 +29,7 @@ EventBinding::EventBinding(const std::string& event_name)
  :	m_name(event_name)
 {}
 
-void EventBinding::appendEvent(const EventData& event)
+void EventBinding::mt_Append_Event(const EventData& event)
 {
 	//
 }

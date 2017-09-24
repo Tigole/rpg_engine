@@ -4,33 +4,29 @@
 #include "ECS_Core/ECS_Component.hpp"
 
 #include <string>
+#include <SFML/System/Vector2.hpp>
 
 class ComponentPosition : public ECS_Component
 {
 public:
 	ComponentPosition();
 
-	void load(const TiXmlElement& element);
+	void mt_Load(const TiXmlElement& element);
 
-	struct Position
-	{
-		Position(int x, int y, int layer = 0);
-		int m_x;
-		int m_y;
-		int m_layer;
-	};
+	sf::Vector2f mt_Get_Current_Position(void);
+	int mt_Get_Current_Layer(void);
+	sf::Vector2f mt_Get_Previous_Position(void);
+	void mt_Set_Current_Position(const sf::Vector2f& new_world_position_px);
+	void mt_Set_Current_Position(const sf::Vector2f& new_world_position_px, int new_layer);
 
-	void getCurrentPosition(Position& current_position);
-	void setCurrentPosition(const Position& current_position);
-	void getPreviousPosition(Position& previous_position);
+	void mt_Move_By(sf::Vector2f delta_px);
+	void mt_Set_Layer(int layer);
 
-	void moveBy(int dx, int dy, int d_layer = 0);
-
-	static std::string getComponentId(void);
+	static const ECS_ComponentId& mt_Get_Component_Id(void);
 
 protected:
-	Position m_current_position;
-	Position m_previous_position;
+	std::pair<sf::Vector2f, int> m_current_world_position_px;
+	std::pair<sf::Vector2f, int> m_previous_world_position_px;
 };
 
 #endif // _COMPONENT_POSITION_HPP

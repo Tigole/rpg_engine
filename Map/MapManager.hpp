@@ -13,8 +13,8 @@ class TilesetManager;
 class MapManager
 {
 public:
-	void load(const std::string& file_path, const std::map<std::string, std::unique_ptr<MapLoader>>& loaders, const TilesetManager& tm);
-	IMap* getMap(const std::string& map_id);
+	void mt_Load(const std::string& file_path, const std::map<std::string, std::unique_ptr<IMapLoader>>& loaders, const TilesetManager& tm);
+	IMap* mt_Get_Map(const std::string& map_id);
 
 private:
 	std::map<std::string, std::unique_ptr<IMap>> m_data;

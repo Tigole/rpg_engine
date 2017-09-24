@@ -13,8 +13,8 @@ public:
 	VariableList(const std::vector<std::pair<std::string, std::string>>& var_list);
 	VariableList(const std::string& var_name, const std::string& var_value);
 
-	void setVariable(const std::string& var_name, std::string var_value);
-	bool getVariable(const std::string& var_name, std::string& var_value) const;
+	void mt_Set_Variable(const std::string& var_name, std::string var_value);
+	bool mt_Get_Variable(const std::string& var_name, std::string& var_value) const;
 
 private:
 	std::map<std::string, std::string> m_variables;

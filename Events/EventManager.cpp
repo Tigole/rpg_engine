@@ -6,7 +6,7 @@ EventManager::EventManager()
 	m_current_state(m_states.end())
 {}
 
-void EventManager::handleEvent(const sf::Event& sfml_event)
+void EventManager::mt_Handle_Event(const sf::Event& sfml_event)
 {
 	std::map<sf::Event::EventType, EventType> l_map;
 	std::map<sf::Event::EventType, EventType>::iterator l_map_it;
@@ -80,7 +80,7 @@ void EventManager::handleEvent(const sf::Event& sfml_event)
 	}*/
 }
 
-void EventManager::update(void)
+void EventManager::mt_Update(void)
 {
 	EventCallBacks::iterator l_event_callback_it;
 
@@ -101,7 +101,7 @@ void EventManager::update(void)
 	}
 }
 
-void EventManager::setState(GameState* active_state)
+void EventManager::mt_Set_State(GameState* active_state)
 {
 	m_current_state = m_states.find(active_state);
 	if (m_current_state == m_states.end())

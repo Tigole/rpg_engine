@@ -9,13 +9,13 @@ public:
 	ThreadTask();
 	virtual ~ThreadTask();
 
-	void start(void);
-	bool hasStarted(void) const;
-	bool isDone(void) const;
+	void mt_Start(void);
+	bool mt_Has_Started(void) const;
+	bool mt_Is_Done(void) const;
 
 protected:
-	void done(void);
-	virtual void work(void) = 0;
+	void mt_Done(void);
+	virtual void mt_Work(void) = 0;
 
 	sf::Thread m_thread;
 	bool m_started;

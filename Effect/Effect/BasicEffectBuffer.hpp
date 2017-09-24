@@ -9,8 +9,8 @@ class BasicEffectBuffer : public Effect
 public:
 	BasicEffectBuffer(const std::string& target_attribute, int value, int nb_turn);
 
-	void affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target);
-	std::unique_ptr<IEffect> clone(void) const;
+	void mt_Affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target);
+	std::unique_ptr<IEffect> mt_Clone(void) const;
 
 private:
 	int m_value;

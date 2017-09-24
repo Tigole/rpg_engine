@@ -15,10 +15,10 @@ namespace fight
 	{
 	public:
 		FightFSM();
-		void initialize(IParty& hero, std::vector<IParty*>& ennemies);
+		void mt_Initialize(IParty& hero, std::vector<IParty*>& ennemies);
 
 	protected:
-		bool reset(void);
+		bool mt_Reset(void);
 	private:
 		std::vector<ICharacter*> m_fighters;
 	};

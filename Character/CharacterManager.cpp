@@ -16,7 +16,7 @@ CharacterManager::CharacterManager()
 	/** Nothing **/
 }
 
-void CharacterManager::load(const std::string& file_path, const std::map<std::string, std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm)
+void CharacterManager::mt_Load(const std::string& file_path, const std::map<std::string, std::unique_ptr<CharacterLoader>>& loaders, SkillManager& sm)
 {
 	TiXmlDocument document;
 	std::map<std::string, std::unique_ptr<CharacterLoader>>::const_iterator l_it;
@@ -38,17 +38,17 @@ void CharacterManager::load(const std::string& file_path, const std::map<std::st
 		if (l_it == loaders.end())
 			throw ExceptionXMLLoadingNoLoader(l_element->ValueStr());
 
-		l_tmp_char = (l_it->second)->load(*l_element, sm);
-		m_characters[l_tmp_char->getName()] = std::move(l_tmp_char);
+		l_tmp_char = (l_it->second)->mt_Load(*l_element, sm);
+		m_characters[l_tmp_char->mt_Get_Name()] = std::move(l_tmp_char);
 	}
 }
 
-std::unique_ptr<ICharacter> CharacterManager::getCharacter(const std::string& character_id)
+std::unique_ptr<ICharacter> CharacterManager::mt_Get_Character(const std::string& character_id)
 {
 	auto l_it(m_characters.find(character_id));
 
 	if (l_it == m_characters.end())
 		throw ExceptionResourceDoesNotExists(character_id, FUNCTION_NAME);
 
-	return l_it->second->clone();
+	return l_it->second->mt_Clone();
 }

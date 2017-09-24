@@ -6,7 +6,7 @@ class Observer
 {
 public:
 	virtual ~Observer(){}
-	virtual void notify(const MessageType& msg) = 0;
+	virtual void mt_Notify(const MessageType& msg) = 0;
 };
 
 #endif // _OBSERVER_HPP

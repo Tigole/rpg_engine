@@ -6,7 +6,7 @@ ECS_SystemManager::ECS_SystemManager()
 	//
 }
 
-void ECS_SystemManager::entityModified(const ECS_Entity& e, const ECS_ComponentContainer& owned_components)
+void ECS_SystemManager::mt_Entity_Modified(const ECS_Entity& entity, const ECS_ComponentContainer& owned_components)
 {
 	std::set<ECS_ComponentId> l_owned_components;
 
@@ -17,6 +17,6 @@ void ECS_SystemManager::entityModified(const ECS_Entity& e, const ECS_ComponentC
 
 	for (auto& l_system : m_systems)
 	{
-		l_system.second->entityModified(e, l_owned_components);
+		l_system.second->mt_Entity_Modified(entity, l_owned_components);
 	}
 }

@@ -13,7 +13,7 @@ BasicEffectSetterLoader::BasicEffectSetterLoader()
 	/** Nothing **/
 }
 
-std::unique_ptr<IEffect> BasicEffectSetterLoader::load(const TiXmlElement& element)
+std::unique_ptr<IEffect> BasicEffectSetterLoader::mt_Load(const TiXmlElement& element)
 {
 	std::unique_ptr<IEffect> l_ret(nullptr);
 	std::string target_attribute, formula;
@@ -35,7 +35,7 @@ BasicEffectModifierLoader::BasicEffectModifierLoader()
 	/** Nothing **/
 }
 
-std::unique_ptr<IEffect> BasicEffectModifierLoader::load(const TiXmlElement& element)
+std::unique_ptr<IEffect> BasicEffectModifierLoader::mt_Load(const TiXmlElement& element)
 {
 	std::unique_ptr<IEffect> l_ret(nullptr);
 	std::string target_attribute, formula;
@@ -57,7 +57,7 @@ BasicEffectBufferLoader::BasicEffectBufferLoader()
 	/** Nothing **/
 }
 
-std::unique_ptr<IEffect> BasicEffectBufferLoader::load(const TiXmlElement& element)
+std::unique_ptr<IEffect> BasicEffectBufferLoader::mt_Load(const TiXmlElement& element)
 {
 	std::unique_ptr<IEffect> l_ret(nullptr);
 	std::string target_attribute;

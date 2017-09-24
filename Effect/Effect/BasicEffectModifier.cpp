@@ -8,11 +8,11 @@ BasicEffectModifier::BasicEffectModifier(const std::string& target_attribute, co
 	/** Nothing **/
 }
 
-void BasicEffectModifier::affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
+void BasicEffectModifier::mt_Affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
 {
 	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 }
-std::unique_ptr<IEffect> BasicEffectModifier::clone(void) const
+std::unique_ptr<IEffect> BasicEffectModifier::mt_Clone(void) const
 {
 	return std::unique_ptr<IEffect>(new BasicEffectModifier(*this));
 }

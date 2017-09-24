@@ -8,7 +8,7 @@ class IActionable
 public:
 	virtual ~IActionable(){}
 
-	virtual void manageEvent(const IEvent& event) = 0;
+	virtual void mt_Manage_Event(const IEvent& event) = 0;
 
 };
 

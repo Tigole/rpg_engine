@@ -8,7 +8,7 @@
 
 extern "C"
 {
-	void deleteCompositeAttribute(IAttribute* obj);
+	void fn_delete_CompositeAttribute(IAttribute* obj);
 }
 
 class CompositeAttribute : public Attribute
@@ -17,15 +17,15 @@ public:
 	CompositeAttribute(const std::string& base_name);
 	CompositeAttribute(const CompositeAttribute& cp);
 
-	void addAttributes(std::unique_ptr<IAttribute>& lower_attribute);
-	virtual void getValue(const std::string& attribute_name, int& value) const;
-	virtual void setValue(const std::string& attribute_name, int value);
-	std::unique_ptr<IAttribute> clone(void) const;
-	void save(TiXmlElement& parent) const;
-	virtual void dump(ILogger& l);
+	void mt_Add_Attributes(std::unique_ptr<IAttribute>& lower_attribute);
+	virtual void mt_Get_Value(const std::string& attribute_name, int& value) const;
+	virtual void mt_Set_Value(const std::string& attribute_name, int value);
+	std::unique_ptr<IAttribute> mt_Clone(void) const;
+	void mt_Save(TiXmlElement& parent) const;
+	virtual void mt_Dump(ILogger& l);
 
 private:
-	void splitAttributeName(const std::string& full_name, std::string& base_name, std::string& lower_name) const;
+	void mt_Split_Attribute_Name(const std::string& full_name, std::string& base_name, std::string& lower_name) const;
 	std::map<std::string, std::unique_ptr<IAttribute>> m_attributes;
 
 	/** \fn bool splitAttributeName(const std::string& full_name, std::string& base_name, std::string& lower_name) const
@@ -34,7 +34,7 @@ private:
 		Example:
 			full_name = "hp.max"
 			base_name = "hp"
-			lower_name = "max" 
+			lower_name = "max"
 	**/
 };
 

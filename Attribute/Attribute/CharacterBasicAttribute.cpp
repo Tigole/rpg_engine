@@ -7,17 +7,17 @@ CharacterBasicAttribute::CharacterBasicAttribute(const std::string& name)
 	/** Nothing **/
 }
 
-void CharacterBasicAttribute::startTurn(void)
+void CharacterBasicAttribute::mt_Start_Turn(void)
 {
 	/** Nothing **/
 }
 
-void CharacterBasicAttribute::endTurn(void)
+void CharacterBasicAttribute::mt_End_Turn(void)
 {
 	//
 }
 
-void CharacterBasicAttribute::endFight(void)
+void CharacterBasicAttribute::mt_End_Fight(void)
 {
 	//
 }

@@ -8,7 +8,11 @@ class IAnimation : public fsm::SequentialFSM
 public:
 	virtual ~IAnimation(){}
 
-	virtual bool reset(void);
+	virtual bool mt_Reset(void);
+
+	virtual void mt_Update(float delta_time_ms) = 0;
+	virtual void mt_Play(void) = 0;
+	virtual void mt_Stop(void) = 0;
 
 protected:
 	//

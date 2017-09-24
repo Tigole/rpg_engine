@@ -11,7 +11,7 @@ class IEffect : public misc::Clonable<IEffect>
 public:
 	virtual ~IEffect(){}
 
-	virtual void affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target) = 0;
+	virtual void mt_Affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target) = 0;
 };
 
 #endif // !_IEFFECT_HPP

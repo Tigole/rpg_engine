@@ -12,8 +12,8 @@ public:
 	ILoader();
 	virtual ~ILoader();
 protected:
-	bool checkAttributes(const TiXmlElement& element, const std::vector<std::string>& attributes) const;
-	bool checkChildren(const TiXmlElement& element, const std::vector<std::string>& children) const;
+	bool mt_Check_Attributes(const TiXmlElement& element, const std::vector<std::string>& attributes) const;
+	bool mt_Check_Children(const TiXmlElement& element, const std::vector<std::string>& children) const;
 
 	/** \fn bool checkAttributes(const TiXmlElement& element, const std::vector<std::string>& attributes) const
 		\brief Check if the element has at least one attribute named in "attributes"
@@ -38,7 +38,7 @@ public:
 	Loader(const std::string& element_name);
 	virtual ~Loader();
 
-	const std::string& getElementName(void) const;
+	const std::string& mt_Get_Element_Name(void) const;
 protected:
 	std::string m_element_name;
 

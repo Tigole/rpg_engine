@@ -18,11 +18,11 @@ class MusicManager
 {
 public:
 	MusicManager(const std::string& resource_path);
-	void play(const std::string& music_id);
-	void resume(void);
-	void stop(void);
-	void pause(void);
-	void load(const std::string& file_path);
+	void mt_Play(const std::string& music_id);
+	void mt_Resume(void);
+	void mt_Stop(void);
+	void mt_Pause(void);
+	void mt_Load(const std::string& file_path);
 
 protected:
 	std::string m_resource_path;

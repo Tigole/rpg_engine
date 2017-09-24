@@ -25,7 +25,7 @@ MusicManager::MusicManager(const std::string& resource_path)
 	m_database()
 {}
 
-void MusicManager::play(const std::string& music_id)
+void MusicManager::mt_Play(const std::string& music_id)
 {
 	std::map<std::string, MusicData>::iterator l_it;
 
@@ -36,26 +36,26 @@ void MusicManager::play(const std::string& music_id)
 		m_music.openFromFile(m_resource_path + l_it->second.m_file_path);
 		m_music.setLoop(true);
 		m_music.play();
-	}	
+	}
 }
 
-void MusicManager::resume(void)
+void MusicManager::mt_Resume(void)
 {
 	if (m_music.getStatus() == sf::Music::Paused)
 		m_music.play();
 }
 
-void MusicManager::stop(void)
+void MusicManager::mt_Stop(void)
 {
 	m_music.stop();
 }
 
-void MusicManager::pause(void)
+void MusicManager::mt_Pause(void)
 {
 	m_music.pause();
 }
 
-void MusicManager::load(const std::string& file_path)
+void MusicManager::mt_Load(const std::string& file_path)
 {
 	TiXmlDocument l_doc;
 	std::string l_id, l_path;

@@ -10,12 +10,12 @@ BasicEffectBuffer::BasicEffectBuffer(const std::string& target_attribute, int va
 	/** Nothing **/
 }
 
-void BasicEffectBuffer::affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
+void BasicEffectBuffer::mt_Affect(ISkill& skill_owner, ICharacter& char_owner, ICharacter& char_target)
 {
 	throw ExceptionUnimplementedFunction(FUNCTION_NAME);
 }
 
-std::unique_ptr<IEffect> BasicEffectBuffer::clone(void) const
+std::unique_ptr<IEffect> BasicEffectBuffer::mt_Clone(void) const
 {
 	return std::unique_ptr<IEffect>(new BasicEffectBuffer(*this));
 }

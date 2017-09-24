@@ -14,7 +14,7 @@ Exception::Exception(const std::string& str)
 	/** Nothing **/
 }
 
-const char* Exception::what(void) const
+const char* Exception::mt_What(void) const
 {
 	return m_what.c_str();
 }
@@ -98,7 +98,7 @@ ExceptionStringSplittingFail::ExceptionStringSplittingFail(const std::string& st
 }
 
 ExceptionArraySize::ExceptionArraySize(unsigned int index, unsigned int array_size, const std::string& array_name, const std::string& context)
-	: Exception("Index \"" + misc::numberToString(index) + "\" is too large for \"" + array_name + "[0;" + misc::numberToString(array_size) + "[\" in " + context)
+	: Exception("Index \"" + misc::fn_Number_To_String(index) + "\" is too large for \"" + array_name + "[0;" + misc::fn_Number_To_String(array_size) + "[\" in " + context)
 {
 	/** Nothing **/
 }

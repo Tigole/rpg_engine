@@ -14,8 +14,8 @@ namespace fsm
 class EmptyState : public IState
 {
 public:
-	IState* callProcess(void) { return this; }
-	bool reset(void) { return true; }
+	IState* mt_Call_Process(void) { return this; }
+	bool mt_Reset(void) { return true; }
 };
 
 class IdleState : public State
@@ -23,7 +23,7 @@ class IdleState : public State
 public:
 	virtual ~IdleState(){}
 protected:
-	virtual bool process(void) { return true; }
+	virtual bool mt_Process(void) { return true; }
 };
 
 }

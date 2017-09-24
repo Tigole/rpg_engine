@@ -18,22 +18,22 @@ public:
     ILogger();
     virtual ~ILogger();
 
-    virtual bool isValid(void) = 0;
-    virtual void entranceFunction(const char* function_name) = 0;
-    virtual void exitFunction(void) = 0;
-    virtual void onEvent(const char* event_name) = 0;
-    virtual void stopEvent(void) = 0;
-    virtual void startBlock(const char* block_name) = 0;
-    virtual void endBlock(void) = 0;
-    virtual void stopLog(void) = 0;
-    virtual ILogger& log(const std::string& msg) = 0;
-    ILogger& log(bool b);
-    ILogger& log(const char* msg);
-    ILogger& log(char* msg);
+    virtual bool mt_Is_Valid(void) = 0;
+    virtual void mt_Entrance_Function(const char* function_name) = 0;
+    virtual void mt_Exit_Function(void) = 0;
+    virtual void mt_On_Event(const char* event_name) = 0;
+    virtual void mt_Stop_Event(void) = 0;
+    virtual void mt_Start_Block(const char* block_name) = 0;
+    virtual void mt_End_Block(void) = 0;
+    virtual void mt_Stop_Log(void) = 0;
+    virtual ILogger& mt_Log(const std::string& msg) = 0;
+    ILogger& mt_Log(bool b);
+    ILogger& mt_Log(const char* msg);
+    ILogger& mt_Log(char* msg);
     template<typename T>
-    ILogger& log(const T& nombre)
+    ILogger& mt_Log(const T& nombre)
     {
-        return log(misc::numberToString(nombre));
+        return mt_Log(misc::fn_Number_To_String(nombre));
     }
 
 // Documentation
@@ -48,29 +48,29 @@ public:
     Logger(const std::string& fichier);
     virtual ~Logger();
 
-    bool isValid(void);
-    virtual void entranceFunction(const char* function_name);
-    virtual void exitFunction(void);
-    virtual void onEvent(const char* nom_evenement);
-    virtual void stopEvent(void);
-    virtual void startBlock(const char* nom_balise);
-    virtual void endBlock(void);
+    bool mt_Is_Valid(void);
+    virtual void mt_Entrance_Function(const char* function_name);
+    virtual void mt_Exit_Function(void);
+    virtual void mt_On_Event(const char* nom_evenement);
+    virtual void mt_Stop_Event(void);
+    virtual void mt_Start_Block(const char* nom_balise);
+    virtual void mt_End_Block(void);
 protected:
     const std::string m_file_name;
     std::ofstream m_file;
 
-    virtual void FormatEntranceFunction(const char* function_name) = 0;
-    virtual void FormatExiteFunction(const char* function_name) = 0;
-    virtual void FormatOnEvenement(const char* event_name) = 0;
-    virtual void FormatStopEvenement(const char* event_name) = 0;
-    virtual void FormatStartBlock(const char* block_name) = 0;
-    virtual void FormatEndBlock(const char* block_name) = 0;
-    void unstackEntriesForStopLog(void);
+    virtual void mt_Format_Entrance_Function(const char* function_name) = 0;
+    virtual void mt_Format_Exit_Function(const char* function_name) = 0;
+    virtual void mt_Format_On_Evenement(const char* event_name) = 0;
+    virtual void mt_Format_Stop_Evenement(const char* event_name) = 0;
+    virtual void mt_Format_Start_Block(const char* block_name) = 0;
+    virtual void mt_Format_End_Block(const char* block_name) = 0;
+    void mt_Unstack_Entries_For_Stop_Log(void);
 private:
     std::stack<std::string> m_functions, m_events, m_blocks;
     std::stack<void (Logger::*)(void)> m_stack_entries;
-    void manageFormatEntrance(const char* name, std::stack<std::string>& stack, void (Logger::*function)(const char*));
-    void manageFormatExit(std::stack<std::string>& stack, void (Logger::*function)(const char*));
+    void mt_Manage_Format_Entrance(const char* name, std::stack<std::string>& stack, void (Logger::*function)(const char*));
+    void mt_Manage_Format_Exit(std::stack<std::string>& stack, void (Logger::*function)(const char*));
 
 // Documentation
     /** \class Logger
@@ -81,7 +81,7 @@ private:
 template<typename T>
 ILogger& operator<<(ILogger& log, const T& msg)
 {
-    return log.log(msg);
+    return log.mt_Log(msg);
 }
 /** \fn template<typename T> ILogger& operator<<(ILogger& log, const T& msg)
     \brief Surcharge de l'operateur d'insertion pour le log

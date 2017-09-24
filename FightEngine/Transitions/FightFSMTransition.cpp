@@ -18,20 +18,20 @@ namespace fight
 			/** Nothing **/
 		}
 
-		bool PartyTransition::reset(void)
+		bool PartyTransition::mt_Reset(void)
 		{
 			return true;
 		}
 
-		fsm::IState* PartyDead::check(fsm::IState* current_state)
+		fsm::IState* PartyDead::mt_Check(fsm::IState* current_state)
 		{
 			fsm::IState* l_ret(current_state);
 
 			for (auto& party : m_target_parties)
 			{
-				for (auto& party_member : party->getMembers())
+				for (auto& party_member : party->mt_Get_Members())
 				{
-					if (party_member->isDead())
+					if (party_member->mt_Is_Dead())
 					{
 						l_ret = m_target_state;
 					}
@@ -41,7 +41,7 @@ namespace fight
 			return l_ret;
 		}
 
-		fsm::IState* PartyAlive::check(fsm::IState* current_state)
+		fsm::IState* PartyAlive::mt_Check(fsm::IState* current_state)
 		{
 			fsm::IState* l_ret(m_target_state);
 
@@ -49,9 +49,9 @@ namespace fight
 
 			for (auto& party : m_target_parties)
 			{
-				for (auto& party_member : party->getMembers())
+				for (auto& party_member : party->mt_Get_Members())
 				{
-					if (!party_member->isDead())
+					if (!party_member->mt_Is_Dead())
 					{
 						l_ret = m_target_state;
 					}

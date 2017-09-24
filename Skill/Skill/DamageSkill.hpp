@@ -19,20 +19,20 @@ public:
 		DSO_ERROR
 	};
 
-	static DamageSkillOperator stringToOperator(const std::string& op);
+	static DamageSkillOperator mt_String_To_Operator(const std::string& op);
 
 	DamageSkill(const std::string& name, int damages, DamageSkillOperator op);
 	~DamageSkill();
 
 protected:
-	int affectCharacter(ICharacter& target);
+	int mt_Affect_Character(ICharacter& target);
 
-	virtual int manage_DSO_ADD(int owner_base_damages, int skill_damages) = 0;
-	virtual int manage_DSO_MINUS(int owner_base_damages, int skill_damages) = 0;
-	virtual int manage_DSO_MULTIPLY(int owner_base_damages, int skill_damages) = 0;
-	virtual int manage_DSO_DIVIDE(int owner_base_damages, int skill_damages) = 0;
-	virtual int manage_DSO_PERCENT(int owner_base_damages, int skill_damages) = 0;
-	virtual int manage_DSO_RAW(int owner_base_damages, int skill_damages) = 0;
+	virtual int mt_Manage_DSO_ADD(int owner_base_damages, int skill_damages) = 0;
+	virtual int mt_Manage_DSO_MINUS(int owner_base_damages, int skill_damages) = 0;
+	virtual int mt_Manage_DSO_MULTIPLY(int owner_base_damages, int skill_damages) = 0;
+	virtual int mt_Manage_DSO_DIVIDE(int owner_base_damages, int skill_damages) = 0;
+	virtual int mt_Manage_DSO_PERCENT(int owner_base_damages, int skill_damages) = 0;
+	virtual int mt_Manage_DSO_RAW(int owner_base_damages, int skill_damages) = 0;
 
 	static std::map<DamageSkillOperator, int (DamageSkill::*)(int, int)> m_operator_map;
 

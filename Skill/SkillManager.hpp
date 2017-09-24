@@ -20,9 +20,9 @@ class SkillManager
 public:
     SkillManager();
 
-	void load(const std::string& file_path, const std::map<std::string, std::unique_ptr<SkillLoader>>& loaders);
+	void mt_Load(const std::string& file_path, const std::map<std::string, std::unique_ptr<SkillLoader>>& loaders);
 
-	std::unique_ptr<ISkill> getSkill(const std::string& skill_name, ICharacter& skill_owner) const;
+	std::unique_ptr<ISkill> mt_Get_Skill(const std::string& skill_name, ICharacter& skill_owner) const;
 
 private:
 

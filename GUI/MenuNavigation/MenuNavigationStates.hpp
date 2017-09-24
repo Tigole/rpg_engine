@@ -21,7 +21,7 @@ protected:
 	std::vector<INavigationObject*>::iterator& m_target_object;
 	fsm::TogglableTransition& m_trans_child_validate;
 	fsm::TogglableTransition& m_trans_child_cancel;
-	bool process(void);
+	bool mt_Process(void);
 };
 
 #endif // !_MENU_NAVIGATION_STATES_HPP

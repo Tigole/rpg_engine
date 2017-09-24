@@ -9,19 +9,19 @@ class ResourceManager
 public:
 	virtual ~ResourceManager(){}
 
-	ResourceType* getResource(const std::string& resource_id)
+	ResourceType* mt_Get_Resource(const std::string& resource_id)
 	{
 		//
 	}
-	void releaseResource(const std::string& resource_id)
+	void mt_Release_Resource(const std::string& resource_id)
 	{
 		//
 	}
 
 protected:
-	bool load(const std::string& file_path)
+	bool mt_Load(const std::string& file_path)
 	{
-		return static_cast<Derived*>(this)->load(file_path);
+		return static_cast<Derived*>(this)->mt_Load(file_path);
 	}
 };
 

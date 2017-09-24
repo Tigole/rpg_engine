@@ -26,15 +26,15 @@ BasicSkillLoader::BasicSkillLoader()
 	m_attributes.push_back("target_attribute");
 	m_attributes.push_back("formula");
 
-	m_children["AttributeList"] = &BasicSkillLoader::loadAttributes;
+	m_children["AttributeList"] = &BasicSkillLoader::mt_Load_Attributes;
 }
 
-void BasicSkillLoader::setAttributeLoaderFactory(const AttributeLoaderFactory* attribute_loader_factory)
+void BasicSkillLoader::mt_Set_AttributeLoaderFactory(const AttributeLoaderFactory* attribute_loader_factory)
 {
 	m_attribute_loader_factory = attribute_loader_factory;
 }
 
-std::unique_ptr<ISkill> BasicSkillLoader::load(const TiXmlElement& element)
+std::unique_ptr<ISkill> BasicSkillLoader::mt_Load(const TiXmlElement& element)
 {
 	std::unique_ptr<ISkill> l_ret(nullptr);
 	std::string skill_id;
@@ -65,7 +65,7 @@ std::unique_ptr<ISkill> BasicSkillLoader::load(const TiXmlElement& element)
 	return l_ret;
 }
 
-void BasicSkillLoader::loadAttributes(const TiXmlElement& element, ISkill& skill) const
+void BasicSkillLoader::mt_Load_Attributes(const TiXmlElement& element, ISkill& skill) const
 {
 	LoaderCreator<AttributeLoader> attribute_loader_creator;
 
@@ -75,11 +75,11 @@ void BasicSkillLoader::loadAttributes(const TiXmlElement& element, ISkill& skill
 
 		if (l_element != nullptr)
 		{
-			attribute_loader_creator = m_attribute_loader_factory->getLoader(l_element->Value());
+			attribute_loader_creator = m_attribute_loader_factory->mt_Get_Loader(l_element->Value());
 			std::unique_ptr<AttributeLoader> attribute_loader(attribute_loader_creator.m_creator());
-			std::unique_ptr<IAttribute> iattribute(attribute_loader->load(*l_element));
+			std::unique_ptr<IAttribute> iattribute(attribute_loader->mt_Load(*l_element));
 
-			skill.addAttribute(iattribute);
+			skill.mt_Add_Attribute(iattribute);
 		}
 	}
 }

@@ -9,8 +9,8 @@ public:
 	CharacterAttribute(const std::string& name);
 	virtual ~CharacterAttribute();
 
-	virtual const std::string& getName(void) const;
-	virtual void dump(ILogger& l);
+	virtual const std::string& mt_Get_Name(void) const;
+	virtual void mt_Dump(ILogger& l);
 
 protected:
 	std::string m_name;

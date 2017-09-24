@@ -5,7 +5,7 @@
 
 extern "C"
 {
-	void deleteDBG_DamageSkill(ISkill* obj);
+	void fn_DeleteDBG_DamageSkill(ISkill* obj);
 }
 
 class DBG_DamageSkill : public DamageSkill
@@ -13,15 +13,15 @@ class DBG_DamageSkill : public DamageSkill
 public:
 	DBG_DamageSkill(const std::string& name, int damages, DamageSkillOperator op);
 
-	std::unique_ptr<ISkill> clone(void) const;
+	std::unique_ptr<ISkill> mt_Clone(void) const;
 
 protected:
-	virtual int manage_DSO_ADD(int owner_base_damages, int skill_damages);
-	virtual int manage_DSO_MINUS(int owner_base_damages, int skill_damages);
-	virtual int manage_DSO_MULTIPLY(int owner_base_damages, int skill_damages);
-	virtual int manage_DSO_DIVIDE(int owner_base_damages, int skill_damages);
-	virtual int manage_DSO_PERCENT(int owner_base_damages, int skill_damages);
-	virtual int manage_DSO_RAW(int owner_base_damages, int skill_damages);
+	virtual int mt_Manage_DSO_ADD(int owner_base_damages, int skill_damages);
+	virtual int mt_Manage_DSO_MINUS(int owner_base_damages, int skill_damages);
+	virtual int mt_Manage_DSO_MULTIPLY(int owner_base_damages, int skill_damages);
+	virtual int mt_Manage_DSO_DIVIDE(int owner_base_damages, int skill_damages);
+	virtual int mt_Manage_DSO_PERCENT(int owner_base_damages, int skill_damages);
+	virtual int mt_Manage_DSO_RAW(int owner_base_damages, int skill_damages);
 };
 
 #endif // _DBG_DAMAGE_SKILL_HPP

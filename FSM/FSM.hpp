@@ -18,10 +18,10 @@ class CyclicFSM : public BasicFSM
 public:
 	virtual ~CyclicFSM(){}
 
-	virtual int process(void);
+	virtual int mt_Process(void);
 };
 
-/** 
+/**
 	\class SequentialFSM
 	\brief Represent a sequential FSM
 
@@ -44,11 +44,11 @@ public:
 	SequentialFSM();
 	virtual ~SequentialFSM(){}
 
-	virtual int process(void);
+	virtual int mt_Process(void);
 
 protected:
 
-	void addStopState(IState* stop_state, int return_value = SEQUENTIAL_STOP_STATE_REACHED);
+	void mt_Add_Stop_State(IState* stop_state, int return_value = SEQUENTIAL_STOP_STATE_REACHED);
 
 private:
 

@@ -7,12 +7,12 @@ bool DummyLogger::isValid(void)
     return true;
 }
 
-void DummyLogger::entranceFunction(const char* function_name)
+void DummyLogger::mt_Entrance_Function(const char* function_name)
 {
 	DUMMY_LOGGER_UNUSED_PARAMETER(function_name);
 }
 
-void DummyLogger::exitFunction(void)
+void DummyLogger::mt_Exit_Function(void)
 {
 	/** *Nothing **/
 }
@@ -27,12 +27,12 @@ void DummyLogger::stopEvent(void)
 	/** Nothing **/
 }
 
-void DummyLogger::startBlock(const char* block_name)
+void DummyLogger::mt_Start_Block(const char* block_name)
 {
 	DUMMY_LOGGER_UNUSED_PARAMETER(block_name);
 }
 
-void DummyLogger::endBlock(void)
+void DummyLogger::mt_End_Block(void)
 {
 	/** Nothing **/
 }

@@ -20,15 +20,15 @@ CompositeAttribute::CompositeAttribute(const CompositeAttribute& cp)
 	m_attributes()
 {
 	for (const auto& p : cp.m_attributes)
-		m_attributes[p.first] = std::move(p.second->clone());
+		m_attributes[p.first] = std::move(p.second->mt_Clone());
 }
 
-std::unique_ptr<IAttribute> CompositeAttribute::clone(void) const
+std::unique_ptr<IAttribute> CompositeAttribute::mt_Clone(void) const
 {
 	return std::unique_ptr<IAttribute>(new CompositeAttribute(*this));
 }
 
-void CompositeAttribute::save(TiXmlElement& parent) const
+void CompositeAttribute::mt_Save(TiXmlElement& parent) const
 {
 	TiXmlElement* l_this(nullptr);
 
@@ -38,32 +38,32 @@ void CompositeAttribute::save(TiXmlElement& parent) const
 		l_this->SetAttribute("name", m_name);
 		for (auto it = m_attributes.begin(); it != m_attributes.end(); it++)
 		{
-			it->second->save(*l_this);
-				log().entranceFunction(FUNCTION_NAME);
+			it->second->mt_Save(*l_this);
+				log().mt_Entrance_Function(FUNCTION_NAME);
 				log() << "Error while saving attribute \"" << it->first << "\"\n";
-				log().exitFunction();
+				log().mt_Exit_Function();
 		}
 }
 
-void CompositeAttribute::addAttributes(std::unique_ptr<IAttribute>& lower_attribute)
+void CompositeAttribute::mt_Add_Attributes(std::unique_ptr<IAttribute>& lower_attribute)
 {
 	bool l_ret(false);
 
 	if (lower_attribute == nullptr)
 		throw std::runtime_error(FUNCTION_NAME);
 
-	if (m_attributes.find(lower_attribute->getName()) != m_attributes.end())
-		throw ExceptionResourceAlradeyExists(lower_attribute->getName(), FUNCTION_NAME);
+	if (m_attributes.find(lower_attribute->mt_Get_Name()) != m_attributes.end())
+		throw ExceptionResourceAlradeyExists(lower_attribute->mt_Get_Name(), FUNCTION_NAME);
 
-	m_attributes[lower_attribute->getName()] = std::move(lower_attribute);
+	m_attributes[lower_attribute->mt_Get_Name()] = std::move(lower_attribute);
 }
 
-void CompositeAttribute::getValue(const std::string& attribute_name, int& value) const
+void CompositeAttribute::mt_Get_Value(const std::string& attribute_name, int& value) const
 {
 	std::string base_name, lower_name;
 	std::map<std::string, std::unique_ptr<IAttribute>>::const_iterator it;
 
-	splitAttributeName(attribute_name, base_name, lower_name);
+	mt_Split_Attribute_Name(attribute_name, base_name, lower_name);
 
 	if (base_name != m_name)
 		throw ExceptionResourceDoesNotExists(base_name, FUNCTION_NAME);
@@ -72,15 +72,15 @@ void CompositeAttribute::getValue(const std::string& attribute_name, int& value)
 	if (it == m_attributes.end())
 		throw ExceptionResourceDoesNotExists(lower_name, FUNCTION_NAME);
 
-	it->second->getValue(lower_name, value);
+	it->second->mt_Get_Value(lower_name, value);
 }
 
-void CompositeAttribute::setValue(const std::string& attribute_name, int value)
+void CompositeAttribute::mt_Set_Value(const std::string& attribute_name, int value)
 {
 	std::string base_name, lower_name;
 	std::map<std::string, std::unique_ptr<IAttribute>>::const_iterator it;
 
-	splitAttributeName(attribute_name, base_name, lower_name);
+	mt_Split_Attribute_Name(attribute_name, base_name, lower_name);
 
 	if (base_name != m_name)
 		throw ExceptionResourceDoesNotExists(base_name, FUNCTION_NAME);
@@ -89,10 +89,10 @@ void CompositeAttribute::setValue(const std::string& attribute_name, int value)
 	if (it == m_attributes.end())
 		throw ExceptionResourceDoesNotExists(lower_name, FUNCTION_NAME);
 
-	it->second->setValue(lower_name, value);
+	it->second->mt_Set_Value(lower_name, value);
 }
 
-void CompositeAttribute::splitAttributeName(const std::string& full_name, std::string& base_name, std::string& lower_name) const
+void CompositeAttribute::mt_Split_Attribute_Name(const std::string& full_name, std::string& base_name, std::string& lower_name) const
 {
 	std::stringstream ss;
 
@@ -107,11 +107,11 @@ void CompositeAttribute::splitAttributeName(const std::string& full_name, std::s
 		throw ExceptionStringSplittingFail(full_name);
 }
 
-void CompositeAttribute::dump(ILogger& l)
+void CompositeAttribute::mt_Dump(ILogger& l)
 {
 	l << "name : \"" << m_name << "\"\n";
-	l.startBlock("children attributes");
+	l.mt_Start_Block("children attributes");
 	for (auto& a : m_attributes)
-		a.second->dump(l);
-	l.endBlock();
+		a.second->mt_Dump(l);
+	l.mt_End_Block();
 }

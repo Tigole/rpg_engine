@@ -8,13 +8,13 @@ Character::Character(const std::string& name, int hp)
 	/** Nothing **/
 }
 
-void Character::selectSkill(void)
+void Character::mt_Select_Skill(void)
 {
 	/** Choose skill **/
 	/** Choose target for the skill **/
 }
 
-void Character::useSkill(void)
+void Character::mt_Use_Skill(void)
 {
 	//
 }

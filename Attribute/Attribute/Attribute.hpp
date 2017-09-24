@@ -8,7 +8,7 @@ class Attribute : public IAttribute
 public:
 	Attribute(const std::string& name);
 	virtual ~Attribute();
-	virtual const std::string& getName(void);
+	virtual const std::string& mt_Get_Name(void);
 
 protected:
 	std::string m_name;

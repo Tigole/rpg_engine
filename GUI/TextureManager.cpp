@@ -24,7 +24,7 @@ TextureManager::~TextureManager()
 	/** Nothing **/
 }
 
-void TextureManager::load(const std::string& file_path)
+void TextureManager::mt_Load(const std::string& file_path)
 {
 	TiXmlDocument doc(file_path);
 	TiXmlElement* root(nullptr);
@@ -36,7 +36,7 @@ void TextureManager::load(const std::string& file_path)
 		{
 			if (a->ValueStr() == "Texture")
 			{
-				load(*a);
+				mt_Load(*a);
 			}
 		}
 	}
@@ -46,7 +46,7 @@ void TextureManager::load(const std::string& file_path)
 	}
 }
 
-void TextureManager::load(const TiXmlElement& texture)
+void TextureManager::mt_Load(const TiXmlElement& texture)
 {
 	std::vector<std::string> attributes;
 	std::string attrib;
@@ -55,7 +55,7 @@ void TextureManager::load(const TiXmlElement& texture)
 	attributes.push_back("id");
 	attributes.push_back("path");
 
-	if (checkAttributes(texture, attributes) == true)
+	if (mt_Check_Attributes(texture, attributes) == true)
 	{
 		texture.QueryStringAttribute("path", &attrib);
 		t.loadFromFile(m_resources_path + attrib);
@@ -68,7 +68,7 @@ void TextureManager::load(const TiXmlElement& texture)
 	}
 }
 
-const sf::Texture& TextureManager::getTexture(const std::string& texture_id) const
+const sf::Texture& TextureManager::mt_Get_Texture(const std::string& texture_id) const
 {
 	std::map<std::string, sf::Texture>::const_iterator it(m_textures.find(texture_id));
 
@@ -81,7 +81,7 @@ const sf::Texture& TextureManager::getTexture(const std::string& texture_id) con
 }
 
 
-std::unique_ptr<IGUIBackground> TextureManager::getBackground(const std::string& background_id) const
+std::unique_ptr<IGUIBackground> TextureManager::mt_Get_Background(const std::string& background_id) const
 {
 	std::unique_ptr<IGUIBackground> l_ret;
 	auto it(m_background.find(background_id));
@@ -91,7 +91,7 @@ std::unique_ptr<IGUIBackground> TextureManager::getBackground(const std::string&
 		throw ExceptionResourceDoesNotExists(background_id, FUNCTION_NAME);
 	}
 
-	l_ret = it->second->clone();
+	l_ret = it->second->mt_Clone();
 
 	return l_ret;
 }

@@ -9,21 +9,21 @@ public:
     XMLLogger(const std::string& file_path, const std::string& root);
     ~XMLLogger();
 
-    virtual void stopLog(void);
-    virtual ILogger& log(const std::string& msg);
+    virtual void mt_Stop_Log(void);
+    virtual ILogger& mt_Log(const std::string& msg);
 
 protected:
-    virtual void FormatEntranceFunction(const char* nom_fonction);
-    virtual void FormatExiteFunction(const char* nom_fonction);
-    virtual void FormatOnEvenement(const char* nom_evenement);
-    virtual void FormatStopEvenement(const char* nom_evenement);
-    virtual void FormatStartBlock(const char* nom_block);
-    virtual void FormatEndBlock(const char* nom_block);
+    virtual void mt_Format_Entrance_Function(const char* nom_fonction);
+    virtual void mt_Format_Exit_Function(const char* nom_fonction);
+    virtual void mt_Format_On_Evenement(const char* nom_evenement);
+    virtual void mt_Format_Stop_Evenement(const char* nom_evenement);
+    virtual void mt_Format_Start_Block(const char* nom_block);
+    virtual void mt_Format_End_Block(const char* nom_block);
     //
-    void writeCharactere(char caractere);
-    void writeTab(void);
-    void startMark(const char* balise, const char* nom);
-    void endMark(const char* balise, const char* nom);
+    void mt_Write_Charactere(char caractere);
+    void mt_Write_Tab(void);
+    void mt_Start_Mark(const char* balise, const char* nom);
+    void mt_End_Mark(const char* balise, const char* nom);
     std::string m_root;
     int m_tab_counter;
     bool m_write_tab;

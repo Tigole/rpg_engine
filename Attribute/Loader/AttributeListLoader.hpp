@@ -12,7 +12,7 @@ class AttributeListLoader : public Loader
 public:
 	AttributeListLoader(const AttributeLoaderFactory& attribute_loader_factory);
 
-	void load(const TiXmlElement& element, std::vector<std::unique_ptr<IAttribute>>& attributes);
+	void mt_Load(const TiXmlElement& element, std::vector<std::unique_ptr<IAttribute>>& attributes);
 
 private:
 	const AttributeLoaderFactory& m_attribute_loader_factory;

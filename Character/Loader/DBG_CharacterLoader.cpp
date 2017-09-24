@@ -14,18 +14,18 @@ DBG_CharacterLoader::DBG_CharacterLoader(const std::string& element_name)
 	/** Nothing **/
 }
 
-bool DBG_CharacterLoader::isValid(const TiXmlElement& element)
+bool DBG_CharacterLoader::mt_Is_Valid(const TiXmlElement& element)
 {
 	bool l_ret(true);
 	std::vector<std::string> attributes;
 	std::map<std::string, bool (DBG_CharacterLoader::*)(const TiXmlElement&)> checkers;
 
-	checkers["Skills"] = &DBG_CharacterLoader::checkSkills;
+	checkers["Skills"] = &DBG_CharacterLoader::mt_Check_Skills;
 
 	attributes.push_back("name");
 	attributes.push_back("hp");
 
-	l_ret = checkAttributes(element, attributes);
+	l_ret = mt_Check_Attributes(element, attributes);
 
 	for (auto l_sub_node = element.FirstChild(); (l_ret) && (l_sub_node != nullptr); l_sub_node = l_sub_node->NextSibling())
 	{
@@ -40,16 +40,16 @@ bool DBG_CharacterLoader::isValid(const TiXmlElement& element)
 				l_ret = (this->*l_it->second)(*l_sub_element);
 				if (!l_ret)
 				{
-					log().entranceFunction(FUNCTION_NAME);
+					log().mt_Entrance_Function(FUNCTION_NAME);
 					log() << "Sub element is not valid : \"" << l_sub_element->Value() << "\"\n";
-					log().exitFunction();
+					log().mt_Exit_Function();
 				}
 			}
 			else
 			{
-				log().entranceFunction(FUNCTION_NAME);
+				log().mt_Entrance_Function(FUNCTION_NAME);
 				log() << "No checker found for \"" << l_sub_element->Value() << "\"\n";
-				log().exitFunction();
+				log().mt_Exit_Function();
 			}
 		}
 	}
@@ -57,7 +57,7 @@ bool DBG_CharacterLoader::isValid(const TiXmlElement& element)
 	return l_ret;
 }
 
-bool DBG_CharacterLoader::checkSkills(const TiXmlElement& skills)
+bool DBG_CharacterLoader::mt_Check_Skills(const TiXmlElement& skills)
 {
 	bool l_b_ret(true);
 	std::vector<std::string> attribs;
@@ -72,19 +72,19 @@ bool DBG_CharacterLoader::checkSkills(const TiXmlElement& skills)
 		{
             if (l_sub_element->ValueStr() == "Skill")
 			{
-				l_b_ret = checkAttributes(*l_sub_element, attribs);
+				l_b_ret = mt_Check_Attributes(*l_sub_element, attribs);
 				if (!l_b_ret)
 				{
-					log().entranceFunction(FUNCTION_NAME);
+					log().mt_Entrance_Function(FUNCTION_NAME);
 					log() << "Element is not valid : \"" << l_sub_element->Value() << "\"\n";
-					log().exitFunction();
+					log().mt_Exit_Function();
 				}
 			}
 			else
 			{
-				log().entranceFunction(FUNCTION_NAME);
+				log().mt_Entrance_Function(FUNCTION_NAME);
 				log() << "Element shouldn't be there : \"" << l_sub_element->Value() << "\"\n";
-				log().exitFunction();
+				log().mt_Exit_Function();
 				l_b_ret = false;
 			}
 		}
@@ -93,7 +93,7 @@ bool DBG_CharacterLoader::checkSkills(const TiXmlElement& skills)
 	return l_b_ret;
 }
 
-std::unique_ptr<ICharacter> DBG_CharacterLoader::load(const TiXmlElement& element, SkillManager& sm)
+std::unique_ptr<ICharacter> DBG_CharacterLoader::mt_Load(const TiXmlElement& element, SkillManager& sm)
 {
 	std::unique_ptr<ICharacter> l_ret(nullptr);
 	std::string character_name;
@@ -113,7 +113,7 @@ std::unique_ptr<ICharacter> DBG_CharacterLoader::load(const TiXmlElement& elemen
 		if (l_sub_element != nullptr)
 		{
 			if (l_sub_element->ValueStr() == "Skills")
-				character_skills = loadSkills(*l_sub_element);
+				character_skills = mt_Load_Skills(*l_sub_element);
 		}
 	}
 
@@ -122,13 +122,13 @@ std::unique_ptr<ICharacter> DBG_CharacterLoader::load(const TiXmlElement& elemen
 	if (l_ret != nullptr)
 	{
 		for (auto& skill : character_skills)
-			l_ret->addSkill(skill, sm);
+			l_ret->mt_Add_Skill(skill, sm);
 	}
 
 	return l_ret;
 }
 
-std::vector<std::string> DBG_CharacterLoader::loadSkills(const TiXmlElement& skills_element)
+std::vector<std::string> DBG_CharacterLoader::mt_Load_Skills(const TiXmlElement& skills_element)
 {
 	std::vector<std::string> skills_names;
 

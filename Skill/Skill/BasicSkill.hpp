@@ -8,7 +8,7 @@
 
 extern "C"
 {
-	void deleteBasicSkill(ISkill* obj);
+	void fn_Delete_BasicSkill(ISkill* obj);
 }
 
 class IEffect;
@@ -21,25 +21,17 @@ public:
 	virtual ~BasicSkill();
 	BasicSkill& operator=(const BasicSkill& bs);
 
-	virtual void use(const std::vector<IBattleGroundWrapper*>& targets);
-	virtual void setOwner(ICharacter& owner);
-	virtual const std::string& getName(void) const;
-	void addEffect(const std::unique_ptr<IEffect>& effect);
+	virtual void mt_Use(const std::vector<IBattleGroundWrapper*>& targets);
+	virtual void mt_Set_Owner(ICharacter& owner);
+	virtual const std::string& mt_Get_Name(void) const;
+	void mt_Add_Effect(const std::unique_ptr<IEffect>& effect);
 
-	std::unique_ptr<ISkill> clone(void) const;
+	std::unique_ptr<ISkill> mt_Clone(void) const;
 
 protected:
-
-	/*virtual int affectCharacter(ICharacter& target);
-
-	bool getVariablesFromFormula(ICharacter& target, VariableList& vars);
-	bool evaluateFormula(ICharacter& target, int& result);*/
-
 	ICharacter* m_owner;
 	std::string m_id;
 	std::vector<std::unique_ptr<IEffect>> m_effects;
-	//std::string m_formula;
-	//std::string m_target_attribute;
 };
 
 #endif // !_BASIC_SKILL_HPP

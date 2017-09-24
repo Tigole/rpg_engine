@@ -9,13 +9,13 @@ public:
 	BasicActionable();
 	virtual ~BasicActionable();
 
-	virtual void manageEvent(const IEvent& event);
-	virtual void onValidate(void) = 0;
-	virtual void onCancel(void) = 0;
-	virtual void onLeft(void) = 0;
-	virtual void onRight(void) = 0;
-	virtual void onUp(void) = 0;
-	virtual void onBottom(void) = 0;
+	virtual void mt_Manage_Event(const IEvent& event);
+	virtual void mt_On_Validate(void) = 0;
+	virtual void mt_On_Cancel(void) = 0;
+	virtual void mt_On_Left(void) = 0;
+	virtual void mt_On_Right(void) = 0;
+	virtual void mt_On_Up(void) = 0;
+	virtual void mt_On_Bottom(void) = 0;
 
 protected:
 	//
