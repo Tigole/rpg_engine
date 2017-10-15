@@ -7,8 +7,10 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <unordered_map>
 
 #include "Platform.h"
+#include <SFML/System/Vector2.hpp>
 
 #if (PLATFORM == PLATFORM_WINDOWS)
 #define FUNCTION_NAME __FUNCSIG__
@@ -18,6 +20,8 @@
 
 #if PLATFORM == PLATFORM_WINDOWS
 #include <windows.h>
+#undef min
+#undef max
 #elif PLATFORM == PLATFORM_LINUX
 #include <dlfcn.h>
 #endif
@@ -26,7 +30,6 @@
 
 #include "Exception/Exception.hpp"
 
-#include <SFML/System/Vector2.hpp>
 
 class TiXmlElement;
 class ILogger;
@@ -151,6 +154,28 @@ namespace misc
 
 		return ret;
 	}
+
+	struct EnumClassHash
+	{
+		template<typename T>
+		std::size_t operator()(const T& t) const
+		{
+			return static_cast<std::size_t>(t);
+		}
+		template<typename T>
+		bool operator()(const T& a, const T& b) const
+		{
+			return (a < b);
+		}
+	};
+
+	template<typename Key>
+	using HashType = std::conditional<std::is_enum<Key>::value, EnumClassHash, std::hash<Key>>;
+	
+	template<typename Key, typename Value>
+	using UnorderedMap = std::unordered_map<Key, Value, HashType<Key>>;
+	template<typename Key, typename Value>
+	using Map = std::map<Key, Value>;
 
 	template <typename FunctionPointer>
 	class DLL_Loader

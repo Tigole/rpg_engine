@@ -39,7 +39,7 @@ void SystemRenderer::mt_Update(float delta_time_ms)
 	}
 }
 
-ComponentDrawable* SystemRenderer::mt_Get_Drawable(const ECS_Entity& entity)
+ComponentDrawable* SystemRenderer::mt_Get_Drawable(const ECS_EntityId& entity)
 {
 	ECS_EntityManager& l_entity_manager(m_environment->m_entity_manager);
 	ComponentDrawable* l_ret(nullptr);
@@ -85,7 +85,7 @@ void SystemRenderer::mt_Render(Window& window, unsigned int layer)
 
 void SystemRenderer::mt_Sort_By_Layer(void)
 {
-	std::sort(m_entities.begin(), m_entities.end(), [this](ECS_Entity l_e1, ECS_Entity l_e2)
+	std::sort(m_entities.begin(), m_entities.end(), [this](ECS_EntityId l_e1, ECS_EntityId l_e2)
 	{
 		bool l_b_ret;
 		ECS_EntityManager& l_entity_manager(this->m_environment->m_entity_manager);
@@ -100,4 +100,9 @@ void SystemRenderer::mt_Sort_By_Layer(void)
 			l_b_ret = l_e1_pos->mt_Get_Current_Layer() < l_e2_pos->mt_Get_Current_Layer();
 		return l_b_ret;
 	});
+}
+
+void SystemRenderer::mt_Handle_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event)
+{
+	//
 }

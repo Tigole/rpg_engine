@@ -19,9 +19,10 @@ public:
 	void mt_Render(Window& window, unsigned int layer);
 
 	static ECS_SystemId mt_Get_System_Id();
+	void mt_Handle_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event);
 
 private:
-	ComponentDrawable* mt_Get_Drawable(const ECS_Entity& entity);
+	ComponentDrawable* mt_Get_Drawable(const ECS_EntityId& entity);
 	void mt_Sort_By_Layer(void);
 	std::vector<ECS_ComponentId> m_drawable_components;
 

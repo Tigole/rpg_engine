@@ -1,4 +1,6 @@
 #include "ECS_SystemManager.hpp"
+#include "ECS_EntityManager.hpp"
+
 
 ECS_SystemManager::ECS_SystemManager()
  :	m_systems()
@@ -6,7 +8,7 @@ ECS_SystemManager::ECS_SystemManager()
 	//
 }
 
-void ECS_SystemManager::mt_Entity_Modified(const ECS_Entity& entity, const ECS_ComponentContainer& owned_components)
+void ECS_SystemManager::mt_Entity_Modified(const ECS_EntityId& entity, const ECS_ComponentContainer& owned_components)
 {
 	std::set<ECS_ComponentId> l_owned_components;
 
@@ -18,5 +20,34 @@ void ECS_SystemManager::mt_Entity_Modified(const ECS_Entity& entity, const ECS_C
 	for (auto& l_system : m_systems)
 	{
 		l_system.second->mt_Entity_Modified(entity, l_owned_components);
+	}
+}
+
+void ECS_SystemManager::mt_Add_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event)
+{
+	m_events_queue[entity].mt_Add_Event(event);
+}
+
+void ECS_SystemManager::mt_Update(float delta_time_ms)
+{
+	for (auto& l_system : m_systems)
+	{
+		l_system.second->mt_Update(delta_time_ms);
+	}
+	mt_Process_Events();
+}
+
+void ECS_SystemManager::mt_Process_Events(void)
+{
+	for (auto& l_entity_event_queue : m_events_queue)
+	{
+		ECS_EntityEvent l_entity_event;
+		while (l_entity_event_queue.second.mt_Process(l_entity_event) == true)
+		{
+			for (auto& l_system : m_systems)
+			{
+				l_system.second->mt_Handle_Event(l_entity_event_queue.first, l_entity_event);
+			}
+		}
 	}
 }

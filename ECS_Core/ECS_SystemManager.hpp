@@ -5,6 +5,9 @@
 #include <memory>
 #include "ECS_System.hpp"
 #include "ECS_Core/ECS_Types.hpp"
+#include "EventQueue/EventQueue.hpp"
+
+class ECS_EntityManager;
 
 class ECS_SystemManager
 {
@@ -41,10 +44,19 @@ public:
 		return l_ret;
 	}
 
-	void mt_Entity_Modified(const ECS_Entity& entity, const ECS_ComponentContainer& owned_components);
+	void mt_Entity_Modified(const ECS_EntityId& entity, const ECS_ComponentContainer& owned_components);
+
+	void mt_Add_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event);
+
+	void mt_Update(float delta_time_ms);
 
 private:
+	void mt_Process_Events(void);
+
+
+	ECS_EntityManager* m_entity_manager;
 	ECS_SystemContainer m_systems;
+	std::unordered_map<ECS_EntityId, EventQueue<ECS_EntityEvent>> m_events_queue;
 };
 
 #endif // !_SYSTEM_MANAGER_HPP

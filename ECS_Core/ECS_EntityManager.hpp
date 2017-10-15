@@ -12,7 +12,7 @@ public:
 	ECS_EntityManager(ECS_SystemManager& system_manager);
 
 	template<class ComponenetType>
-	ComponenetType* mt_Add_Component(const ECS_Entity& entity, const ECS_ComponentId& component_id)
+	ComponenetType* mt_Add_Component(const ECS_EntityId& entity, const ECS_ComponentId& component_id)
 	{
 		ECS_EntityContainer::iterator l_entity_it;
 		ComponenetType* l_ret(nullptr);
@@ -35,7 +35,7 @@ public:
 		return l_ret;
 	}
 
-	void mt_Remove_Component(const ECS_Entity& entity, const ECS_ComponentId& component_id)
+	void mt_Remove_Component(const ECS_EntityId& entity, const ECS_ComponentId& component_id)
 	{
 		ECS_EntityContainer::iterator l_entity_it;
 		ECS_ComponentContainer::iterator l_component_it;
@@ -49,7 +49,7 @@ public:
 	}
 
 	template<class ComponentType>
-	ComponentType* mt_Get_Component(const ECS_Entity& entity, const ECS_ComponentId& component_id)
+	ComponentType* mt_Get_Component(const ECS_EntityId& entity, const ECS_ComponentId& component_id)
 	{
 		ECS_EntityContainer::iterator l_entity_it;
 		ECS_ComponentContainer::iterator l_component_it;

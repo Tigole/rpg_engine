@@ -17,16 +17,17 @@ public:
 	ECS_System(const ECS_SystemId& system_id);
 	~ECS_System();
 
-	void mt_Add_Entity();
-	void mt_Entity_Modified(const ECS_Entity& entity, const std::set<ECS_ComponentId>& owned_components);
+	void mt_Add_Entity(const ECS_EntityId& entity);
+	void mt_Entity_Modified(const ECS_EntityId& entity, const std::set<ECS_ComponentId>& owned_components);
 	virtual void mt_Update(float delta_time_ms) = 0;
+	virtual void mt_Handle_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event) = 0;
 
 protected:
 	virtual bool mt_Is_Valid(const std::set<ECS_ComponentId>& owned_components);
 
 	ECS_SystemId m_id;
 	std::vector<ECS_ComponentId> m_required_components;
-	std::vector<ECS_Entity> m_entities;
+	std::vector<ECS_EntityId> m_entities;
 	Environment *m_environment;
 };
 

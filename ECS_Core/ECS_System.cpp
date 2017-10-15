@@ -12,9 +12,14 @@ ECS_System::ECS_System(const ECS_SystemId& system_id)
 ECS_System::~ECS_System()
 {}
 
-void ECS_System::mt_Entity_Modified(const ECS_Entity& e, const std::set<ECS_ComponentId>& owned_components)
+void ECS_System::mt_Add_Entity(const ECS_EntityId& entity)
 {
-	std::vector<ECS_Entity>::iterator l_entity_it;
+	m_entities.push_back(entity);
+}
+
+void ECS_System::mt_Entity_Modified(const ECS_EntityId& e, const std::set<ECS_ComponentId>& owned_components)
+{
+	std::vector<ECS_EntityId>::iterator l_entity_it;
 
 	l_entity_it = std::find(m_entities.begin(), m_entities.end(), e);
 

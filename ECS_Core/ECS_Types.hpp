@@ -7,19 +7,20 @@
 #include <unordered_map>
 #include <map>
 
+#include "Miscellaneous.hpp"
+
 class ECS_System;
 class ECS_Component;
 
 using ECS_EntityId = int;
-using ECS_Entity = ECS_EntityId;
 using ECS_EntityMessage = int;
-using ECS_EntityEvent = int;
 
 enum class ECS_ComponentId
 {
 	POSITION = 0,
 	SPRITE_SHEET,
 	MOVABLE,
+	CONTROLLER,
 
 	COUNT
 };
@@ -30,10 +31,26 @@ enum class ECS_SystemId
 {
 	RENDERER = 0,
 	MOVEMENT,
+	CONTROL,
 
 	COUNT
 };
 using ECS_SystemContainer = std::unordered_map<ECS_SystemId, std::unique_ptr<ECS_System>>;
+
+enum class ECS_EntityEvent
+{
+	SPAWNED = 0,
+	DESPAWNED, 
+	COLLIDING_X, 
+	COLLIDING_Y, 
+	MOVING_LEFT, 
+	MOVING_RIGHT, 
+	MOVING_UP, 
+	MOVING_DOWN,
+	ELEVATION_CHANGE, 
+	BECAME_IDLE, 
+	BEGAN_MOVING
+};
 
 
 #endif // _ECS_TYPES_HPP
