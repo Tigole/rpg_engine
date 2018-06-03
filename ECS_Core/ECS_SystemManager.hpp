@@ -8,6 +8,7 @@
 #include "EventQueue/EventQueue.hpp"
 
 class ECS_EntityManager;
+class Window;
 
 class ECS_SystemManager
 {
@@ -50,13 +51,14 @@ public:
 
 	void mt_Update(float delta_time_ms);
 
+	void mt_Draw(Window& window, unsigned int layer);
+
 private:
 	void mt_Process_Events(void);
 
-
 	ECS_EntityManager* m_entity_manager;
 	ECS_SystemContainer m_systems;
-	std::unordered_map<ECS_EntityId, EventQueue<ECS_EntityEvent>> m_events_queue;
+	misc::UnorderedMap<ECS_EntityId, EventQueue<ECS_EntityEvent>> m_events_queue;
 };
 
 #endif // !_SYSTEM_MANAGER_HPP

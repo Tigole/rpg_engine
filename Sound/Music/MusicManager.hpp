@@ -5,6 +5,22 @@
 #include <map>
 #include <SFML/Audio.hpp>
 
+#include "ResourceManager.hpp"
+
+class MusicManager : public ResourceManager<MusicManager, sf::Music>
+{
+public:
+	MusicManager(const std::string& resources_path)
+		:ResourceManager<MusicManager, sf::Music>(resources_path, "/Musics/Music")
+	{}
+
+	bool mt_Load(sf::Music* resource, const std::string& file_path)
+	{
+		return resource->openFromFile(file_path);
+	}
+};
+
+#if 0
 struct MusicData
 {
 	MusicData();
@@ -29,5 +45,7 @@ protected:
 	std::map<std::string, MusicData> m_database;
 	sf::Music m_music;
 };
+
+#endif
 
 #endif // _MUSIC_MANAGER_HPP

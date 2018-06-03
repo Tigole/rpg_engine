@@ -6,14 +6,23 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+class GUI_Manager;
+class EventManager;
+class EventDetails;
+
 class Window
 {
 public:
-	Window(const std::string& title);
+	Window(EventManager* event_manager, GUI_Manager* gui_manager);
 	virtual ~Window();
 
+	void mt_Create(const std::string& title, const sf::Vector2u& size);
 	void mt_Begin_Draw(void);
 	void mt_End_Draw(void);
+
+	bool mt_Is_Done(void) const;
+
+	void mt_On_Close(EventDetails* event_details);
 
 	void mt_Update(void);
 
@@ -22,6 +31,10 @@ public:
 
 private:
 	sf::RenderWindow m_renderer_window;
+
+	EventManager* m_event_manager;
+	GUI_Manager* m_gui_manager;
+	bool m_is_done;
 };
 
 #endif // _WINDOW_HPP

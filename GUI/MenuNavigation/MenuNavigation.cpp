@@ -1,5 +1,5 @@
 #include "MenuNavigation.hpp"
-
+#if 0
 MenuNavigation::MenuNavigation(/*unsigned int row_number, unsigned int column_number*/)
 	: m_navigation_objects(),
 	m_target_object(m_navigation_objects.end()),
@@ -103,3 +103,4 @@ void MenuNavigation::mt_Manage_Drawing(void)
 		//
 	}
 }
+#endif

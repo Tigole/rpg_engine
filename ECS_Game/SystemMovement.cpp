@@ -56,9 +56,11 @@ void SystemMovement::mt_Compute_Speed(float delta_time_ms, ComponentMovable& mov
 
 sf::Vector2f SystemMovement::mt_Get_Tile_Friction(int elevation, int x_tile_index, int y_tile_index)
 {
-	sf::Vector2f l_ret;
+	sf::Vector2f l_ret(0.0f, 0.0f);
+	const TileInfo* l_tile_infos(m_p_map->mt_Get_Tile_Infos(x_tile_index, y_tile_index, elevation));
 	
-	l_ret.x = l_ret.y = m_p_map->mt_Get_Tile_Infos(x_tile_index, y_tile_index, elevation)->m_friction;
+	if (l_tile_infos != nullptr)
+		l_ret = l_tile_infos->m_friction;
 
 	return l_ret;
 }

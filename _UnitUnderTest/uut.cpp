@@ -40,6 +40,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Game.hpp"
+
 #include <cstdio>
 #include <iostream>
 
@@ -440,7 +442,7 @@ namespace uut
 		log().mt_Entrance_Function(FUNCTION_NAME);
 		log().mt_Exit_Function();
 	}
-
+#if 0
 	void uut_GUIBackground(void)
 	{
 		TextureManager texture_manager(g_resource_path);
@@ -528,8 +530,7 @@ namespace uut
 
 	void uut_TextDialogBox(void)
 	{
-		TextureManager texture_manager(g_resource_path);
-		texture_manager.mt_Load(g_resource_path + "Data/Textures.xml");
+		Environment env(g_resource_path);
 		sf::Font font;
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
 		GUIBackground gui_bg(texture_manager, "dlg", GUIBackground::TextureData(5));
@@ -559,29 +560,38 @@ namespace uut
 		}
 		log().mt_Exit_Function();
 	}
-
+#endif
 	void uut_Tileset(void)
 	{
-		TilesetManager tileset_manager(g_resource_path);
+		Environment env(g_resource_path);
+		Tileset* l_tileset(nullptr);
 		sf::RenderWindow window(sf::VideoMode(640, 480), FUNCTION_NAME);
-		Tile top_left, top_right, buttonm_right, buttom_left;
+		sf::Sprite l_sprite;
+		TileInfo* top_left, *top_right, *buttonm_right, *buttom_left;
 
 		log().mt_Entrance_Function(FUNCTION_NAME);
 
-		tileset_manager.mt_Load(g_resource_path + "Data/Tilesets.xml");
+		env.mt_Load("Environment.xml");
+		l_tileset = env.m_tileset_manager.mt_Get_Resource("PkmnTileset");
 
-		top_left = tileset_manager.mt_Get_Tile("Tileset_0", 0, 0);
-		top_right = tileset_manager.mt_Get_Tile("Tileset_0", 1, 0);
-		buttonm_right = tileset_manager.mt_Get_Tile("Tileset_0", 1, 1);
-		buttom_left = tileset_manager.mt_Get_Tile("Tileset_0", 0, 1);
+		top_left = l_tileset->mt_Get_Tile_Infos(0);
+		top_right = l_tileset->mt_Get_Tile_Infos(7);
+		buttonm_right = l_tileset->mt_Get_Tile_Infos(8);
+		buttom_left = l_tileset->mt_Get_Tile_Infos(15);
 
 		window.setFramerateLimit(90);
 
-		top_right.m_sprite.setPosition(50, 0);
-		buttonm_right.m_sprite.setPosition(50, 50);
-		buttom_left.m_sprite.setPosition(0, 50);
 
-		while (window.isOpen())
+		while (window.isOpen()
+			&&	(top_left != nullptr)
+			&&	(top_left->m_texture != nullptr)
+			&&	(top_right != nullptr)
+			&&	(top_right->m_texture != nullptr)
+			&&	(buttom_left != nullptr)
+			&&	(buttom_left->m_texture != nullptr)
+			&&	(buttonm_right != nullptr)
+			&&	(buttonm_right->m_texture != nullptr)
+			)
 		{
 			sf::Event event;
 			while (window.pollEvent(event))
@@ -592,10 +602,26 @@ namespace uut
 
 			window.clear(sf::Color::Yellow);
 
-			window.draw(top_left.m_sprite);
-			window.draw(top_right.m_sprite);
-			window.draw(buttonm_right.m_sprite);
-			window.draw(buttom_left.m_sprite);
+			l_sprite.setTexture(*(top_left->m_texture));
+			l_sprite.setTextureRect(top_left->m_texture_rect);
+			l_sprite.setPosition(0, 0);
+			window.draw(l_sprite);
+
+			l_sprite.setTexture(*(top_right->m_texture));
+			l_sprite.setTextureRect(top_right->m_texture_rect);
+			l_sprite.setPosition(50, 0);
+			window.draw(l_sprite);
+
+			l_sprite.setTexture(*(buttom_left->m_texture));
+			l_sprite.setTextureRect(buttom_left->m_texture_rect);
+			l_sprite.setPosition(0, 50);
+			window.draw(l_sprite);
+
+			l_sprite.setTexture(*(buttonm_right->m_texture));
+			l_sprite.setTextureRect(buttonm_right->m_texture_rect);
+			l_sprite.setPosition(50, 50);
+			window.draw(l_sprite);
+
 			// puis, dans la boucle de dessin, entre window.clear() et window.display()
 			window.display();
 		}
@@ -605,23 +631,25 @@ namespace uut
 	void uut_Map(void)
 	{
 		Environment env(g_resource_path);
-		std::unique_ptr<IMap> basic_map;
-		BasicMapLoader loader(env.m_tileset_manager);
+		BasicMap* basic_map;
 		XMLFileLoader l_xml_loader;
+		std::string l_str_map_id("GeneratedMap");//"PkmnMap"
 
 		log().mt_Entrance_Function(FUNCTION_NAME);
 
-		env.m_tileset_manager.mt_Load(g_resource_path + "Data/Tilesets.xml");
-		env.m_music_manager.mt_Load(g_resource_path + "Data/Musics.xml");
+		env.mt_Load("Environment.xml");
 
-		loader.mt_Prepare(l_xml_loader, g_resource_path + "Data/Map_0002.xml");
+		env.m_tileset_manager.mt_Dump();
+		env.m_map_manager.mt_Dump();
 
-		l_xml_loader.mt_Start();
-		while (l_xml_loader.mt_Is_Done() == false)
-			sf::sleep(sf::milliseconds(100));
+		basic_map = env.m_map_manager.mt_Get_Resource(l_str_map_id);
 
-		basic_map = loader.mt_Get_Map();
-		basic_map->mt_Run(env);
+		if (basic_map != nullptr)
+		{
+			//basic_map->mt_Run();
+
+			env.m_map_manager.mt_Release_Resource(l_str_map_id);
+		}
 
 		log().mt_Exit_Function();
 	}
@@ -643,11 +671,24 @@ namespace uut
 
 		l_map->run(l_environment);*/
 	}
+
+	void uut_Game(void)
+	{
+		Game l_game(g_resource_path);
+
+		while (l_game.mt_Is_Running())
+		{
+			l_game.mt_Update();
+			l_game.mt_Render();
+			l_game.mt_LateUpdate();
+		}
+	}
+
 	void uut_Environment(void)
 	{
 		Environment l_environment(g_resource_path);
 
-		l_environment.mt_Load();
+		l_environment.mt_Load("Environment.xml");
 	}
 #if 0
 	void uut_ECS_Entity(void)

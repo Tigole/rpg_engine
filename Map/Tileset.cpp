@@ -7,62 +7,15 @@ Tile::Tile()
 
 Tile::Tile(const Tile& cp)
 	: m_infos(cp.m_infos),
-	m_sprite(cp.m_sprite)
-{
-	m_sprite.setPosition(cp.m_sprite.getPosition());
-	/*const sf::Texture* l_texture(cp.getTexture());
-	//setTextureRect(cp.getTextureRect());
-	if (l_texture != nullptr)
-		setTexture(*l_texture);*/
-}
+	m_is_solid(cp.m_is_solid)
+{}
 
 Tile& Tile::operator=(const Tile& cp)
 {
-	const sf::Texture* l_texture(cp.m_sprite.getTexture());
-
-	if (l_texture != nullptr)
-		m_sprite.setTexture(*l_texture);
-	m_sprite.setTextureRect(cp.m_sprite.getTextureRect());
-	m_sprite.setPosition(cp.m_sprite.getPosition());
 	m_infos = cp.m_infos;
+	m_is_solid = cp.m_is_solid;
 
 	return *this;
-}
-
-void Tileset::mt_Load(const TiXmlElement& tileset, const std::string& resource_path)
-{
-	std::vector<std::string> l_attributes;
-	std::string l_texture_path;
-
-	l_attributes.push_back("id");
-	l_attributes.push_back("path");
-	l_attributes.push_back("col_count");
-	l_attributes.push_back("row_count");
-	l_attributes.push_back("default_walkable");
-
-	if (mt_Check_Attributes(tileset, l_attributes) == false)
-		throw ExceptionXMLLoadingAttributeMissing(tileset, "");
-
-	tileset.QueryStringAttribute("id", &m_id);
-	tileset.QueryStringAttribute("path", &l_texture_path);
-	tileset.QueryIntAttribute("col_count", &m_col_count);
-	tileset.QueryIntAttribute("row_count", &m_row_count);
-	tileset.QueryBoolAttribute("default_walkable", &m_default_walkable);
-
-	if (m_texture.loadFromFile(resource_path + l_texture_path) == false)
-		throw ExceptionResourceDoesNotExists(resource_path + l_texture_path, FUNCTION_NAME);
-
-	l_attributes.resize(2);
-	l_attributes[0] = "col";
-	l_attributes[1] = "raw";
-
-	for (auto l_child_element = tileset.FirstChildElement("NonDefaultWalkableTile"); l_child_element != nullptr; l_child_element = l_child_element->NextSiblingElement("NonDefaultWalkableTile"))
-	{
-		int l_col, l_row;
-		if (mt_Check_Attributes(*l_child_element, l_attributes) == false)
-			throw ExceptionXMLLoadingAttributeMissing(*l_child_element, "");
-		m_non_default_walkable_tile.push_back(std::make_pair(l_col, l_row));
-	}
 }
 
 const std::string& Tileset::mt_Get_Id() const
@@ -70,46 +23,194 @@ const std::string& Tileset::mt_Get_Id() const
 	return m_id;
 }
 
-Tile Tileset::mt_Get_Tile(unsigned int col, unsigned int row) const
+TileInfo* Tileset::mt_Get_Tile_Infos(TileId id)
 {
-	Tile l_ret;
-	sf::Vector2u l_texture_size;
-	int l_left, l_top, l_width, l_height;
-	bool l_is_non_default_walkable(false);
+	TileInfo* l_ret;
+	std::unordered_map<TileId, std::unique_ptr<TileInfo>>::const_iterator l_it;
 
-	l_texture_size = m_texture.getSize();
+	l_it = m_tile_infos.find(id);
 
-	if ((l_texture_size.x / m_col_count >= col)
-		&& (l_texture_size.y / m_row_count >= row))
+	if (l_it != m_tile_infos.end())
 	{
-		l_width = l_texture_size.x / m_col_count;
-		l_height = l_texture_size.y / m_row_count;
-		l_left = col * l_width;
-		l_top = row * l_height;
-		l_ret.m_sprite.setTexture(m_texture);
-		l_ret.m_sprite.setTextureRect(sf::IntRect(l_left, l_top, l_width, l_height));
-
-		for (const auto& a : m_non_default_walkable_tile)
-			if ((a.first == col) && (a.second == row))
-				l_is_non_default_walkable = true;
-
-		if (l_is_non_default_walkable)
-			l_ret.m_infos.m_is_walkable = m_default_walkable;
-		else
-			l_ret.m_infos.m_is_walkable = !m_default_walkable;
+		l_ret = l_it->second.get();
 	}
 	else
-		throw Exception("[" + misc::fn_Number_To_String(col) + " " + misc::fn_Number_To_String(row) +"] can't be acceded for tileset \"" + m_id + "\" in " + FUNCTION_NAME);
+	{
+		l_ret = nullptr;
+	}
 
 	return l_ret;
 }
 
+TileInfo* Tileset::mt_Get_Tile_Infos(unsigned int col, unsigned int row)
+{
+	TileInfo* l_ret;
+	TileId l_id;
+
+	if (mt_Col_Row_To_Id(col, row, l_id) == true)
+	{
+		l_ret = mt_Get_Tile_Infos(l_id);
+	}
+	else
+	{
+		l_ret = nullptr;
+	}
+
+	return l_ret;
+}
+
+bool Tileset::mt_Col_Row_To_Id(unsigned int col, unsigned int row, TileId& id)
+{
+	bool l_b_ret;
+
+	if ((col < m_col_count) && (row < m_row_count))
+	{
+		id = (row * m_col_count) + col;
+		l_b_ret = true;
+	}
+	else
+	{
+		l_b_ret = false;
+	}
+
+	return l_b_ret;
+}
+
+bool Tileset::mt_Id_To_Col_Row(TileId id, unsigned int& col, unsigned int& row)
+{
+	bool l_b_ret;
+
+	if (m_col_count != 0)
+	{
+		row = id / m_col_count;
+		col = id - (row * m_col_count);
+
+		if ((row < m_row_count) && (col < m_col_count))
+		{
+			l_b_ret = true;
+		}
+		else
+		{
+			l_b_ret = false;
+		}
+	}
+	else
+	{
+		l_b_ret = false;
+	}
+
+	return l_b_ret;
+}
+
 sf::Vector2u Tileset::mt_Get_Tile_Size(void) const
 {
-	sf::Vector2u l_ret(m_texture.getSize());
+	sf::Vector2u l_ret(0, 0);
+
+	if (m_texture != nullptr)
+		l_ret = m_texture->getSize();
 
 	l_ret.x /= m_col_count;
 	l_ret.y /= m_row_count;
 
 	return l_ret;
+}
+
+bool Tileset::mt_Add_Tile(TileId id, const sf::Vector2f& friction, bool deadly)
+{
+	bool l_b_ret;
+	std::unique_ptr<TileInfo> l_tile_info;
+	unsigned int l_col, l_row;
+	sf::Vector2u l_tile_dimension;
+
+	if (m_tile_infos.find(id) == m_tile_infos.end())
+	{
+		l_tile_dimension = mt_Get_Tile_Size();
+		l_tile_info.reset(new TileInfo());
+		l_tile_info->m_id = id;
+		l_tile_info->m_friction = friction;
+		l_tile_info->m_deadly = deadly;
+		l_tile_info->m_texture = m_texture;
+		l_b_ret = mt_Id_To_Col_Row(id, l_col, l_row);
+		l_tile_info->m_texture_rect.left = l_col * l_tile_dimension.x;
+		l_tile_info->m_texture_rect.top = l_row * l_tile_dimension.y;
+		l_tile_info->m_texture_rect.width = l_tile_dimension.x;
+		l_tile_info->m_texture_rect.height = l_tile_dimension.y;
+		if (l_b_ret == true)
+			l_b_ret = m_tile_infos.emplace(std::make_pair(id, std::move(l_tile_info))).second;
+	}
+	else
+	{
+		l_b_ret = false;
+	}
+
+	return l_b_ret;
+}
+
+#include "GUI/TextureManager.hpp"
+#include "XMLFileLoader.hpp"
+
+TilesetLoader::TilesetLoader(TextureManager& texture_manager)
+	:m_Target(nullptr),
+	m_Texture_Manager(&texture_manager)
+{}
+
+bool TilesetLoader::mt_Prepare(Tileset& target, XMLFileLoader& loader, const std::string& file_path)
+{
+	bool l_b_ret;
+
+	m_Target = &target;
+	l_b_ret = loader.mt_Set_File(file_path);
+	if (l_b_ret == true)
+		l_b_ret = loader.mt_Add_On_Entry_Callback(file_path, "/Tileset/Texture", &TilesetLoader::mt_Load_Texture, this);
+	if (l_b_ret == true)
+		l_b_ret = loader.mt_Add_On_Entry_Callback(file_path, "/Tileset/Tiles", &TilesetLoader::mt_Load_Tiles, this);
+	if (l_b_ret == true)
+		l_b_ret = loader.mt_Add_On_Entry_Callback(file_path, "/Tileset/Tiles/Tile", &TilesetLoader::mt_Load_Tile, this);
+
+	return l_b_ret;
+}
+
+bool TilesetLoader::mt_Load_Texture(const XML_Element& texture)
+{
+	bool l_b_ret;
+	std::string l_texture_id;
+
+	l_b_ret = texture.mt_Get_Attribute("id", l_texture_id);
+	if (l_b_ret == true)
+	{
+		m_Target->m_texture = m_Texture_Manager->mt_Get_Resource(l_texture_id);
+	}
+
+	return l_b_ret;
+}
+
+bool TilesetLoader::mt_Load_Tiles(const XML_Element& tiles)
+{
+	bool l_b_ret;
+
+	l_b_ret = tiles.mt_Get_Attribute("col_count", m_Target->m_col_count);
+	if (l_b_ret == true)
+		l_b_ret = tiles.mt_Get_Attribute("row_count", m_Target->m_row_count);
+
+	return l_b_ret;
+}
+
+bool TilesetLoader::mt_Load_Tile(const XML_Element& tile)
+{
+	bool l_b_ret;
+	TileId l_id;
+	sf::Vector2f l_friction;
+	bool l_deadly;
+
+	l_b_ret = tile.mt_Get_Attribute("id", (unsigned int&)l_id);
+	if (l_b_ret == true)
+		l_b_ret = tile.mt_Get_Attribute("x_friction", l_friction.x);
+	if (l_b_ret == true)
+		l_b_ret = tile.mt_Get_Attribute("y_friction", l_friction.y);
+	if (l_b_ret == true)
+		l_b_ret = tile.mt_Get_Attribute("deadly", l_deadly);
+	if (l_b_ret == true)
+		l_b_ret = m_Target->mt_Add_Tile(l_id, l_friction, l_deadly);
+
+	return l_b_ret;
 }

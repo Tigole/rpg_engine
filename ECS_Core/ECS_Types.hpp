@@ -24,8 +24,8 @@ enum class ECS_ComponentId
 
 	COUNT
 };
-using ECS_ComponentContainer = std::unordered_map<ECS_ComponentId, std::unique_ptr<ECS_Component>>;
-using ECS_EntityContainer = std::unordered_map<ECS_EntityId, ECS_ComponentContainer>;
+using ECS_ComponentContainer = misc::UnorderedMap<ECS_ComponentId, std::unique_ptr<ECS_Component>>;
+using ECS_EntityContainer = misc::UnorderedMap<ECS_EntityId, ECS_ComponentContainer>;
 
 enum class ECS_SystemId
 {
@@ -35,20 +35,20 @@ enum class ECS_SystemId
 
 	COUNT
 };
-using ECS_SystemContainer = std::unordered_map<ECS_SystemId, std::unique_ptr<ECS_System>>;
+using ECS_SystemContainer = misc::UnorderedMap<ECS_SystemId, std::unique_ptr<ECS_System>>;
 
 enum class ECS_EntityEvent
 {
 	SPAWNED = 0,
-	DESPAWNED, 
-	COLLIDING_X, 
-	COLLIDING_Y, 
-	MOVING_LEFT, 
-	MOVING_RIGHT, 
-	MOVING_UP, 
+	DESPAWNED,
+	COLLIDING_X,
+	COLLIDING_Y,
+	MOVING_LEFT,
+	MOVING_RIGHT,
+	MOVING_UP,
 	MOVING_DOWN,
-	ELEVATION_CHANGE, 
-	BECAME_IDLE, 
+	ELEVATION_CHANGE,
+	BECAME_IDLE,
 	BEGAN_MOVING
 };
 

@@ -63,7 +63,7 @@ void SpriteSheet::mt_Load(TextureManager& texture_manager, const std::string& co
 
 	l_loader.mt_Set_File(conf_file_name);
 	/** TODO read the file and so on **/
-	m_sprite.setTexture(texture_manager.mt_Get_Texture(conf_file_name) , true);
+	//m_sprite.setTexture(texture_manager.mt_Get_Texture(conf_file_name) , true);
 	m_sprite.setPosition(0.0f, 0.0f);
 	//l_loader.addCallback()
 	//l_loader.addCallback

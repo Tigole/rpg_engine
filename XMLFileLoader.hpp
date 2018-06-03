@@ -10,18 +10,37 @@
 #include <functional>
 #include <stack>
 
+#include "Logger/ILogger.h"
+
 class XML_Element
 {
 public:
-	XML_Element(TiXmlElement& target);
+	XML_Element(const TiXmlElement& target);
 	bool mt_Get_Attribute(const std::string& attribute_name, std::string& attribute_value) const;
 	bool mt_Get_Attribute(const std::string& attribute_name, int& attribute_value) const;
 	bool mt_Get_Attribute(const std::string& attribute_name, unsigned int& attribute_value) const;
 	bool mt_Get_Attribute(const std::string& attribute_name, float& attribute_value) const;
+	bool mt_Get_Attribute(const std::string& attribute_name, bool& attribute_value) const;
+	template<typename T>
+	bool mt_Get_Attribute(const std::string& attribute_name, T& attribute_value, T(*pfn_StringToEnum)(const std::string&)) const
+	{
+		bool l_b_ret;
+		std::string l_str;
+
+		l_b_ret = mt_Get_Attribute(attribute_name, l_str);
+
+		if (l_b_ret == true)
+		{
+			attribute_value = pfn_StringToEnum(l_str);
+		}
+
+
+		return l_b_ret;
+	}
 	bool mt_Get_Value(std::string& element_value) const;
 
 private:
-	TiXmlElement& m_target;
+	const TiXmlElement& m_target;
 };
 
 using XML_Callback = std::function<bool(const XML_Element&)>;
@@ -40,57 +59,75 @@ class XMLFileLoader : public ThreadTask
 public:
 	XMLFileLoader();
 
-	void mt_Set_File(const std::string& file_path);
+	bool mt_Set_File(const std::string& file_path);
 	template<class C>
-	void mt_Add_On_Entry_Callback(const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
+	bool mt_Add_On_Entry_Callback(const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
 	{
+		bool l_b_ret;
 		if (m_current_file_it != m_files.end())
 		{
-			mt_Add_On_Entry_Callback(m_current_file_it->first, xml_path, callback, object);
+			l_b_ret = mt_Add_On_Entry_Callback(m_current_file_it->first, xml_path, callback, object);
 		}
+		else
+		{
+			l_b_ret = false;
+		}
+		return l_b_ret;
 	}
 	template<class C>
-	void mt_Add_On_Entry_Callback(const std::string& file_path, const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
+	bool mt_Add_On_Entry_Callback(const std::string& file_path, const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
 	{
+		bool l_b_ret;
 		XML_FileHandler::iterator l_file_it;
 
-		mt_Add_File(file_path);
+		l_b_ret = mt_Add_File(file_path);
 
 		l_file_it = m_files.find(file_path);
 		if (l_file_it != m_files.end())
 		{
-			mt_Add_Callback(l_file_it->second.m_on_entry_callbacks, xml_path, callback, object);
+			l_b_ret = mt_Add_Callback(l_file_it->second.m_on_entry_callbacks, xml_path, callback, object);
 		}
+
+		return l_b_ret;
 	}
 	template<class C>
-	void mt_Add_On_Exit_Callback(const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
+	bool mt_Add_On_Exit_Callback(const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
 	{
+		bool l_b_ret;
 		if (m_current_file_it != m_files.end())
 		{
-			mt_Add_On_Exit_Callback(m_current_file_it->first, xml_path, callback, object);
+			l_b_ret = mt_Add_On_Exit_Callback(m_current_file_it->first, xml_path, callback, object);
 		}
+		else
+		{
+			l_b_ret = false;
+		}
+		return l_b_ret;
 	}
 	template<class C>
-	void mt_Add_On_Exit_Callback(const std::string& file_path, const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
+	bool mt_Add_On_Exit_Callback(const std::string& file_path, const std::string xml_path, bool(C::*callback)(const XML_Element&), C* object)
 	{
 		XML_FileHandler::iterator l_file_it;
+		bool l_b_ret;
 
-		mt_Add_File(file_path);
+		l_b_ret = mt_Add_File(file_path);
 
 		l_file_it = m_files.find(file_path);
 		if (l_file_it != m_files.end())
 		{
-			mt_Add_Callback(l_file_it->second.m_on_exit_callbacks, xml_path, callback, object);
+			l_b_ret = mt_Add_Callback(l_file_it->second.m_on_exit_callbacks, xml_path, callback, object);
 		}
+
+		return l_b_ret;
 	}
 
 protected:
 	template<class C>
-	void mt_Add_Callback(XML_CallbackContainer& callback_container, const std::string& xml_path, bool(C::*callback)(const XML_Element&), C* object)
+	bool mt_Add_Callback(XML_CallbackContainer& callback_container, const std::string& xml_path, bool(C::*callback)(const XML_Element&), C* object)
 	{
-		callback_container.emplace(xml_path, std::bind(callback, object, std::placeholders::_1));
+		return callback_container.emplace(xml_path, std::bind(callback, object, std::placeholders::_1)).second;
 	}
-	void mt_Add_File(const std::string& file_path);
+	bool mt_Add_File(const std::string& file_path);
 	struct LoadingStructure
 	{
 		LoadingStructure():m_error(), m_element_count(0){}
@@ -99,11 +136,14 @@ protected:
 	};
 	void mt_Work(void);
 	bool mt_Explore_Document(TiXmlElement& root, LoadingStructure& loading_struct, XML_CallbackContainer& on_entry_callbacks, XML_CallbackContainer& on_exit_callbacks);
-	bool mt_Get_Next_Element(TiXmlElement*& current_element, std::stack<TiXmlElement*>& elements_stack, std::string& current_element_path, XML_CallbackContainer& on_exit_callbacks);
-	bool mt_Manage_Callback(const std::string& element_path, XML_CallbackContainer& callback_container, TiXmlElement* current_element);
+	bool mt_Recursive_Exploration(const TiXmlElement* current_element, LoadingStructure& loading_struct, XML_CallbackContainer& on_entry_callbacks, XML_CallbackContainer& on_exit_callbacks);
+	bool mt_Manage_Callback(const TiXmlElement& element, const std::string& path, XML_CallbackContainer& callbacks);
+	std::string mt_Get_Path(const TiXmlNode* element);
+
 	XML_FileHandler m_files;
 	XML_FileHandler::iterator m_current_file_it;
 	LoadingStructure m_loading_struct;
+	bool m_verbose;
 };
 
 #endif // _XML_FILE_LOADER_HPP

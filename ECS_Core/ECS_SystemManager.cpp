@@ -1,6 +1,6 @@
 #include "ECS_SystemManager.hpp"
 #include "ECS_EntityManager.hpp"
-
+#include "ECS_Game/SystemRenderer.hpp"
 
 ECS_SystemManager::ECS_SystemManager()
  :	m_systems()
@@ -50,4 +50,17 @@ void ECS_SystemManager::mt_Process_Events(void)
 			}
 		}
 	}
+}
+
+void ECS_SystemManager::mt_Draw(Window& window, unsigned int layer)
+{
+	auto l_it(m_systems.find(ECS_SystemId::RENDERER));
+
+	if (l_it != m_systems.end())	
+	{
+		SystemRenderer* l_syst_renderer(dynamic_cast<SystemRenderer*>(l_it->second.get()));
+
+		l_syst_renderer->mt_Render(window, layer);
+	}
+
 }

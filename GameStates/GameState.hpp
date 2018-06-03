@@ -2,29 +2,40 @@
 #define _GAME_STATE_HPP 1
 
 #include "Events/Events.hpp"
+#include "FSM/StateManagement.hpp"
+#include <SFML/Graphics.hpp>
 
 #include <map>
 #include <functional>
 
+class GameStateManager;
 class EventManager;
 
-class GameState
+class IGameState : public IState
 {
 public:
-	GameState();
+	IGameState();
+	virtual ~IGameState();
+
+	virtual void mt_Draw(void) = 0;
+
+	virtual GameStateManager* mt_GetStateManager(void) = 0;
+	virtual sf::View& mt_GetView(void) = 0;
+protected:
+};
+
+class GameState : public IGameState
+{
+public:
+	GameState(GameStateManager* state_manager);
 	virtual ~GameState();
 
-	virtual void onEntry(void);
-	virtual void onExit(void);
-	void onKeyboardDown(EventData* event_data);
-	void onKeyboardUp(EventData* event_data);
+	virtual GameStateManager* mt_GetStateManager(void);
+	virtual sf::View& mt_GetView(void);
 
 protected:
-	using CallBackKey = std::map<sf::Keyboard, std::function<void(sf::Event::KeyEvent*)>>;
-
-	EventManager* m_event_manager;
-	CallBackKey m_on_key_down;
-	CallBackKey m_on_key_up;
+	GameStateManager* m_state_manager;
+	sf::View m_view;
 };
 
 #endif // _GAME_STATE_HPP

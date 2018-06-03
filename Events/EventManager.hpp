@@ -2,55 +2,55 @@
 #define _EVENT_MANAGER_HPP 1
 
 #include "Events/Events.hpp"
+#include "FSM/StateManagement.hpp"
+#include "GameStates/GameStateTypes.hpp"
+#include "XMLFileLoader.hpp"
 
 
 #include <vector>
 #include <set>
 #include <map>
 #include <functional>
+#include <string>
+#include <unordered_map>
+#include <memory>
 
 class GameState;
 
-class EventManager
+class EventManager : public StateDependent<GameStateType>
 {
 public:
 	EventManager();
+
 	template<class T>
-	void mt_Add_Callback(const EventType& event_type, void(T::*callback)(EventData*), T* object)
+	void mt_Add_Callback(GameStateType game_state, const std::string& event_id, void(T::*callback)(EventDetails*), T* object)
 	{
-		EventCallBacks::iterator l_event_it;
-		std::set<std::function<void(EventData*)>>::iterator l_callback_it;
-		std::function<void(EventData*)> l_function;
-
-		if (m_current_state != m_states.end())
-		{
-			l_function = std::bind(callback, object);
-
-			l_event_it = m_current_state->second.find(event_type);
-			if (l_event_it == m_current_state->second.end())
-			{
-				l_event_it = m_current_state->second.emplace(event_type, std::set<std::function<void(EventData*)>>()).second;
-			}
-
-			l_callback_it = l_event_it->second.find(l_function);
-			if (l_callback_it == l_event_it->second.end())
-			{
-				l_event_it->second.emplace(l_function);
-			}
-		}
+		m_state_callback.emplace(game_state, EventCallBacks()).first->second.emplace(event_id, std::bind(callback, object, std::placeholders::_1));
 	}
-	void mt_Handle_Event(const sf::Event& sfml_event);
-	void mt_Update(void);
-	void mt_Set_State(GameState* active_state);
+	template<class T>
+	void mt_Add_Callback(const std::string& event_id, void(T::*callback)(EventDetails*), T* object)
+	{
+		m_no_state_callback.emplace(event_id, std::bind(callback, object, std::placeholders::_1));
+	}
 
-private:
-	using EventCallBacks = std::map<EventType, std::set<std::function<void(EventData*)>>>;
-	using StatesCallBacks = std::map<GameState*, EventCallBacks>;
+	void mt_Remove_Callback(GameStateType game_state, const std::string& event_id);
+
+	void mt_OnEntry(const GameStateType& state);
+	void mt_Handle_Event(const sf::Event& sfml_event);
+	void mt_Handle_Event(const EventDataGUI& gui_event);
+	void mt_Update(void);
+
+	void mt_Load(const std::string& file);
+
+	using Bindings = std::unordered_map<std::string, std::unique_ptr<EventBinding>>;
+	using EventCallBacks = std::map<std::string, std::function<void(EventDetails*)>>;
+	using StatesCallBacks = std::map<GameStateType, EventCallBacks>;
 	using StatesCallBacksIterator = StatesCallBacks::iterator;
 
-	std::vector<std::pair<EventType, EventData>> m_occured_events;
-	StatesCallBacks m_states;
-	StatesCallBacksIterator m_current_state;
+private:
+	Bindings m_bindings;
+	StatesCallBacks m_state_callback;
+	EventCallBacks m_no_state_callback;
 };
 
 

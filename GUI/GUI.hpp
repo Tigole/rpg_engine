@@ -7,7 +7,7 @@
 #include "Miscellaneous.hpp"
 
 class TextureManager;
-
+#if 0
 class IGUIBackground : public sf::Drawable, public misc::Clonable<IGUIBackground>
 {
 public:
@@ -35,7 +35,7 @@ public:
 		unsigned int m_bottom_edge_size_px;
 		unsigned int m_right_edge_size_px;
 	};
-	GUIBackground(const TextureManager& texture_manager, const std::string& texture_id, const TextureData& texture_data);
+	GUIBackground(TextureManager& texture_manager, const std::string& texture_id, const TextureData& texture_data);
 	GUIBackground(const GUIBackground& copy);
 
 	virtual void mt_Set_Screen_Position(unsigned int left_px, unsigned int top_px);
@@ -75,5 +75,5 @@ protected:
 	sf::Transformable m_transformable;
 	sf::IntRect m_usable_dimension;
 };
-
+#endif
 #endif // !_GUI_HPP

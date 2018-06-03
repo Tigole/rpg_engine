@@ -6,71 +6,39 @@
 #include "Logger/ILogger.h"
 
 
-BasicMap::BasicMap()
+BasicMap::BasicMap()//MusicManager* music_manager, TilesetManager* tileset_manager)
 	: m_tiles(),
 	m_linked_maps(),
-	m_ambiant_music()
+	m_ambiant_music_id(),
+	m_tileset_manager(nullptr)
 {}
 
 BasicMap::BasicMap(const BasicMap& cp)
-	: m_tiles(),
+	: m_tiles(cp.m_tiles),
 	m_linked_maps(cp.m_linked_maps),
-	m_ambiant_music(cp.m_ambiant_music)
-{
-	for (auto l_it = cp.m_layers.begin(); l_it != cp.m_layers.end(); l_it++)
-	{
-		sf::Sprite l_sprite;
+	m_ambiant_music_id(cp.m_ambiant_music_id),
+	m_tileset_manager(cp.m_tileset_manager)
+{}
 
-		l_sprite.setTexture(l_it->second.getTexture());
-		m_layers[l_it->first].create(l_it->second.getTexture().getSize().x, l_it->second.getTexture().getSize().y);
-		m_layers[l_it->first].draw(l_sprite);
-	}
+BasicMap::~BasicMap()
+{
+	mt_Unload();
 }
 
-IMap* BasicMap::mt_Run(Environment& environment)
+void BasicMap::mt_Draw_Layer(int layer_number, sf::RenderWindow& window)
 {
-	sf::RenderWindow window(sf::VideoMode(640, 480), m_id);
-	unsigned int l_col, l_row;
-	float l_scale(1.0f);
+	std::unordered_map<int, sf::RenderTexture>::const_iterator l_layer;
+	sf::Sprite l_sprite;
 
-	window.setFramerateLimit(5);
+	l_layer = m_layers.find(layer_number);
 
-	environment.m_music_manager.mt_Play(m_ambiant_music);
-
-	while (window.isOpen())
+	if (l_layer != m_layers.end())
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-			if (event.type == sf::Event::MouseWheelMoved)
-			{
-				int delta(event.mouseWheel.delta);
-				if (	(l_scale > 0.5f && delta < 0)
-					||	(delta > 0 && l_scale < 3.0f))
-					l_scale += delta * 0.5f;
-			}
-		}
-
-		window.clear(sf::Color::Magenta);
-
-		sf::Sprite l_sprite;
-
-		l_sprite.setTexture(m_layers.begin()->second.getTexture());
-		l_sprite.setScale(l_scale, l_scale);
+		l_sprite.setTexture(l_layer->second.getTexture());
+		l_sprite.setTextureRect(sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(l_layer->second.getSize())));
 
 		window.draw(l_sprite);
-
-		window.display();
 	}
-
-	return nullptr;
-}
-
-void BasicMap::mt_Initialize(MapManager& map_manager)
-{
-	//
 }
 
 void BasicMap::mt_Save(TiXmlElement& element)
@@ -81,22 +49,37 @@ const std::string& BasicMap::mt_Get_Id() const
 	return m_id;
 }
 
-std::unique_ptr<IMap> BasicMap::mt_Clone(void) const
+/*std::unique_ptr<IMap> BasicMap::mt_Clone(void) const
 {
 	return std::unique_ptr<IMap>(new BasicMap(*this));
-}
+}*/
 
-const TileInfo* BasicMap::mt_Get_Tile_Infos(int x_index, int y_index, int elevation) const
+const TileInfo* BasicMap::mt_Get_Tile_Infos(int x_index, int y_index, int elevation)
 {
 	const TileInfo* l_ret(nullptr);
-	std::map<int, misc::Grid<Tile>>::const_iterator l_it;
+	std::unordered_map<int, misc::Grid<Tile>>::iterator l_it;
 
 	l_it = m_tiles.find(elevation);
 
 	if ((l_it != m_tiles.end()) && (x_index < l_it->second.mt_Size().x ) && (y_index < l_it->second.mt_Size().y))
 	{
-		l_ret = &l_it->second.mt_At(x_index, y_index).m_infos;
+		l_ret = l_it->second.mt_At(x_index, y_index).m_infos;
 	}
 
 	return l_ret;
+}
+
+const std::string& BasicMap::mt_Get_Ambiant_Music_Id(void) const
+{
+	return m_ambiant_music_id;
+}
+
+std::size_t BasicMap::mt_Get_Layer_Count(void) const
+{
+	return m_layers.size();
+}
+
+void BasicMap::mt_Unload(void)
+{
+	m_tileset_manager->mt_Release_Resource(m_tileset_id);
 }

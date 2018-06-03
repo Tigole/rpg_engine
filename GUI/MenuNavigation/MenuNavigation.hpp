@@ -10,7 +10,7 @@
 #include "GUI/DialogBox.hpp"
 
 class INavigationObject;
-
+#if 0
 class MenuNavigation : public BasicActionable, public fsm::SequentialFSM, public BasicDialogBox
 {
 public:
@@ -39,5 +39,5 @@ protected:
 	fsm::TogglableTransition m_trans_on_validate, m_trans_on_cancel, m_trans_child_on_cancel, m_trans_child_on_validate;
 
 };
-
+#endif
 #endif // !_IMENU_NAVIGATION_HPP

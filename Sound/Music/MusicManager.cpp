@@ -2,7 +2,7 @@
 #include "Exception/Exception.hpp"
 #include "Miscellaneous.hpp"
 #include <tinyxml.h>
-
+#if 0
 MusicData::MusicData()
 	: m_file_path(),
 	m_loop(true),
@@ -86,3 +86,4 @@ void MusicManager::mt_Load(const std::string& file_path)
 		m_database[l_id] = MusicData(l_path, l_loop, l_volume);
 	}
 }
+#endif

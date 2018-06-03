@@ -35,6 +35,7 @@ namespace uut
 	void uut_Environment(void);
 	//void uut_ECS_Entity(void);
 	void uut_XMLFileLoader(void);
+	void uut_Game(void);
 }
 
 

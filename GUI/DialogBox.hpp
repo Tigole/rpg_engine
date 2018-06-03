@@ -6,7 +6,7 @@
 #include "GUI.hpp"
 
 class TextureManager;
-
+#if 0
 class IDialogBox : public sf::Drawable
 {
 public:
@@ -67,6 +67,6 @@ protected:
 	sf::Text m_text;
 	sf::Font m_font;
 };
-
+#endif
 
 #endif // !_DIALOG_BOX_HPP

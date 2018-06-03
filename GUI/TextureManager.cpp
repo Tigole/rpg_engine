@@ -2,7 +2,7 @@
 #include "Exception/Exception.hpp"
 #include "Miscellaneous.hpp"
 #include "GUI.hpp"
-
+#if 0
 /*namespace uut
 {
 	extern std::string g_resource_path;
@@ -95,3 +95,4 @@ std::unique_ptr<IGUIBackground> TextureManager::mt_Get_Background(const std::str
 
 	return l_ret;
 }
+#endif

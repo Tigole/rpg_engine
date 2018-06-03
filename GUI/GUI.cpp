@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <map>
-
+#if 0
 IGUIBackground::~IGUIBackground()
 {
 	/** Nothing **/
@@ -49,8 +49,8 @@ GUIBackground::TextureData::TextureData(unsigned int top_edge_size_px, unsigned 
 }
 
 
-GUIBackground::GUIBackground(const TextureManager& texture_manager, const std::string& texture_id, const TextureData& texture_data)
-	:m_texture(texture_manager.mt_Get_Texture(texture_id)),
+GUIBackground::GUIBackground(TextureManager& texture_manager, const std::string& texture_id, const TextureData& texture_data)
+	:m_texture(texture_manager.mt_Get_Resource(texture_id)),
 	m_texture_data(texture_data)
 {
 	/** Nothing **/
@@ -307,3 +307,4 @@ void GUIBackground::mt_Set_Corners(	sf::Sprite& top_left_corner_sprite,
 	m_renderer.draw(bottom_left_corner_sprite);
 	m_renderer.draw(bottom_right_corner_sprite);
 }
+#endif

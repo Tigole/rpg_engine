@@ -63,6 +63,7 @@ EntityId EntityGenerator::getId()
 		l_ret = m_removed_ids.back();
 		m_removed_ids.pop_back();
 	}
+	return l_ret;
 }
 
 void EntityGenerator::remove(Entity& e)

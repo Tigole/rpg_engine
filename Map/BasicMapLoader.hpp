@@ -9,9 +9,11 @@ class XML_Element;
 class BasicMapLoader : public MapLoader<BasicMap>
 {
 public:
-	BasicMapLoader(TilesetManager& tileset_manager);
+	BasicMapLoader(TilesetManager* tileset_manager);
+	~BasicMapLoader();
 
-	virtual void mt_Prepare(XMLFileLoader& file_loader, const std::string& file_path);
+	virtual bool mt_Prepare_Loader(XMLFileLoader& file_loader, const std::string& file_path);
+	bool mt_Finalize(void);
 
 private:
 	bool mt_Load_BasicMap(const XML_Element& basic_map);
@@ -21,12 +23,12 @@ private:
 	bool mt_Load_AmbiantMusic(const XML_Element& ambiant_music);
 	bool mt_Load_CharacterLayer(const XML_Element& character_layer);
 	void mt_Unload_Map(void);
-	void mt_Finalize(void);
 
 	TilesetManager* m_tileset_manager;
+	std::pair<std::string, Tileset*> m_tileset;
 
 	int m_current_layer;
-	std::map<int, misc::Grid<Tile>> m_tiles;
+	//std::map<int, misc::Grid<Tile>> m_tiles;
 };
 
 #endif // !_BASIC_MAP_LOADER_HPP

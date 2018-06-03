@@ -4,7 +4,7 @@
 #include <string>
 
 #include <iostream>
-
+#if 0
 IDialogBox::~IDialogBox()
 {
 	/** Nothing **/
@@ -175,3 +175,4 @@ void TextDialogBox::mt_Set_Text(const std::vector<std::string>& text)
 {
 	//
 }
+#endif

@@ -5,43 +5,44 @@
 #include <string>
 #include <memory>
 
+#include "XMLFileLoader.hpp"
+
 class IMap;
 class TiXmlElement;
 class TilesetManager;
 class XMLFileLoader;
 
+template<typename MapType>
 class IMapLoader
 {
 public:
 	IMapLoader(){}
 	virtual ~IMapLoader(){}
-	virtual void mt_Prepare(XMLFileLoader& file_loader, const std::string& file_path) = 0;
-	virtual std::unique_ptr<IMap> mt_Get_Map() = 0;
+	virtual bool mt_Prepare(MapType& map, XMLFileLoader& file_loader, const std::string& file_path) = 0;
 
 protected:
-	virtual void mt_Finalize(void) = 0;
 };
 
 template<typename MapType>
-class MapLoader : public IMapLoader
+class MapLoader : public IMapLoader<MapType>
 {
 public:
+	MapLoader() : m_Target(nullptr){}
 	virtual ~MapLoader(){}
-	std::unique_ptr<IMap> mt_Get_Map()
+	bool mt_Prepare(MapType& map, XMLFileLoader& file_loader, const std::string& file_path)
 	{
-		std::unique_ptr<IMap> l_ret(nullptr);
+		bool l_b_ret;
 
-		mt_Finalize();
+		m_Target = &map;
 
-		l_ret = m_map.mt_Clone();
+		l_b_ret = mt_Prepare_Loader(file_loader, file_path);
 
-		mt_Unload_Map();
-
-		return l_ret;
+		return l_b_ret;
 	}
 protected:
-	virtual void mt_Unload_Map(void) = 0;
-	MapType m_map;
+	virtual bool mt_Prepare_Loader(XMLFileLoader& file_loader, const std::string& file_name) = 0;
+
+	MapType* m_Target;
 };
 
 #endif // !_MAP_LOADER_HPP

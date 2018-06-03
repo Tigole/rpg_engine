@@ -96,7 +96,7 @@ namespace misc
 		{
 			return m_data[col][row];
 		}
-		T& mt_At(unsigned int col, unsigned int y)
+		T& mt_At(unsigned int col, unsigned int row)
 		{
 			return m_data[col][row];
 		}
@@ -155,6 +155,7 @@ namespace misc
 		return ret;
 	}
 
+	#if (PLATFORM == PLATFORM_LINUX)
 	struct EnumClassHash
 	{
 		template<typename T>
@@ -170,12 +171,20 @@ namespace misc
 	};
 
 	template<typename Key>
-	using HashType = std::conditional<std::is_enum<Key>::value, EnumClassHash, std::hash<Key>>;
-	
+	using HashType = typename std::conditional<std::is_enum<Key>::value, EnumClassHash, std::hash<Key>>::type;
+
 	template<typename Key, typename Value>
 	using UnorderedMap = std::unordered_map<Key, Value, HashType<Key>>;
 	template<typename Key, typename Value>
 	using Map = std::map<Key, Value>;
+	#else
+
+	template<typename Key, typename Value>
+	using UnorderedMap = std::unordered_map<Key, Value>;
+	template<typename Key, typename Value>
+	using Map = std::map<Key, Value>;
+
+	#endif
 
 	template <typename FunctionPointer>
 	class DLL_Loader

@@ -12,6 +12,7 @@ public:
 	void mt_Start(void);
 	bool mt_Has_Started(void) const;
 	bool mt_Is_Done(void) const;
+	void mt_Wait_For_Ending(int sleep_milliseconds) const;
 
 protected:
 	void mt_Done(void);
