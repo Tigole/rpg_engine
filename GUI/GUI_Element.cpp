@@ -42,7 +42,7 @@ GUI_Element_State fn_GUIElementState_ToEnum(const std::string& state)
 
 
 GUI_Element::GUI_Element(const std::string& id, GUI_Element* owner)
-	:m_id(id), m_owner(owner), m_current_state(GUI_Element_State::Neutral)
+	:m_id(id), m_owner(owner), m_current_state(static_cast<GUI_Element_State>(0xff))
 {
 	//
 }

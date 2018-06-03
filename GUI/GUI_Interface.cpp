@@ -6,13 +6,26 @@
 GUI_Interface::GUI_Interface(const std::string& id, GUI_Manager* manager)
 	:GUI_Element(id, nullptr),
 	m_manager(manager),
-	m_is_active(true),
+	m_is_active(false),
 	m_has_focus(false)
 {}
 
 void GUI_Interface::mt_Add_Element(GUI_Element* element)
 {
 	m_elements.emplace(std::make_pair(element->mt_Get_Id(), element));
+}
+
+void GUI_Interface::mt_Active(bool activation)
+{
+	m_is_active = activation;
+
+	if (m_is_active == true)
+	{
+		for (auto& el : m_elements)
+		{
+			el.second->mt_Set_State(GUI_Element_State::Neutral);
+		}
+	}
 }
 
 bool GUI_Interface::mt_Is_Active(void) const

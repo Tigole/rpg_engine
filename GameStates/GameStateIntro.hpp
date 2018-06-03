@@ -1,6 +1,6 @@
 #ifndef _GAME_STATE_INTRO_HPP
 #define _GAME_STATE_INTRO_HPP 1
-
+#if 0
 #include "GameState.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -27,5 +27,7 @@ protected:
 	std::string m_texture_id;
 	std::string m_text_to_display;
 };
+
+#endif
 
 #endif // !_GAME_STATE_INTRO_HPP

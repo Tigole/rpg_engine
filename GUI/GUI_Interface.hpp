@@ -20,6 +20,7 @@ public:
 
 	void mt_Add_Element(GUI_Element* element);
 
+	void mt_Active(bool activation);
 	bool mt_Is_Active(void) const;
 	bool mt_Has_Focus(void) const;
 

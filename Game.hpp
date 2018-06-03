@@ -12,6 +12,7 @@
 #include <memory>
 
 using BasicMapManager = MapManager<BasicMap, BasicMapLoader>;
+using GameStateContainer = std::unordered_map<GameStateType, std::unique_ptr<GameState>>;
 
 class Game
 {
@@ -29,8 +30,7 @@ private:
 	std::unique_ptr<GameStateManager> m_State_Manager;
 	sf::Clock m_clock;
 
-	std::unique_ptr<GameState> m_Intro_State;
-	std::unique_ptr<GameState> m_Game_State;
+	GameStateContainer m_game_states;
 
 	void mt_Setup_States(void);
 };

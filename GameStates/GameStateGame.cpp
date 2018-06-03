@@ -14,7 +14,7 @@ void GameStateGame::mt_OnEntry(void)
 {
 	Environment* l_evironment(m_state_manager->mt_GetEnvironment());
 
-	l_evironment->m_event_manager.mt_Add_Callback(GameStateType::Game, "GAME_KEYBOARD_GameToIntro", &GameStateGame::mt_Exit, this);
+	l_evironment->m_event_manager.mt_Add_Callback(GameStateType::Game, "GAME_KEYBOARD_GameToMainMenu", &GameStateGame::mt_Exit, this);
 
 	m_map = l_evironment->m_map_manager.mt_Get_Resource("GeneratedMap");
 	l_evironment->m_sound_system.mt_Pause_Music(m_map->mt_Get_Ambiant_Music_Id());
@@ -22,7 +22,7 @@ void GameStateGame::mt_OnEntry(void)
 
 void GameStateGame::mt_OnExit(void)
 {
-	m_state_manager->mt_GetEnvironment()->m_event_manager.mt_Remove_Callback(GameStateType::Game, "GAME_KEYBOARD_GameToIntro");
+	m_state_manager->mt_GetEnvironment()->m_event_manager.mt_Remove_Callback(GameStateType::Game, "GAME_KEYBOARD_GameToMainMenu");
 
 	m_state_manager->mt_GetEnvironment()->m_sound_system.mt_Stop_Music(m_map->mt_Get_Ambiant_Music_Id());
 	m_state_manager->mt_GetEnvironment()->m_map_manager.mt_Release_Resource("GeneratedMap");
@@ -51,5 +51,5 @@ void GameStateGame::mt_Draw(void)
 
 void GameStateGame::mt_Exit(EventDetails* detail)
 {
-	m_state_manager->mt_SetState(GameStateType::Intro);
+	m_state_manager->mt_SetState(GameStateType::MainMenu);
 }

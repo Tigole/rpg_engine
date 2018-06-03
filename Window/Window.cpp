@@ -23,7 +23,7 @@ void Window::mt_Create(const std::string& title, const sf::Vector2u& size)
 
 	m_renderer_window.create(sf::VideoMode(size.x, size.y), title);
 
-	m_event_manager->mt_Add_Callback(GameStateType::Intro, "WINDOW_KEYBOARD_Close", &Window::mt_On_Close, this);
+	m_event_manager->mt_Add_Callback(GameStateType::MainMenu, "WINDOW_KEYBOARD_Close", &Window::mt_On_Close, this);
 
 	m_renderer_window.setVisible(true);
 }

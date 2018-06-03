@@ -1,3 +1,5 @@
+#if 0
+
 #include "GameStateIntro.hpp"
 #include "GameStateManager.hpp"
 #include "Environment.hpp"
@@ -56,3 +58,4 @@ void GameStateIntro::mt_Quit(EventDetails* detail)
 {
 	m_state_manager->mt_GetEnvironment()->m_window.mt_On_Close(detail);
 }
+#endif

@@ -3,6 +3,7 @@
 
 #include "GameStates/GameStateIntro.hpp"
 #include "GameStates/GameStateGame.hpp"
+#include "GameStates/GameStateMainMenu.hpp"
 
 GameStateType fn_GameStateType_ToEnum(const std::string& type)
 {
@@ -11,7 +12,7 @@ GameStateType fn_GameStateType_ToEnum(const std::string& type)
 	std::unordered_map<std::string, GameStateType>::iterator l_it;
 
 	l_map["MainMenu"] = GameStateType::MainMenu;
-	l_map["Intro"] = GameStateType::Intro;
+	//l_map["Intro"] = GameStateType::Intro;
 	l_map["Game"] = GameStateType::Game;
 
 	l_it = l_map.find(type);
@@ -29,9 +30,9 @@ std::string fn_GameStateType_ToString(const GameStateType& type)
 	std::unordered_map<GameStateType, std::string> l_map;
 	std::unordered_map<GameStateType, std::string>::iterator l_it;
 
-	l_map[GameStateType::SplashScreen] = "";
+	//l_map[GameStateType::SplashScreen] = "";
 	l_map[GameStateType::MainMenu] = "MainMenu";
-	l_map[GameStateType::Intro] = "Intro";
+	//l_map[GameStateType::Intro] = "Intro";
 	l_map[GameStateType::Game] = "Game";
 
 	l_it = l_map.find(type);
@@ -50,7 +51,8 @@ Game::Game(const std::string& resource_path)
 	m_clock.restart();
 	mt_Setup_States();
 
-	m_environment.m_window.mt_Create("! The Game !", sf::Vector2u(640, 480));
+	m_environment.m_window.mt_Create("! The Game !", sf::Vector2u(800 /*640*/, 600/*480*/));
+	m_State_Manager->mt_SetState(GameStateType::MainMenu);
 }
 
 Game::~Game()
@@ -80,17 +82,17 @@ void Game::mt_LateUpdate(void)
 void Game::mt_Setup_States(void)
 {
 	m_State_Manager = std::make_unique<GameStateManager>(&m_environment);
-	m_Intro_State = std::make_unique<GameStateIntro>(m_State_Manager.get());
-	m_Game_State = std::make_unique<GameStateGame>(m_State_Manager.get());
 
+	m_game_states.emplace(GameStateType::MainMenu, std::make_unique<GameStateMainMenu>(m_State_Manager.get()));
+	m_game_states.emplace(GameStateType::Game, std::make_unique<GameStateGame>(m_State_Manager.get()));
+
+	for (auto& l_game_state : m_game_states)
+	{
+		m_State_Manager->mt_AddState(l_game_state.first, l_game_state.second.get());
+	}
 
 	m_State_Manager->mt_AddDependant(&m_environment.m_event_manager);
 	m_State_Manager->mt_AddDependant(&m_environment.m_gui_manager);
-
-
-	m_State_Manager->mt_AddState(GameStateType::Intro, m_Intro_State.get());
-	m_State_Manager->mt_AddState(GameStateType::Game, m_Game_State.get());
-	m_State_Manager->mt_SetState(GameStateType::Intro);
 }
 
 bool Game::mt_Is_Running() const

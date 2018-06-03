@@ -23,11 +23,21 @@ void GUI_Manager::mt_OnEntry(const GameStateType& state)
 	{
 		for (auto& l_interface : l_state->second)
 		{
+			l_interface.second->mt_Active(false);
 			l_interface.second->mt_On_Release(sf::Vector2f(0.0f, 0.0f));
 		}
 	}
 
 	mt_Set_State(state);
+
+	l_state = m_interfaces.find(m_current_state);
+	if (l_state != m_interfaces.end())
+	{
+		for (auto& l_interface : l_state->second)
+		{
+			l_interface.second->mt_Active(true);
+		}
+	}
 }
 
 void GUI_Manager::mt_Add_Style(const std::string& style_id, const GUI_Element_State& state, const GUI_Style& style)

@@ -5,8 +5,8 @@
 
 enum class GameStateType
 {
-	SplashScreen = 0,
-	Intro,
+	/*SplashScreen = 0,
+	Intro,*/
 	MainMenu,
 	Game,
 };
