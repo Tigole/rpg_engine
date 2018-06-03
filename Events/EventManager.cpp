@@ -49,7 +49,7 @@ void EventManager::mt_Handle_Event(const sf::Event& sfml_event)
 				{
 					l_bind->m_details.m_position = sf::Vector2f(sfml_event.mouseMove.x, sfml_event.mouseMove.y);
 
-					l_bind->m_occurence++;
+					l_bind->m_occurence = 1;
 				}
 				if ((l_event_type == EventType::EVENT_MOUSE_CLICK) || (l_event_type == EventType::EVENT_MOUSE_RELEASE))
 				{

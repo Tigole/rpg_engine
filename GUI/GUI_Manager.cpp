@@ -17,6 +17,16 @@ GUI_Manager::GUI_Manager(EventManager* event_manager, Environment* environment)
 
 void GUI_Manager::mt_OnEntry(const GameStateType& state)
 {
+	auto l_state = m_interfaces.find(m_current_state);
+
+	if (l_state != m_interfaces.end())
+	{
+		for (auto& l_interface : l_state->second)
+		{
+			l_interface.second->mt_On_Release(sf::Vector2f(0.0f, 0.0f));
+		}
+	}
+
 	mt_Set_State(state);
 }
 

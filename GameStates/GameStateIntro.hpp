@@ -17,6 +17,7 @@ public:
 	virtual void mt_Draw(void);
 
 	void mt_Continue(EventDetails* detail);
+	void mt_Quit(EventDetails* detail);
 
 protected:
 	sf::Font m_Font;

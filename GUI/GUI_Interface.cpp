@@ -52,9 +52,9 @@ void GUI_Interface::mt_On_Release(const sf::Vector2f& mousePos)
 
 	for (auto& el : m_elements)
 	{
+		el.second->mt_On_Release(mousePos);
 		if (el.second->mt_Is_Inside(mousePos) == true)
 		{
-			el.second->mt_On_Release(mousePos);
 			l_event.m_element_id = el.second->mt_Get_Id();
 			m_manager->mt_Add_Event(l_event);
 		}
@@ -63,9 +63,19 @@ void GUI_Interface::mt_On_Release(const sf::Vector2f& mousePos)
 
 void GUI_Interface::mt_On_Hover(const sf::Vector2f& mousePos)
 {
+	EventDataGUI l_event;
+
+	l_event.m_type = EventDataGUIType::Hover;
+	l_event.m_interface_id = m_id;
+
 	for (auto& el : m_elements)
 	{
 		el.second->mt_On_Hover(mousePos);
+		if (el.second->mt_Get_State() == GUI_Element_State::Focused)
+		{
+			l_event.m_element_id = el.second->mt_Get_Id();
+			m_manager->mt_Add_Event(l_event);
+		}
 	}
 }
 

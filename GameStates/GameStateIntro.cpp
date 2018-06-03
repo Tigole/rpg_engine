@@ -21,6 +21,7 @@ void GameStateIntro::mt_OnEntry(void)
 
 	l_environement->m_event_manager.mt_Add_Callback(GameStateType::Intro, "GAME_KEYBOARD_IntroToMainMenu", &GameStateIntro::mt_Continue, this);
 	l_environement->m_event_manager.mt_Add_Callback(GameStateType::Intro, "GAME_GUI_IntroToMainMenu", &GameStateIntro::mt_Continue, this);
+	l_environement->m_event_manager.mt_Add_Callback(GameStateType::Intro, "GAME_GUI_IntroQuit", &GameStateIntro::mt_Quit, this);
 
 	m_text.setFont(m_Font);
 	m_text.setString(sf::String(m_text_to_display));
@@ -49,4 +50,9 @@ void GameStateIntro::mt_Draw(void)
 void GameStateIntro::mt_Continue(EventDetails* detail)
 {
 	m_state_manager->mt_SetState(GameStateType::Game);
+}
+
+void GameStateIntro::mt_Quit(EventDetails* detail)
+{
+	m_state_manager->mt_GetEnvironment()->m_window.mt_On_Close(detail);
 }

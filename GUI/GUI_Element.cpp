@@ -64,13 +64,21 @@ void GUI_Element::mt_Set_Style(const GUI_Element_State& state, const GUI_Style& 
 
 void GUI_Element::mt_Set_State(const GUI_Element_State& state)
 {
-	m_current_state = state;
-	auto l_style = m_styles.find(m_current_state);
-
-	if (l_style != m_styles.end())
+	if (state != m_current_state)
 	{
-		mt_Apply_Style(l_style->second);
+		m_current_state = state;
+		auto l_style = m_styles.find(m_current_state);
+
+		if (l_style != m_styles.end())
+		{
+			mt_Apply_Style(l_style->second);
+		}
 	}
+}
+
+GUI_Element_State GUI_Element::mt_Get_State(void) const
+{
+	return m_current_state;
 }
 
 void GUI_Element::mt_On_Click(const sf::Vector2f& mousePos)
@@ -80,9 +88,23 @@ void GUI_Element::mt_On_Click(const sf::Vector2f& mousePos)
 
 void GUI_Element::mt_On_Release(const sf::Vector2f& mousePos)
 {
-	if (m_current_state == GUI_Element_State::Clicked)
+	if (mt_Is_Inside(mousePos) == true)
 	{
-		if (mt_Is_Inside(mousePos) == true)
+		mt_Set_State(GUI_Element_State::Focused);
+	}
+	else
+	{
+		mt_Set_State(GUI_Element_State::Neutral);
+	}
+}
+
+void GUI_Element::mt_On_Hover(const sf::Vector2f& mousePos)
+{
+	if (m_current_state != GUI_Element_State::Clicked)
+	{
+		bool l_is_inside(mt_Is_Inside(mousePos));
+		
+		if (l_is_inside == true)
 		{
 			mt_Set_State(GUI_Element_State::Focused);
 		}
@@ -90,19 +112,6 @@ void GUI_Element::mt_On_Release(const sf::Vector2f& mousePos)
 		{
 			mt_Set_State(GUI_Element_State::Neutral);
 		}
-	}
-}
-
-void GUI_Element::mt_On_Hover(const sf::Vector2f& mousePos)
-{
-	bool l_is_inside(mt_Is_Inside(mousePos));
-	if ((m_current_state == GUI_Element_State::Neutral) && (l_is_inside == true))
-	{
-		mt_Set_State(GUI_Element_State::Focused);
-	}
-	if ((m_current_state == GUI_Element_State::Focused) && (l_is_inside == false))
-	{
-		mt_Set_State(GUI_Element_State::Neutral);
 	}
 }
 

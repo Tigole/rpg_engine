@@ -72,6 +72,7 @@ public:
 
 	void mt_Set_Style(const GUI_Element_State& state, const GUI_Style& style);
 	void mt_Set_State(const GUI_Element_State& state);
+	GUI_Element_State mt_Get_State(void) const;
 
 	virtual void mt_On_Click(const sf::Vector2f& mousePos);
 	virtual void mt_On_Release(const sf::Vector2f& mousePos);
