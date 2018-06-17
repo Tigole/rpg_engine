@@ -32,7 +32,7 @@ public:
 		if (l_b_ret == true)
 		{
 			l_xml_loader.mt_Start();
-			l_xml_loader.mt_Wait_For_Ending(50);
+			l_xml_loader.mt_Wait_For_Ending();
 			l_map_loader_type.mt_Finalize();
 		}
 

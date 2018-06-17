@@ -23,7 +23,7 @@ public:
 		l_b_ret = l_tilset_loader_type.mt_Prepare(*resource, l_xml_loader, file_path);
 
 		l_xml_loader.mt_Start();
-		l_xml_loader.mt_Wait_For_Ending(50);
+		l_xml_loader.mt_Wait_For_Ending();
 
 		return l_b_ret;
 	}

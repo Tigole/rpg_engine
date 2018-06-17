@@ -12,7 +12,7 @@ GUI_Interface::GUI_Interface(const std::string& id, GUI_Manager* manager)
 
 void GUI_Interface::mt_Add_Element(GUI_Element* element)
 {
-	m_elements.emplace(std::make_pair(element->mt_Get_Id(), element));
+	element = m_elements.emplace(std::make_pair(element->mt_Get_Id(), element)).first->second.get();
 }
 
 void GUI_Interface::mt_Active(bool activation)
@@ -23,7 +23,14 @@ void GUI_Interface::mt_Active(bool activation)
 	{
 		for (auto& el : m_elements)
 		{
-			el.second->mt_Set_State(GUI_Element_State::Neutral);
+			el.second->mt_On_Active();
+		}
+	}
+	else
+	{
+		for (auto& el : m_elements)
+		{
+			el.second->mt_On_Deactive();
 		}
 	}
 }
@@ -131,32 +138,23 @@ void GUI_Interface::mt_Set_Environment(Environment* env)
 	}
 }
 
-/*void GUI_Interface::mt_On_MouseMove(EventDetails* details)
+GUI_Element* GUI_Interface::mt_Get_Element(const std::string& id)
+{
+	GUI_Element* l_ret(nullptr);
+	auto l_it = m_elements.find(id);
+
+	if (l_it != m_elements.end())
+	{
+		l_ret = l_it->second.get();
+	}
+
+	return l_ret;
+}
+
+void GUI_Interface::mt_Redraw(void)
 {
 	for (auto& el : m_elements)
 	{
-		el.second->mt_On_Hover(details->m_position);
+		el.second->mt_Redraw();
 	}
 }
-
-void GUI_Interface::mt_On_Click(EventDetails* details)
-{
-	bool stop(false);
-
-	for (auto l_it = m_elements.begin(); (l_it != m_elements.end()) && (stop == false); l_it++)
-	{
-		if (l_it->second->mt_Is_Inside(details->m_position) == true)
-		{
-			l_it->second->mt_On_Click(details->m_position);
-			stop = true;
-		}
-	}
-}
-
-void GUI_Interface::mt_On_Release(EventDetails* details)
-{
-	for (auto& el : m_elements)
-	{
-		el.second->mt_On_Release(details->m_position);
-	}
-}*/

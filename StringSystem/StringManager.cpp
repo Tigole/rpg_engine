@@ -50,10 +50,10 @@ void StringManager::mt_Load(const std::string& conf_file)
 	l_xml_loader.mt_Add_On_Entry_Callback(conf_file, "/Languages/Language", &StringManager::mt_Load_Language, this);
 
 	l_xml_loader.mt_Start();
-	l_xml_loader.mt_Wait_For_Ending(100);
+	l_xml_loader.mt_Wait_For_Ending();
 }
 
-std::string StringManager::mt_Get_String(const std::string& lang_id, const std::string& string_id, const GameStringArguments& args)
+sf::String StringManager::mt_Get_String(const std::string& lang_id, const std::string& string_id, const GameStringArguments& args)
 {
 	std::string l_ret;
 	auto l_lang(m_languages.find(lang_id));
@@ -67,7 +67,7 @@ std::string StringManager::mt_Get_String(const std::string& lang_id, const std::
 		l_ret = mt_Get_String(lang_id);
 	}
 
-	return l_ret;
+	return sf::String::fromUtf8(l_ret.begin(), l_ret.end());
 }
 
 std::string StringManager::mt_Get_Current_Lang(void) const
@@ -135,7 +135,7 @@ bool StringManager::mt_Load_Language(const XML_Element& language)
 		l_loader.mt_Prepare(l_xml_loader, m_resource_path + l_file, l_lang_id, this);
 
 		l_xml_loader.mt_Start();
-		l_xml_loader.mt_Wait_For_Ending(100);
+		l_xml_loader.mt_Wait_For_Ending();
 	}
 
 	return l_b_ret;

@@ -12,7 +12,7 @@ Environment::Environment(const std::string& resource_path)
 	m_system_manager(),
 	m_entity_manager(m_system_manager),
 	m_map_manager(resource_path, &m_tileset_manager),
-	m_gui_manager(&m_event_manager, this),
+	m_gui_manager(resource_path, &m_event_manager, this),
 	m_string_manager(resource_path),
 	m_window(&m_event_manager, &m_gui_manager)
 {}

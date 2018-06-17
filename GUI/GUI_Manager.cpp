@@ -7,8 +7,8 @@
 
 #include "Window/Window.hpp"
 
-GUI_Manager::GUI_Manager(EventManager* event_manager, Environment* environment)
-	:m_event_manager(event_manager), m_environment(environment)
+GUI_Manager::GUI_Manager(const std::string& resource_path, EventManager* event_manager, Environment* environment)
+	:m_event_manager(event_manager), m_environment(environment), m_resource_path(resource_path + "Data/")
 {
 	m_event_manager->mt_Add_Callback("GUI_MANAGER_Mouse_Click", &GUI_Manager::mt_On_Click, this);
 	m_event_manager->mt_Add_Callback("GUI_MANAGER_Mouse_Release", &GUI_Manager::mt_On_Release, this);
@@ -18,6 +18,7 @@ GUI_Manager::GUI_Manager(EventManager* event_manager, Environment* environment)
 void GUI_Manager::mt_OnEntry(const GameStateType& state)
 {
 	auto l_state = m_interfaces.find(m_current_state);
+	auto l_path = m_paths.end();
 
 	if (l_state != m_interfaces.end())
 	{
@@ -30,12 +31,18 @@ void GUI_Manager::mt_OnEntry(const GameStateType& state)
 
 	mt_Set_State(state);
 
-	l_state = m_interfaces.find(m_current_state);
-	if (l_state != m_interfaces.end())
+	l_path = m_paths.find(m_current_state);
+	if (l_path != m_paths.end())
 	{
-		for (auto& l_interface : l_state->second)
+		for (auto& l_interface_ : l_path->second)
 		{
-			l_interface.second->mt_Active(true);
+			GUI_Interface* l_interface = mt_Get_Interface(m_current_state, l_interface_.first);
+
+			if (l_interface != nullptr)
+			{
+				l_interface->mt_Redraw();
+				l_interface->mt_Active(true);
+			}
 		}
 	}
 }
@@ -80,8 +87,26 @@ void GUI_Manager::mt_Add_Interface(const GameStateType& state, GUI_Interface* in
 GUI_Interface* GUI_Manager::mt_Get_Interface(const GameStateType& state, const std::string& interface_id)
 {
 	GUI_Interface* l_ret(nullptr);
-	auto l_state(m_interfaces.find(m_current_state));
+	auto l_state(m_interfaces.end());
+	GUI_Manager_Interface_Loader l_loader;
+	XMLFileLoader l_xml_loader;
+	auto l_path_state = m_paths.find(m_current_state);
 
+	if (l_path_state != m_paths.end())
+	{
+		auto& l_path = l_path_state->second.find(interface_id);
+
+		if (l_path != l_path_state->second.end())
+		{
+			l_loader.mt_Prepare(m_resource_path + l_path->second, l_xml_loader, this);
+
+			l_xml_loader.mt_Start();
+			l_xml_loader.mt_Wait_For_Ending();
+		}
+	}
+
+	l_state = m_interfaces.find(m_current_state);
+	
 	if (l_state != m_interfaces.end())
 	{
 		auto l_interface(l_state->second.find(interface_id));
@@ -113,10 +138,10 @@ bool GUI_Manager::mt_Poll_Event(EventDataGUI& gui_event)
 
 void GUI_Manager::mt_Load_Interfaces(const std::string& conf_file)
 {
-	GUI_Manager_Interface_Loader l_loader;
 	XMLFileLoader l_xml_loader;
 
-	l_loader.mt_Prepare(conf_file, l_xml_loader, this);
+	l_xml_loader.mt_Set_File(conf_file);
+	l_xml_loader.mt_Add_On_Entry_Callback(conf_file, "/Interfaces/Interface", &GUI_Manager::mt_Load_Path, this);
 
 	l_xml_loader.mt_Start();
 	l_xml_loader.mt_Wait_For_Ending(100);
@@ -233,4 +258,31 @@ void GUI_Manager::mt_Draw(Window& target)
 Environment* GUI_Manager::mt_Get_Environment(void)
 {
 	return m_environment;
+}
+
+bool GUI_Manager::mt_Load_Path(const XML_Element& element)
+{
+	bool l_b_ret;
+	std::string l_id;
+	std::string l_path;
+	GameStateType l_game_state;
+
+	l_b_ret = element.mt_Get_Attribute("id", l_id);
+
+	if (l_b_ret == true)
+	{
+		l_b_ret = element.mt_Get_Attribute("path", l_path);
+	}
+
+	if (l_b_ret == true)
+	{
+		l_b_ret = element.mt_Get_Attribute("game_state", l_game_state, fn_GameStateType_ToEnum);
+	}
+
+	if (l_b_ret == true)
+	{
+		m_paths[l_game_state].emplace(l_id, l_path);
+	}
+
+	return l_b_ret;
 }

@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <string>
 
+#include "GUI_Styles.hpp"
+
 class Window;
 class Environment;
 
@@ -27,37 +29,6 @@ enum class GUI_Element_State
 std::string fn_GUIElementState_ToString(const GUI_Element_State& state);
 GUI_Element_State fn_GUIElementState_ToEnum(const std::string& state);
 
-struct GUI_Style
-{
-	struct Element
-	{
-		sf::Vector2u m_size;
-	};
-
-	struct Background
-	{
-		sf::Color m_background_color;
-		sf::Color m_outline_color;
-		float m_outline_thickness;
-	};
-
-	struct Text
-	{
-		std::string m_font_id;
-		sf::Color m_color;
-		unsigned int m_size;
-	};
-
-	Element m_element;
-	Background m_background;
-	Text m_text;
-};
-
-struct GUI_Visual
-{
-	sf::Text m_text;
-	sf::RectangleShape m_background;
-};
 
 using StateStyles = std::unordered_map<GUI_Element_State, GUI_Style>;
 
@@ -80,25 +51,32 @@ public:
 	virtual void mt_On_Leave() {}
 	virtual void mt_On_Focus() {}
 	virtual void mt_On_Defocus() {}
+	virtual void mt_On_Active() { mt_Set_State(GUI_Element_State::Neutral); }
+	virtual void mt_On_Deactive() { mt_Set_State(GUI_Element_State::Neutral); }
 
 	bool mt_Is_Inside(const sf::Vector2f& position);
 
+	void mt_Set_Id(const std::string& id);
 	const std::string& mt_Get_Id(void) const;
 
-	void mt_Set_Position(const sf::Vector2f& pos);
+	void mt_Set_Allocation(const sf::FloatRect& rect);
 	sf::Vector2f mt_Get_Screen_Position(void) const;
 	sf::FloatRect mt_Get_Screen_Space(void) const;
-	sf::Vector2f mt_Get_Required_Space(void) const;
 
 	void mt_Set_Text(const std::string& text);
 	virtual void mt_Set_Environment(Environment* env);
 
+	sf::Vector2f mt_Get_Required_Space(void) const;
+
+	virtual void mt_Redraw(void);
 
 protected:
 
-	virtual void mt_Apply_Style(const GUI_Style& style) {}
+	virtual void mt_Apply_Style(const GUI_Style& style);
+	virtual void mt_Apply_Style_Text(const GUI_Style& style);
+	virtual void mt_Apply_Style_Background(const GUI_Style& style);
 
-	sf::Vector2f m_position;
+	sf::FloatRect m_allocation;
 	std::string m_id;
 
 	StateStyles m_styles;

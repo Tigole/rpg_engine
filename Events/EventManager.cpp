@@ -266,7 +266,7 @@ void EventManager::mt_Load(const std::string& file)
 
 	l_loader.mt_Start();
 
-	l_loader.mt_Wait_For_Ending(100);
+	l_loader.mt_Wait_For_Ending();
 
 	l_data.m_type = EventDataType::EVENT_DATA_TYPE_MOUSE;
 	l_binding.m_name = "GUI_MANAGER_Mouse_Click";

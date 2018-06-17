@@ -103,7 +103,7 @@ public:
 
 		l_loader.mt_Start();
 
-		l_loader.mt_Wait_For_Ending(10);
+		l_loader.mt_Wait_For_Ending();
 
 		mt_Dump();
 	}

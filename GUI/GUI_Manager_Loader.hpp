@@ -12,6 +12,8 @@ class XMLFileLoader;
 class GUI_Manager;
 class XML_Element;
 class GUI_Interface;
+class GUI_Layout;
+class GUI_Button;
 
 class GUI_Manager_Interface_Loader
 {
@@ -23,9 +25,18 @@ private:
 	bool mt_Load_Button(const XML_Element& button);
 	bool mt_Load_Interface(const XML_Element& element);
 	bool mt_Finalize_Interface(const XML_Element& element);
+	bool mt_Load_Layout(const XML_Element& layout);
+	bool mt_Load_Layout_Button(const XML_Element& button);
+	bool mt_Finalize_Layout(const XML_Element& layout);
+
+	bool mt_Load_Allocation(const XML_Element& element, sf::FloatRect& rect);
+	bool mt_Load_Margin(const XML_Element& element, sf::Vector2f& margin);
+
+	GUI_Button* mt_Load_Button_From_Element(const XML_Element& button, GUI_Element* owner);
 
 	GUI_Manager* m_target;
 	GUI_Interface* m_interface;
+	GUI_Layout* m_layout;
 	GameStateType m_game_state;
 	std::vector<GUI_Element*> m_elements;
 };
@@ -39,7 +50,6 @@ public:
 private:
 	bool mt_Load_Style(const XML_Element& style);
 	bool mt_Load_State(const XML_Element& state);
-	bool mt_Load_Element(const XML_Element& element);
 	bool mt_Load_Text(const XML_Element& text);
 	bool mt_Load_Background(const XML_Element& background);
 

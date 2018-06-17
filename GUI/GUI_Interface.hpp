@@ -18,6 +18,7 @@ class GUI_Interface : public GUI_Element
 public:
 	GUI_Interface(const std::string& id, GUI_Manager* manager);
 
+	void mt_Set_Manager(GUI_Manager* manager);
 	void mt_Add_Element(GUI_Element* element);
 
 	void mt_Active(bool activation);
@@ -35,9 +36,8 @@ public:
 	void mt_Draw(Window& target);
 	virtual void mt_Set_Environment(Environment* env);
 
-	/*void mt_On_MouseMove(EventDetails* details);
-	void mt_On_Click(EventDetails* details);
-	void mt_On_Release(EventDetails* details);*/
+	GUI_Element* mt_Get_Element(const std::string& id);
+	virtual void mt_Redraw(void);
 
 protected:
 	GUI_Manager* m_manager;

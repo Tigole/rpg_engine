@@ -2,6 +2,8 @@
 #define _STRING_MANAGER_HPP 1
 
 #include "GameString.hpp"
+#include <iterator>
+#include <SFML/System/String.hpp>
 
 class XML_Element;
 
@@ -15,7 +17,7 @@ public:
 
 	void mt_Load(const std::string& conf_file);
 
-	std::string mt_Get_String(const std::string& lang_id, const std::string& string_id, const GameStringArguments& args = GameStringArguments());
+	sf::String mt_Get_String(const std::string& lang_id, const std::string& string_id, const GameStringArguments& args = GameStringArguments());
 	std::string mt_Get_Current_Lang(void) const;
 
 	void mt_Add_Sentence(const std::string& lang_id, const std::string& id, const GameString& string);

@@ -10,7 +10,6 @@ public:
 
 	virtual void mt_Update(float detla_time_ms);
 	virtual void mt_Draw(Window& target);
-	virtual void mt_Apply_Style(const GUI_Style& style);
 };
 
 #endif // !_GUI_BUTTON_HPP
