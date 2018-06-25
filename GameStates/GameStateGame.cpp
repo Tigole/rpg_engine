@@ -37,9 +37,9 @@ void GameStateGame::mt_Draw(void)
 {
 	Environment* l_evironment(m_state_manager->mt_GetEnvironment());
 
-	std::size_t l_count(1);
+	std::size_t l_count(2);
 
-	l_count = m_map->mt_Get_Layer_Count();
+	l_count = m_map->mt_Get_Layer_Count() + 1;
 
 	for (std::size_t i = 0; i < l_count; i++)
 	{

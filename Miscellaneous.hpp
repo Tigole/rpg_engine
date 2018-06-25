@@ -36,6 +36,21 @@ class ILogger;
 
 namespace misc
 {
+	template<typename T>
+	class BitField
+	{
+	public:
+		bool mt_Get_Bit(T position)
+		{
+			//
+		}
+		void mt_Set_Bit(T position, bool value)
+		{
+			//
+		}
+	private:
+		std::vector<T> m_bits;
+	};
 	/** \class Resetable
 		\brief Base class for objects that can be reset by an external event
 

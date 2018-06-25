@@ -2,19 +2,14 @@
 
 #include <tinyxml.h>
 
+
+ComponentPosition::ComponentPosition()
+	:ECS_Component(mt_Get_Component_Id())
+{}
+
 const ECS_ComponentId& ComponentPosition::mt_Get_Component_Id(void)
 {
 	return ECS_ComponentId::POSITION;
-}
-
-void ComponentPosition::mt_Load(const TiXmlElement& element)
-{
-	/*if (element.ValueStr() == getComponentId())
-	{
-		element.QueryIntAttribute("x", &m_current_position.m_x);
-		element.QueryIntAttribute("y", &m_current_position.m_y);
-		element.QueryIntAttribute("layer", &m_current_position.m_layer);
-	}*/
 }
 
 sf::Vector2f ComponentPosition::mt_Get_Current_Position(void)

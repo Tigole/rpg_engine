@@ -3,10 +3,11 @@
 
 #include <algorithm>
 
-ECS_System::ECS_System(const ECS_SystemId& system_id)
+ECS_System::ECS_System(const ECS_SystemId& system_id, ECS_SystemManager* manager)
  :	m_id(system_id),
 	m_required_components(),
-	m_entities()
+	m_entities(),
+	m_manager(manager)
 {}
 
 ECS_System::~ECS_System()

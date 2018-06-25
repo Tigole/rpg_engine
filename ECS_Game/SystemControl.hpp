@@ -5,7 +5,7 @@
 
 class SystemControl : public ECS_System
 {
-	SystemControl();
+	SystemControl(ECS_SystemManager* manager);
 	void mt_Handle_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event);
 };
 

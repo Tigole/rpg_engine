@@ -21,6 +21,7 @@ enum class ECS_ComponentId
 	SPRITE_SHEET,
 	MOVABLE,
 	CONTROLLER,
+	DRAW_SKELETON,
 
 	COUNT
 };

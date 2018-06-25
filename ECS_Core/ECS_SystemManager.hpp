@@ -22,9 +22,9 @@ public:
 		ECS_SystemContainer::iterator l_system_it;
 
 		l_system_it = m_systems.find(system_id);
-		if (l_system_it != m_systems.end())
+		if (l_system_it == m_systems.end())
 		{
-			m_systems[system_id] = new SystemType();
+			m_systems[system_id] = std::make_unique<SystemType>(this);
 		}
 
 		return l_ret;
@@ -52,6 +52,9 @@ public:
 	void mt_Update(float delta_time_ms);
 
 	void mt_Draw(Window& window, unsigned int layer);
+
+	void mt_Set_EntityManager(ECS_EntityManager* manager);
+	ECS_EntityManager* mt_Get_EntityManager(void);
 
 private:
 	void mt_Process_Events(void);

@@ -11,20 +11,22 @@
 
 class TilesetManager;
 class Environment;
+class ECS_EntityManager;
 
 template<typename MapType, typename MapLoaderType>
 class MapManager : public ResourceManager<MapManager<MapType, MapLoaderType>, MapType>
 {
 public:
-	MapManager(const std::string& resource_path, TilesetManager* tileset_manager)
+	MapManager(const std::string& resource_path, TilesetManager* tileset_manager, ECS_EntityManager* entity_manager)
 		:ResourceManager<MapManager<MapType, MapLoaderType>, MapType>(resource_path, "/Maps/Map"),
-		m_tileset_manager(tileset_manager)
+		m_tileset_manager(tileset_manager),
+		m_entity_manager(entity_manager)
 	{}
 	virtual ~MapManager(){}
 	bool mt_Load(MapType* resource, const std::string& file_path)
 	{
 		bool l_b_ret;
-		MapLoaderType l_map_loader_type(m_tileset_manager);
+		MapLoaderType l_map_loader_type(m_tileset_manager, m_entity_manager);
 		XMLFileLoader l_xml_loader;
 
 		l_b_ret = l_map_loader_type.mt_Prepare(*resource, l_xml_loader, file_path);
@@ -42,6 +44,7 @@ public:
 protected:
 
 	TilesetManager* m_tileset_manager;
+	ECS_EntityManager* m_entity_manager;
 };
 
 #endif // !_MAP_MANAGER_HPP

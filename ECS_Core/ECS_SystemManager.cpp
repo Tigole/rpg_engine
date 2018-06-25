@@ -62,5 +62,14 @@ void ECS_SystemManager::mt_Draw(Window& window, unsigned int layer)
 
 		l_syst_renderer->mt_Render(window, layer);
 	}
+}
 
+void ECS_SystemManager::mt_Set_EntityManager(ECS_EntityManager* manager)
+{
+	m_entity_manager = manager;
+}
+
+ECS_EntityManager* ECS_SystemManager::mt_Get_EntityManager(void)
+{
+	return m_entity_manager;
 }

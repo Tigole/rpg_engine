@@ -10,9 +10,7 @@ class ComponentPosition : public ECS_Component
 {
 public:
 	ComponentPosition();
-
-	void mt_Load(const TiXmlElement& element);
-
+	
 	sf::Vector2f mt_Get_Current_Position(void);
 	int mt_Get_Current_Layer(void);
 	sf::Vector2f mt_Get_Previous_Position(void);

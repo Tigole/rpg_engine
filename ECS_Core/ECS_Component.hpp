@@ -14,7 +14,7 @@ public:
 
 	ECS_ComponentId mt_Get_Id(void) const {return m_id;}
 
-	virtual void mt_Load(const TiXmlElement& element) = 0;
+	//virtual void mt_Load(const TiXmlElement& element) = 0;
 
 protected:
 	ECS_ComponentId m_id;

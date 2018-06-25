@@ -7,8 +7,12 @@
 #include "XMLFileLoader.hpp"
 #include "Environment.hpp"
 
-BasicMapLoader::BasicMapLoader(TilesetManager* tileset_manager)
+#include "ECS_Game/ComponentPosition.hpp"
+#include "ECS_Core/ECS_EntityManager.hpp"
+
+BasicMapLoader::BasicMapLoader(TilesetManager* tileset_manager, ECS_EntityManager* entity_manager)
 	:MapLoader<BasicMap>(),
+	m_entity_manager(entity_manager),
 	m_tileset_manager(tileset_manager),
 	m_tileset("", nullptr),
 	m_current_layer(0)
@@ -36,6 +40,8 @@ bool BasicMapLoader::mt_Prepare_Loader(XMLFileLoader& file_loader, const std::st
 		l_b_ret = file_loader.mt_Add_On_Entry_Callback(file_path, "/BasicMap/AmbiantMusic", &BasicMapLoader::mt_Load_AmbiantMusic, this);
 	if (l_b_ret == true)
 		l_b_ret = file_loader.mt_Add_On_Entry_Callback(file_path, "/BasicMap/CharacterLayer", &BasicMapLoader::mt_Load_CharacterLayer, this);
+	if (l_b_ret == true)
+		l_b_ret = file_loader.mt_Add_On_Entry_Callback(file_path, "/BasicMap/Entities/Entity", &BasicMapLoader::mt_Load_Entity, this);
 
 	return l_b_ret;
 }
@@ -181,4 +187,38 @@ bool BasicMapLoader::mt_Finalize(void)
 	log().mt_Exit_Function();
 
 	return true;
+}
+
+bool BasicMapLoader::mt_Load_Entity(const XML_Element& entity)
+{
+	bool l_b_ret;
+	std::string l_id;
+	sf::Vector2f l_pos;
+	int l_layer;
+	ECS_EntityId l_entity;
+	ComponentPosition* l_position;
+
+	l_b_ret = entity.mt_Get_Attribute("id", l_id);
+	if (l_b_ret == true)
+	{
+		l_b_ret = entity.mt_Get_Attribute("x", l_pos.x);
+	}
+	if (l_b_ret == true)
+	{
+		l_b_ret = entity.mt_Get_Attribute("y", l_pos.y);
+	}
+	if (l_b_ret == true)
+	{
+		l_b_ret = entity.mt_Get_Attribute("z", l_layer);
+	}
+	if (l_b_ret == true)
+	{
+		l_entity = m_entity_manager->mt_Get_Entity(l_id);
+
+		l_position = m_entity_manager->mt_Get_Component<ComponentPosition>(l_entity, ECS_ComponentId::POSITION);
+
+		l_position->mt_Set_Current_Position(l_pos, l_layer);
+	}
+
+	return l_b_ret;
 }

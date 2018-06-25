@@ -9,12 +9,12 @@
 #include <vector>
 #include <set>
 
-struct Environment;
+class ECS_SystemManager;
 
 class ECS_System : public Observer<ECS_EntityMessage>
 {
 public:
-	ECS_System(const ECS_SystemId& system_id);
+	ECS_System(const ECS_SystemId& system_id, ECS_SystemManager* manager);
 	~ECS_System();
 
 	void mt_Add_Entity(const ECS_EntityId& entity);
@@ -28,7 +28,7 @@ protected:
 	ECS_SystemId m_id;
 	std::vector<ECS_ComponentId> m_required_components;
 	std::vector<ECS_EntityId> m_entities;
-	Environment *m_environment;
+	ECS_SystemManager* m_manager;
 };
 
 #endif // !_ISYSTEM_HPP

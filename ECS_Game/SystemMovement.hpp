@@ -11,7 +11,7 @@ class BasicMap;
 class SystemMovement : public ECS_System
 {
 public:
-	SystemMovement();
+	SystemMovement(ECS_SystemManager* manager);
 
 	void mt_Update(float delta_time_ms);
 
