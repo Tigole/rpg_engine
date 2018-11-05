@@ -16,6 +16,7 @@
 #include "Window/Window.hpp"
 #include "GUI/GUI_Manager.hpp"
 #include "StringSystem/StringManager.hpp"
+#include "ParticleSystem/ParticleSystem.hpp"
 
 #include <string>
 #include <utility>
@@ -49,6 +50,8 @@ public:
 	StringManager m_string_manager;
 
 	Window m_window;
+
+	ParticleSystem m_particle_system;
 
 private:
 	std::string m_resource_path;

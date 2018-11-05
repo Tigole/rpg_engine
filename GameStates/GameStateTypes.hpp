@@ -9,6 +9,8 @@ enum class GameStateType
 	Intro,*/
 	MainMenu,
 	Game,
+
+	COUNT
 };
 
 GameStateType fn_GameStateType_ToEnum(const std::string& type);

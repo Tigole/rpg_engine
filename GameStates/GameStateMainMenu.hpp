@@ -45,6 +45,8 @@ protected:
 
 	GameStateMainMenu_States m_current_state, m_previous_state;
 	std::array<GameStateMainMenu_StateData, static_cast<std::size_t>(GameStateMainMenu_States::Count)> m_state_data;
+
+	std::string m_music_id;
 };
 
 #endif // !_GAME_STATE_MAIN_MENU_HPP

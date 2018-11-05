@@ -65,6 +65,8 @@ int main(int argc, char** argv)
 	std::cout << "Resource path : " << l_resource_path << '\n';
 	std::cout << "\"Esc\" pour sortir du jeu\n\"Espace\" pour passer à la carte de jeu\n";
 	std::cout << "\"a\" pour revenir dans le menu\n";
+	std::cout << "\"zqsd\" pour se déplacer\n";
+	std::cout << "\"f\" pour simuler une attaque\n";
 
 	fn_Play(l_resource_path);
 

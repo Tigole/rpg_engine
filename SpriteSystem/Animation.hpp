@@ -1,7 +1,7 @@
 #ifndef _ANIMATION_HPP
 #define _ANIMATION_HPP 1
 
-#include "Animation/IAnimation.hpp"
+#include "IAnimation.hpp"
 
 class Animation : public IAnimation
 {

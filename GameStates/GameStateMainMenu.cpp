@@ -4,7 +4,8 @@
 
 GameStateMainMenu::GameStateMainMenu(GameStateManager* state_manager)
 	: GameState(state_manager),
-	m_current_state(GameStateMainMenu_States::Count), m_previous_state(GameStateMainMenu_States::Count)
+	m_current_state(GameStateMainMenu_States::Count), m_previous_state(GameStateMainMenu_States::Count),
+	m_music_id("Intro")
 {
 	m_state_data[static_cast<std::size_t>(GameStateMainMenu_States::Main)].m_texture_id = "MainMenu_Main";
 	m_state_data[static_cast<std::size_t>(GameStateMainMenu_States::Main)].m_interface_id = "MainMenu_Main";
@@ -30,6 +31,14 @@ void GameStateMainMenu::mt_OnEntry(void)
 	l_environement->m_event_manager.mt_Add_Callback(GameStateType::MainMenu, "GAME_KEYBOARD_MainMenuToGame", &GameStateMainMenu::mt_Play, this);
 	l_environement->m_event_manager.mt_Add_Callback(GameStateType::MainMenu, "GAME_GUI_MainMenuToGame", &GameStateMainMenu::mt_Play, this);
 	l_environement->m_event_manager.mt_Add_Callback(GameStateType::MainMenu, "GAME_GUI_MainMenuQuit", &GameStateMainMenu::mt_Quit, this);
+
+	l_environement->m_sound_system.mt_Play_Music(m_music_id);
+
+	auto l_window_size = l_environement->m_window.mt_Get_Renderer_Window()->getSize();
+	for (std::size_t ii = 0; ii < l_window_size.x; ii += 20)
+	{
+		l_environement->m_particle_system.mt_Add_Emitter(GameStateType::MainMenu, "Intro", { static_cast<float>(ii), static_cast<float>(l_window_size.y + 15), 0}, 5, -1);
+	}
 }
 
 void GameStateMainMenu::mt_OnExit(void)
@@ -44,10 +53,13 @@ void GameStateMainMenu::mt_OnExit(void)
 	{
 		l_environement->m_texture_manager.mt_Release_Resource(l_state_data.m_texture_id);
 	}
+
+	l_environement->m_sound_system.mt_Stop_Music(m_music_id);
 }
 
 void GameStateMainMenu::mt_Update(float update_data)
 {
+	m_state_manager->mt_GetEnvironment()->m_particle_system.mt_Update(update_data);
 #if 0
 	if (m_previous_state != m_current_state)
 	{
@@ -96,6 +108,7 @@ void GameStateMainMenu::mt_Draw(void)
 	}*/
 
 	l_renderer->draw(m_state_data[static_cast<std::size_t>(m_current_state)].m_sprite);
+	m_state_manager->mt_GetEnvironment()->m_particle_system.mt_Draw(*(m_state_manager->mt_GetEnvironment()->m_window.mt_Get_Renderer_Window()), 0);
 }
 
 void GameStateMainMenu::mt_Play(EventDetails* detail)

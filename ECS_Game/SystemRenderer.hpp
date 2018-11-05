@@ -2,6 +2,7 @@
 #define _SYSTEM_RENDERER_HPP 1
 
 #include "ECS_Core/ECS_System.hpp"
+#include "Direction.hpp"
 
 #include <vector>
 
@@ -24,6 +25,8 @@ public:
 private:
 	ComponentDrawable* mt_Get_Drawable(const ECS_EntityId& entity);
 	void mt_Sort_By_Layer(void);
+	void mt_Set_Direction(ECS_EntityId entity, Direction d);
+
 	std::vector<ECS_ComponentId> m_drawable_components;
 
 };

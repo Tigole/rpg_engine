@@ -41,6 +41,10 @@ void EventManager::mt_Handle_Event(const sf::Event& sfml_event)
 						l_bind->m_details.m_ctrl_pressed = sfml_event.key.control;
 						l_bind->m_details.m_shift_pressed = sfml_event.key.shift;
 					}
+					else
+					{
+						l_bind->m_details.m_keycode = sfml_event.key.code;
+					}
 					l_bind->m_details.m_keycode = sfml_event.key.code;
 
 					l_bind->m_occurence++;
@@ -105,6 +109,8 @@ void EventManager::mt_Update(void)
 		{
 			auto l_current_state(m_state_callback.find(m_current_state));
 			auto l_no_state_callback(m_no_state_callback.find(l_binding->m_name));
+
+			l_binding->m_details.m_bind_name = l_binding->m_name;
 
 			if (l_no_state_callback != m_no_state_callback.end())
 			{

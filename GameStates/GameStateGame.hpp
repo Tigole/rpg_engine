@@ -19,9 +19,14 @@ public:
 	virtual void mt_Update(float update_data);
 	virtual void mt_Draw(void);
 
-	void mt_Exit(EventDetails* detail);
 
 protected:
+	void mt_Exit(EventDetails* detail);
+	void mt_PlayerMove(EventDetails* details);
+	void mt_PlayerStop(EventDetails* details);
+	void mt_Test(EventDetails* details);
+
+
 	BasicMap* m_map;
 };
 

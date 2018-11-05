@@ -213,9 +213,15 @@ bool BasicMapLoader::mt_Load_Entity(const XML_Element& entity)
 	}
 	if (l_b_ret == true)
 	{
+		sf::Vector2u l_Tile_Size;
 		l_entity = m_entity_manager->mt_Get_Entity(l_id);
 
 		l_position = m_entity_manager->mt_Get_Component<ComponentPosition>(l_entity, ECS_ComponentId::POSITION);
+
+		l_Tile_Size = m_tileset.second->mt_Get_Tile_Size();
+
+		l_pos.x = l_pos.x * l_Tile_Size.x + l_Tile_Size.x / 2;
+		l_pos.y = l_pos.y * l_Tile_Size.y + 3 * l_Tile_Size.y / 4;
 
 		l_position->mt_Set_Current_Position(l_pos, l_layer);
 	}

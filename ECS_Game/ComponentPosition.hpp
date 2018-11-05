@@ -20,8 +20,6 @@ public:
 	void mt_Move_By(sf::Vector2f delta_px);
 	void mt_Set_Layer(int layer);
 
-	static const ECS_ComponentId& mt_Get_Component_Id(void);
-
 protected:
 	std::pair<sf::Vector2f, int> m_current_world_position_px;
 	std::pair<sf::Vector2f, int> m_previous_world_position_px;

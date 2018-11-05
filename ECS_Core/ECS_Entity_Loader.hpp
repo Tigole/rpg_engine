@@ -19,6 +19,8 @@ protected:
 	bool mt_Load_Position(const XML_Element& position);
 	bool mt_Load_Skeleton(const XML_Element& skeleton);
 	bool mt_Load_Skeleton_Part(const XML_Element& part);
+	bool mt_Load_Movable(const XML_Element& movable);
+	bool mt_Load_State(const XML_Element& state);
 
 	ECS_EntityManager* m_target;
 	int m_entity_id;

@@ -4,6 +4,7 @@
 #include "Observer/Observer.hpp"
 #include "ECS_Types.hpp"
 #include "ECS_Entity.hpp"
+#include "ECS_Messages.hpp"
 
 #include <string>
 #include <vector>
@@ -24,6 +25,7 @@ public:
 
 protected:
 	virtual bool mt_Is_Valid(const std::set<ECS_ComponentId>& owned_components);
+	bool mt_Is_Registered(ECS_EntityId entity);
 
 	ECS_SystemId m_id;
 	std::vector<ECS_ComponentId> m_required_components;

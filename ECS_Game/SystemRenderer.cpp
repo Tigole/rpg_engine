@@ -1,5 +1,6 @@
 #include "SystemRenderer.hpp"
 #include "ComponentDrawable.hpp"
+#include "ComponentDrawableSkeleton.hpp"
 #include "ComponentPosition.hpp"
 #include "ECS_Core/ECS_EntityManager.hpp"
 #include "ECS_Core/ECS_SystemManager.hpp"
@@ -19,11 +20,19 @@ SystemRenderer::SystemRenderer(ECS_SystemManager* system_manager)
 	m_required_components.push_back(ECS_ComponentId::DRAW_SKELETON);
 
 	m_drawable_components.push_back(ECS_ComponentId::DRAW_SKELETON);
+
+	m_manager->mt_Get_MessageHandler()->mt_Add_Observer(ECS_EntityMessageId::DirectionChanged, this);
 }
 
 void SystemRenderer::mt_Notify(const ECS_EntityMessage& msg)
 {
-	//
+	if (mt_Is_Registered(msg.m_sender))
+	{
+		if (msg.m_id == ECS_EntityMessageId::DirectionChanged)
+		{
+			mt_Set_Direction(msg.m_sender, msg.m_data.m_direction);
+		}
+	}
 }
 
 void SystemRenderer::mt_Update(float delta_time_ms)
@@ -67,14 +76,14 @@ void SystemRenderer::mt_Render(Window& window, unsigned int layer)
 		if (l_p_position->mt_Get_Current_Layer() == layer)
 		{
 			l_p_drawable = mt_Get_Drawable(l_entity);
-			l_width = l_p_drawable->mt_Get_Size().x;
+			/*l_width = l_p_drawable->mt_Get_Size().x;
 			l_height = l_p_drawable->mt_Get_Size().y;
 
 			l_drawable_bounds.left = l_p_position->mt_Get_Current_Position().x;
 			l_drawable_bounds.top = l_p_position->mt_Get_Current_Position().y;
 
 			l_drawable_bounds.width = l_p_drawable->mt_Get_Size().x;
-			l_drawable_bounds.height = l_p_drawable->mt_Get_Size().y;
+			l_drawable_bounds.height = l_p_drawable->mt_Get_Size().y;*/
 
 			/*if (window.mt_Get_View_Space().intersects(l_drawable_bounds))
 			{*/
@@ -105,5 +114,20 @@ void SystemRenderer::mt_Sort_By_Layer(void)
 
 void SystemRenderer::mt_Handle_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event)
 {
-	//
+	if (mt_Is_Registered(entity))
+	{
+		/*if (event == ECS_EntityEvent::MOVING_DOWN || event == ECS_EntityEvent::MOVING_UP
+			|| event == ECS_EntityEvent::MOVING_LEFT || event == ECS_EntityEvent::MOVING_RIGHT
+			|| event == ECS_EntityEvent::ELEVATION_CHANGE || event == ECS_EntityEvent::SPAWNED)
+		{
+			mt_Sort_By_Layer();
+		}*/
+	}
+}
+
+void SystemRenderer::mt_Set_Direction(ECS_EntityId entity, Direction d)
+{
+	ComponentDrawableSkeleton* l_draw = m_manager->mt_Get_EntityManager()->mt_Get_Component<ComponentDrawableSkeleton>(entity, ECS_ComponentId::DRAW_SKELETON);
+
+	l_draw->mt_Set_Direction(d);
 }

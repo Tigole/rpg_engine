@@ -6,6 +6,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include "ECS_Game/Direction.hpp"
+
 #include "SpriteSystem/SpriteSheet.hpp"
 
 class sf::RenderWindow;
@@ -19,6 +21,7 @@ public:
 	virtual void mt_Update_Position(const sf::Vector2f& world_position_px) = 0;
 	virtual sf::Vector2i mt_Get_Size(void) const = 0;
 	virtual void mt_Draw(sf::RenderWindow* window) = 0;
+	virtual void mt_Set_Direction(Direction d) = 0;
 };
 
 class ComponentSpriteSheet : public ComponentDrawable

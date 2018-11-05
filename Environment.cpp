@@ -6,6 +6,8 @@
 #include "ECS_Game/SystemRenderer.hpp"
 #include "ECS_Game/SystemMovement.hpp"
 #include "ECS_Game/SystemControl.hpp"
+#include "ECS_Game/SystemState.hpp"
+#include "ECS_Game/SystemSkeleton.hpp"
 
 Environment::Environment(const std::string& resource_path)
 	:m_sound_system(resource_path),
@@ -18,7 +20,8 @@ Environment::Environment(const std::string& resource_path)
 	m_map_manager(resource_path, &m_tileset_manager, &m_entity_manager),
 	m_gui_manager(resource_path, &m_event_manager, this),
 	m_string_manager(resource_path),
-	m_window(&m_event_manager, &m_gui_manager)
+	m_window(&m_event_manager, &m_gui_manager),
+	m_particle_system(resource_path, &m_texture_manager)
 {}
 
 void Environment::mt_Load(const std::string& xml_file_name)
@@ -54,11 +57,17 @@ void Environment::mt_Load(const std::string& xml_file_name)
 	/** Dependant **/
 	l_data.push_back(std::make_pair("Maps", ""));
 	l_data.push_back(std::make_pair("Entities", ""));
+	l_data.push_back(std::make_pair("Particles", ""));
 	//l_data.push_back(std::make_pair("Characters", ""));
 
 	{
+		m_system_manager.mt_Add_System<SystemState>(ECS_SystemId::STATE);
+		m_system_manager.mt_Add_System<SystemControl>(ECS_SystemId::CONTROL);
+		m_system_manager.mt_Add_System<SystemMovement>(ECS_SystemId::MOVEMENT);
+		// Collision
+		m_system_manager.mt_Add_System<SystemSkeleton>(ECS_SystemId::SKELETON);
+		// Sound
 		m_system_manager.mt_Add_System<SystemRenderer>(ECS_SystemId::RENDERER);
-		//m_system_manager.mt_Add_System<SystemControl>(ECS_SystemId::CONTROL);
 		m_system_manager.mt_Set_EntityManager(&m_entity_manager);
 	}
 
@@ -100,5 +109,7 @@ void Environment::mt_Load(const std::string& xml_file_name)
 			m_string_manager.mt_Load(m_resource_path + "Data/" + a.second);
 		else if (a.first == "Entities")
 			m_entity_manager.mt_Load_Paths(m_resource_path + "Data/" + a.second);
+		else if (a.first == "Particles")
+			m_particle_system.mt_Load(m_resource_path + "Data/" + a.second);
 	}
 }

@@ -10,29 +10,33 @@ class ComponentMovable : public ECS_Component
 public:
 	ComponentMovable();
 
-	const sf::Vector2f& mt_Get_Velocity_px_per_ms(void) const;
-	const sf::Vector2f& mt_Get_Accelerationpx_per_ms2(void) const;
-	const sf::Vector2f& mt_Get_Speed_px_per_ms(void) const;
-	float mt_Get_Max_Velocity_px_per_ms(void) const;
+	const sf::Vector2f& mt_Get_Velocity(void) const;
+	const sf::Vector2f& mt_Get_Accelerationpx(void) const;
+	const sf::Vector2f& mt_Get_Speed(void) const;
+	float mt_Get_Max_Velocity(void) const;
 
-	void mt_Set_Velocity_px_per_ms(const sf::Vector2f& velocity);
-	void mt_Set_Acceleration_px_per_ms2(const sf::Vector2f& acceleration);
-	void mt_Set_Speed_px_per_ms(const sf::Vector2f& speed);
+	void mt_Set_Velocity(const sf::Vector2f& velocity);
+	void mt_Set_Acceleration(const sf::Vector2f& acceleration);
+	void mt_Set_Acceleration(float x, float y);
+	void mt_Set_Speed(const sf::Vector2f& speed);
 	void mt_Set_Max_Velocity(float max_velocity);
 
-	void mt_Add_Velocity_px_per_ms(const sf::Vector2f& velocity);
-	void mt_Apply_Friction_px_per_ms(const sf::Vector2f& friction);
-	void mt_Accelerate_px_per_ms2(const sf::Vector2f& acceleration);
+	void mt_Add_Velocity(const sf::Vector2f& velocity);
+	void mt_Apply_Friction(const sf::Vector2f& friction);
+	void mt_Accelerate(const sf::Vector2f& acceleration);
 
 	void mt_Move(const Direction& dir);
+	void mt_Stop(Axis a);
+	void mt_Set_Direction(const Direction& dir);
+	Direction mt_Get_Direction(void) const;
 
 private:
-	void mt_Manage_Friction(float& vel_px_per_ms, float friction);
-	sf::Vector2f m_velocity_px_per_s;
-	sf::Vector2f m_speed_px_per_s;
-	sf::Vector2f m_acceleration_px_per_s2;
-	int m_max_velocity_px_per_s;
-	//Direction m_direction;
+	void mt_Manage_Friction(float& velocity, float friction);
+	sf::Vector2f m_velocity;
+	sf::Vector2f m_speed;
+	sf::Vector2f m_acceleration;
+	int m_max_velocity;
+	Direction m_direction;
 };
 
 #endif // !_COMPONENT_MOVABLE_HPP

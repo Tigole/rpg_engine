@@ -6,6 +6,7 @@
 #include "ECS_System.hpp"
 #include "ECS_Core/ECS_Types.hpp"
 #include "EventQueue/EventQueue.hpp"
+#include "ECS_MessageHandler.hpp"
 
 class ECS_EntityManager;
 class Window;
@@ -56,12 +57,15 @@ public:
 	void mt_Set_EntityManager(ECS_EntityManager* manager);
 	ECS_EntityManager* mt_Get_EntityManager(void);
 
+	ECS_MessageHandler* mt_Get_MessageHandler(void);
+
 private:
 	void mt_Process_Events(void);
 
 	ECS_EntityManager* m_entity_manager;
 	ECS_SystemContainer m_systems;
 	misc::UnorderedMap<ECS_EntityId, EventQueue<ECS_EntityEvent>> m_events_queue;
+	ECS_MessageHandler m_message_handler;
 };
 
 #endif // !_SYSTEM_MANAGER_HPP

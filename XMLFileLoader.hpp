@@ -22,6 +22,20 @@ public:
 	bool mt_Get_Attribute(const std::string& attribute_name, float& attribute_value) const;
 	bool mt_Get_Attribute(const std::string& attribute_name, bool& attribute_value) const;
 	template<typename T>
+	bool mt_Get_Attribute(const std::string& attribute_name, T& t) const
+	{
+		int i;
+		bool l_b_Ret;
+
+		l_b_Ret = mt_Get_Attribute(attribute_name, i);
+		if (l_b_Ret == true)
+		{
+			t = static_cast<T>(i);
+		}
+
+		return l_b_Ret;
+	}
+	template<typename T>
 	bool mt_Get_Attribute(const std::string& attribute_name, T& attribute_value, T(*pfn_StringToEnum)(const std::string&)) const
 	{
 		bool l_b_ret;

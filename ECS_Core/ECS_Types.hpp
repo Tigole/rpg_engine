@@ -13,7 +13,8 @@ class ECS_System;
 class ECS_Component;
 
 using ECS_EntityId = int;
-using ECS_EntityMessage = int;
+
+enum class Axis { x, y };
 
 enum class ECS_ComponentId
 {
@@ -22,6 +23,7 @@ enum class ECS_ComponentId
 	MOVABLE,
 	CONTROLLER,
 	DRAW_SKELETON,
+	STATE,
 
 	COUNT
 };
@@ -33,6 +35,8 @@ enum class ECS_SystemId
 	RENDERER = 0,
 	MOVEMENT,
 	CONTROL,
+	STATE,
+	SKELETON,
 
 	COUNT
 };
@@ -40,6 +44,8 @@ using ECS_SystemContainer = misc::UnorderedMap<ECS_SystemId, std::unique_ptr<ECS
 
 enum class ECS_EntityEvent
 {
+	IsMoving,
+	/*
 	SPAWNED = 0,
 	DESPAWNED,
 	COLLIDING_X,
@@ -50,8 +56,22 @@ enum class ECS_EntityEvent
 	MOVING_DOWN,
 	ELEVATION_CHANGE,
 	BECAME_IDLE,
-	BEGAN_MOVING
+	BEGAN_MOVING*/
 };
+
+enum class ECS_EntityState
+{
+	IDLE = 0,
+	WALKING,
+	DEAD,
+
+	COUNT
+};
+
+ECS_EntityEvent fn_ECS_EntityEvent_Enum_To_String(const std::string& ev);
+std::string fn_ECS_EntityEvent_Enum_To_String(const ECS_EntityEvent& ev);
+ECS_EntityState fn_EntityState_String_To_Enum(const std::string& state);
+std::string fn_EntityState_Enum_To_String(const ECS_EntityState& state);
 
 
 #endif // _ECS_TYPES_HPP

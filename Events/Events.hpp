@@ -81,6 +81,8 @@ struct EventDetails
 	sf::Vector2f m_position;
 
 	EventDataGUI m_gui_event;
+
+	std::string m_bind_name;
 };
 
 class EventBinding

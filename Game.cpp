@@ -5,6 +5,10 @@
 #include "GameStates/GameStateGame.hpp"
 #include "GameStates/GameStateMainMenu.hpp"
 
+#include <iostream>
+
+static unsigned int gs_step = 0;
+
 GameStateType fn_GameStateType_ToEnum(const std::string& type)
 {
 	GameStateType l_ret((GameStateType)0xffff);
@@ -51,7 +55,7 @@ Game::Game(const std::string& resource_path)
 	m_clock.restart();
 	mt_Setup_States();
 
-	m_environment.m_window.mt_Create("! The Game !", sf::Vector2u(800 /*640*/, 600/*480*/));
+	m_environment.m_window.mt_Create("! The Game !", sf::Vector2u(800 /*640*/, 600 /*480*/));
 	m_State_Manager->mt_SetState(GameStateType::MainMenu);
 }
 
@@ -60,8 +64,11 @@ Game::~Game()
 
 void Game::mt_Update(void)
 {
+	float l_delta_time_s = m_elapsed_time_s;
+	//std::cout << "Step: " << gs_step << '\n';
 	m_environment.m_window.mt_Update();
-	m_State_Manager->mt_Update(m_clock.getElapsedTime().asMilliseconds());
+	m_State_Manager->mt_Update(l_delta_time_s);
+	m_environment.m_gui_manager.mt_Update(l_delta_time_s);
 }
 
 void Game::mt_Render(void)
@@ -76,7 +83,9 @@ void Game::mt_Render(void)
 
 void Game::mt_LateUpdate(void)
 {
-	m_clock.restart();
+	m_elapsed_time_s = m_clock.restart().asSeconds();
+	//m_elapsed_time_s = 0.002;
+	gs_step++;
 }
 
 void Game::mt_Setup_States(void)
@@ -93,6 +102,7 @@ void Game::mt_Setup_States(void)
 
 	m_State_Manager->mt_AddDependant(&m_environment.m_event_manager);
 	m_State_Manager->mt_AddDependant(&m_environment.m_gui_manager);
+	m_State_Manager->mt_AddDependant(&m_environment.m_particle_system);
 }
 
 bool Game::mt_Is_Running() const

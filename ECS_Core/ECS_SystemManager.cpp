@@ -2,6 +2,8 @@
 #include "ECS_EntityManager.hpp"
 #include "ECS_Game/SystemRenderer.hpp"
 
+#include <iostream>
+
 ECS_SystemManager::ECS_SystemManager()
  :	m_systems()
 {
@@ -44,6 +46,7 @@ void ECS_SystemManager::mt_Process_Events(void)
 		ECS_EntityEvent l_entity_event;
 		while (l_entity_event_queue.second.mt_Process(l_entity_event) == true)
 		{
+			std::cout << "Evt: " << fn_ECS_EntityEvent_Enum_To_String(l_entity_event) << '\n';
 			for (auto& l_system : m_systems)
 			{
 				l_system.second->mt_Handle_Event(l_entity_event_queue.first, l_entity_event);
@@ -72,4 +75,9 @@ void ECS_SystemManager::mt_Set_EntityManager(ECS_EntityManager* manager)
 ECS_EntityManager* ECS_SystemManager::mt_Get_EntityManager(void)
 {
 	return m_entity_manager;
+}
+
+ECS_MessageHandler* ECS_SystemManager::mt_Get_MessageHandler(void)
+{
+	return &m_message_handler;
 }

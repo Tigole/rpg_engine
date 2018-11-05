@@ -4,13 +4,8 @@
 
 
 ComponentPosition::ComponentPosition()
-	:ECS_Component(mt_Get_Component_Id())
+	:ECS_Component(ECS_ComponentId::POSITION)
 {}
-
-const ECS_ComponentId& ComponentPosition::mt_Get_Component_Id(void)
-{
-	return ECS_ComponentId::POSITION;
-}
 
 sf::Vector2f ComponentPosition::mt_Get_Current_Position(void)
 {
@@ -26,7 +21,7 @@ void ComponentPosition::mt_Set_Current_Position(const sf::Vector2f& new_world_po
 void ComponentPosition::mt_Set_Current_Position(const sf::Vector2f& new_world_position_px, int new_layer)
 {
 	mt_Set_Current_Position(new_world_position_px);
-	m_previous_world_position_px.second = m_current_world_position_px.second;
+	//m_previous_world_position_px.second = m_current_world_position_px.second;
 	m_current_world_position_px.second = new_layer;
 }
 

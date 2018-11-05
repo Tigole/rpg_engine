@@ -29,6 +29,7 @@ private:
 
 	std::unique_ptr<GameStateManager> m_State_Manager;
 	sf::Clock m_clock;
+	float m_elapsed_time_s;
 
 	GameStateContainer m_game_states;
 

@@ -56,3 +56,8 @@ bool ECS_System::mt_Is_Valid(const std::set<ECS_ComponentId>& owned_components)
 
 	return (l_number_of_compliences == m_required_components.size());
 }
+
+bool ECS_System::mt_Is_Registered(ECS_EntityId entity)
+{
+	return std::find(m_entities.begin(), m_entities.end(), entity) != m_entities.end();
+}
