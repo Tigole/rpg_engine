@@ -53,9 +53,11 @@ public:
 		if (l_it != m_states.end())
 		{
 			if (m_current_state != m_states.end())
+			{
 				m_current_state->second->mt_OnExit();
+			}
 			m_current_state = l_it;
-			mt_NotifyStateChanged(state_id);
+			mt_NotifyOnEntry(state_id);
 			m_current_state->second->mt_OnEntry();
 		}
 	}
@@ -96,7 +98,7 @@ public:
 	}
 
 protected:
-	void mt_NotifyStateChanged(const StateEnumType& state_id)
+	void mt_NotifyOnEntry(const StateEnumType& state_id)
 	{
 		for (auto& l_dep : m_dependents)
 		{

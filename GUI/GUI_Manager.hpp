@@ -45,7 +45,7 @@ public:
 
 	void mt_Load_Interfaces(const std::string& conf_file);
 	void mt_Load_Styles(const std::string& conf_file);
-
+	
 	void mt_On_MouseMove(EventDetails* details);
 	void mt_On_Click(EventDetails* details);
 	void mt_On_Release(EventDetails* details);

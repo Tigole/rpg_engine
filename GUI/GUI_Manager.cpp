@@ -5,14 +5,23 @@
 #include "XMLFileLoader.hpp"
 #include "GUI_Manager_Loader.hpp"
 
+#include "ParticleSystem/ParticleSystem.hpp"
+
 #include "Window/Window.hpp"
 
-GUI_Manager::GUI_Manager(const std::string& resource_path, EventManager* event_manager, Environment* environment)
-	:m_event_manager(event_manager), m_environment(environment), m_resource_path(resource_path + "Data/")
+int GUI_Manager::ms_mouse_elevation = 50;
+
+GUI_Manager::GUI_Manager(const std::string& resource_path, EventManager* event_manager, Environment* environment, ParticleSystem* particle_system)
+	:m_event_manager(event_manager), m_environment(environment), m_resource_path(resource_path + "Data/"), m_particle_system(particle_system), m_show_mouse(true)
 {
 	m_event_manager->mt_Add_Callback("GUI_MANAGER_Mouse_Click", &GUI_Manager::mt_On_Click, this);
 	m_event_manager->mt_Add_Callback("GUI_MANAGER_Mouse_Release", &GUI_Manager::mt_On_Release, this);
 	m_event_manager->mt_Add_Callback("GUI_MANAGER_Mouse_Movement", &GUI_Manager::mt_On_MouseMove, this);
+}
+
+void GUI_Manager::mt_Show_Mouse(bool show)
+{
+	m_show_mouse = show;
 }
 
 void GUI_Manager::mt_OnEntry(const GameStateType& state)
@@ -28,6 +37,8 @@ void GUI_Manager::mt_OnEntry(const GameStateType& state)
 			l_interface.second->mt_On_Release(sf::Vector2f(0.0f, 0.0f));
 		}
 	}
+
+	m_particle_system->mt_Remove_Emitter(m_mouse_particle_generator);
 
 	mt_Set_State(state);
 
@@ -162,6 +173,14 @@ void GUI_Manager::mt_On_MouseMove(EventDetails* details)
 {
 	auto l_state = m_interfaces.find(m_current_state);
 
+	if (m_show_mouse == true)
+	{
+		m_particle_system->mt_Remove_Emitter(m_mouse_particle_generator);
+		m_mouse_particle_generator = m_particle_system->mt_Add_Emitter(m_current_state, "Mouse", sf::Vector3f(details->m_position.x, details->m_position.y, ms_mouse_elevation), 100, -1);
+
+		std::cout << "{ " << details->m_position.x << ", " << details->m_position.y << " }\n";
+	}
+
 	if (l_state != m_interfaces.end())
 	{
 		for (auto& l_interface : l_state->second)
@@ -235,12 +254,11 @@ void GUI_Manager::mt_Update(float delta_time_ms)
 void GUI_Manager::mt_Draw(Window& target)
 {
 	auto l_state = m_interfaces.find(m_current_state);
+	sf::RenderWindow* l_render_window(target.mt_Get_Renderer_Window());
+	sf::View l_current_view(l_render_window->getView());
 
 	if (l_state != m_interfaces.end())
 	{
-		sf::RenderWindow* l_render_window(target.mt_Get_Renderer_Window());
-		sf::View l_current_view(l_render_window->getView());
-
 		l_render_window->setView(l_render_window->getDefaultView());
 
 		for (auto& l_interface : l_state->second)
@@ -252,6 +270,11 @@ void GUI_Manager::mt_Draw(Window& target)
 		}
 
 		l_render_window->setView(l_current_view);
+	}
+
+	if (m_show_mouse == true)
+	{
+		m_particle_system->mt_Draw(*l_render_window, ms_mouse_elevation);
 	}
 }
 
