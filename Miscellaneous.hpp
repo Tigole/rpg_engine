@@ -30,12 +30,16 @@
 
 #include "Exception/Exception.hpp"
 
+#include <SFML/Graphics/Transformable.hpp>
+
 
 class TiXmlElement;
 class ILogger;
 
 namespace misc
 {
+	void fn_Center_Origin(sf::Transformable& object, const sf::FloatRect& localbound);
+
 	template<typename T>
 	class BitField
 	{

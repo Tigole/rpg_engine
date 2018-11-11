@@ -57,6 +57,7 @@ void ComponentDrawableSkeleton::mt_Add_Part(const std::string& id, sf::Texture* 
 
 	m_parts[id].m_id = id;
 	m_parts[id].m_pos_offset = sf::Vector2f(x_offset, y_offset);
+	m_parts[id].m_parent = nullptr;
 	l_sprite = &m_parts[id].m_sprite;
 	
 	//l_sprite->setScale(1.5f, 1.5f);
@@ -65,7 +66,46 @@ void ComponentDrawableSkeleton::mt_Add_Part(const std::string& id, sf::Texture* 
 	fn_Set_Part(m_position, *l_sprite, id, x_offset, y_offset);
 }
 
+SkeletonData* ComponentDrawableSkeleton::mt_Get_Part(const std::string& part_id)
+{
+	SkeletonData* l_Ret(nullptr);
+	auto l_it = m_parts.find(part_id);
+
+	if (l_it != m_parts.end())
+	{
+		l_Ret = &l_it->second;
+	}
+
+	return l_Ret;
+}
+
 void ComponentDrawableSkeleton::mt_Set_Direction(Direction d)
 {
 	//
+}
+
+void ComponentDrawableSkeleton::mt_Set_Animation(const std::string& anim_id, bool play, bool loop)
+{
+	auto l_anim_it = m_animations.find(anim_id);
+
+	if (l_anim_it != m_animations.end())
+	{
+		if (m_current_animation != nullptr)
+		{
+			for (auto& l_anim : *m_current_animation)
+			{
+				l_anim.second->mt_Stop();
+			}
+		}
+
+		m_current_animation = &l_anim_it->second;
+
+		if (play == true)
+		{
+			for (auto& l_anim : *m_current_animation)
+			{
+				l_anim.second->mt_Play(loop);
+			}
+		}
+	}
 }

@@ -9,6 +9,7 @@
 #include "Generator/ParticleGeneratorRandomVelocity.hpp"
 #include "Generator/ParticleGeneratorRangeRotation.hpp"
 #include "Generator/ParticleGeneratorRangeSize.hpp"
+#include "Generator/ParticleGeneratorPointPosition.hpp"
 
 void ParticleGeneratorLoader::mt_Prepare(const std::string& filename, XMLFileLoader& loader, GeneratorList& generator_list)
 {
@@ -18,6 +19,7 @@ void ParticleGeneratorLoader::mt_Prepare(const std::string& filename, XMLFileLoa
 	//loader.mt_Add_On_Entry_Callback("/Generator", &ParticleGeneratorLoader::mt_Load_Generator, this);
 	loader.mt_Add_On_Entry_Callback("/Generator/Texture", &ParticleGeneratorLoader::mt_Load_Texture, this);
 	loader.mt_Add_On_Entry_Callback("/Generator/AreaPosition", &ParticleGeneratorLoader::mt_Load_AreaPosition, this);
+	loader.mt_Add_On_Entry_Callback("/Generator/PointPosition", &ParticleGeneratorLoader::mt_Load_PointPosition, this);
 	loader.mt_Add_On_Entry_Callback("/Generator/RangeColor", &ParticleGeneratorLoader::mt_Load_RangeColor, this);
 	loader.mt_Add_On_Entry_Callback("/Generator/RandomColor", &ParticleGeneratorLoader::mt_Load_RandomColor, this);
 	loader.mt_Add_On_Entry_Callback("/Generator/RandomVelocity", &ParticleGeneratorLoader::mt_Load_RandomVelocity, this);
@@ -59,6 +61,13 @@ bool ParticleGeneratorLoader::mt_Load_AreaPosition(const XML_Element& rccl_Eleme
 	rccl_Element.mt_Get_Attribute("z", l_Pos->m_Deviation.z);
 
 	m_generator_list->push_back(std::move(l_Pos));
+
+	return true;
+}
+
+bool ParticleGeneratorLoader::mt_Load_PointPosition(const XML_Element& rccl_Element)
+{
+	m_generator_list->push_back(std::make_unique<ParticleGeneratorPointPosition>());
 
 	return true;
 }

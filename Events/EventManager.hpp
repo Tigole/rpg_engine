@@ -35,7 +35,7 @@ public:
 
 	void mt_Remove_Callback(GameStateType game_state, const std::string& event_id);
 
-	void mt_OnEntry(const GameStateType& state);
+	virtual void mt_OnEntry(const GameStateType& state);
 	void mt_Handle_Event(const sf::Event& sfml_event);
 	void mt_Handle_Event(const EventDataGUI& gui_event);
 	void mt_Update(void);

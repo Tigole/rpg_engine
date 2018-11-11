@@ -24,41 +24,6 @@ ParticleSystem::ParticleSystem(const std::string& resource_path, TextureManager*
 	:m_Manager(tm),
 	m_Resource_Path(resource_path)
 {
-	/*auto l_Texture = std::make_unique<ParticleGeneratorTexture>();
-	auto l_Pos = std::make_unique<ParticleGeneratorAreaPosition>();
-	auto l_Col = std::make_unique<ParticleGeneratorRangeColor>();
-	auto l_Life = std::make_unique<ParticleGeneratorLifespan>();
-	auto l_Vel = std::make_unique<ParticleGeneratorRandomVelocity>();
-	auto l_Size = std::make_unique<ParticleGeneratorRangeSize>();
-	//ParticleGeneratorRandomColor* l_RCol = new ParticleGeneratorRandomColor();
-	l_Texture->m_Texture_Id = "Circle";
-	l_Pos->m_Deviation = { 0.0f, 0.0f, 0.0f };
-	l_Col->m_Start_Color = sf::Color::Red;// (0xFE, 0x1B, 0x00);
-	l_Col->m_Final_Color = sf::Color::White;
-	l_Life->m_From = 5;
-	l_Life->m_To = 5;
-	l_Vel->m_From = { -100, -100, 0 };
-	l_Vel->m_To = { -75, -75, 0 };
-	l_Size->m_From = 5;
-	l_Size->m_To = 25;
-
-	m_Particles.emplace(GameStateType::Game, ParticleContainer());
-	m_Particles[GameStateType::Game].mt_Set_Texture_Manager(m_Manager);
-	m_Particles[GameStateType::Game].mt_Resize(50);
-	m_Generators.emplace("Flame", GeneratorList());
-	m_Generators["Flame"].push_back(std::move(l_Texture));
-	m_Generators["Flame"].push_back(std::move(l_Pos));
-	m_Generators["Flame"].push_back(std::move(l_Col));
-	m_Generators["Flame"].push_back(std::move(l_Life));
-	m_Generators["Flame"].push_back(std::move(l_Size));
-	m_Generators["Flame"].push_back(std::move(l_Vel));
-	
-	m_Emitters.emplace(GameStateType::Game, EmitterList());
-	m_Emitters[GameStateType::Game].push_back(std::make_unique<ParticleEmitter>(ParticleEmitter({ 330.0f, 325.0f, 1.0f }, 1)));
-	m_Emitters[GameStateType::Game][0]->mt_Set_System(this);
-	m_Emitters[GameStateType::Game][0]->mt_Set_Emitting_Rate(0.1f * 10);
-	m_Emitters[GameStateType::Game][0]->mt_Set_Generator_List("Flame");*/
-
 	for (std::size_t ii = 0; ii < static_cast<std::size_t>(GameStateType::COUNT); ii++)
 	{
 		m_Emitters.emplace(static_cast<GameStateType>(ii), EmitterList());
@@ -75,6 +40,8 @@ ParticleSystem::ParticleSystem(const std::string& resource_path, TextureManager*
 
 void ParticleSystem::mt_OnEntry(const GameStateType& state)
 {
+	mt_Manage_Emitter_To_Remove();
+	m_Particles[m_current_state].mt_Reset();
 	m_current_state = state;
 }
 
@@ -97,6 +64,11 @@ void ParticleSystem::mt_Update(float delta_time_s)
 		}
 	}
 
+	mt_Manage_Emitter_To_Remove();
+}
+
+void ParticleSystem::mt_Manage_Emitter_To_Remove(void)
+{
 	for (auto& emitter_to_remove : m_Emitter_To_Remove)
 	{
 		auto l_it = std::remove_if(m_Emitters[m_current_state].begin(), m_Emitters[m_current_state].end(), [emitter_to_remove](std::unique_ptr<ParticleEmitter>& emitter)

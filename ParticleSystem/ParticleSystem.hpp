@@ -37,6 +37,7 @@ public:
 	void mt_Remove_Emitter(ParticleEmitter* emitter);
 
 private:
+	void mt_Manage_Emitter_To_Remove(void);
 	Particles m_Particles;
 	GeneratorContainer m_Generators;
 	Emitters m_Emitters;

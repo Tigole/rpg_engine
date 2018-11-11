@@ -18,7 +18,7 @@ Environment::Environment(const std::string& resource_path)
 	m_system_manager(),
 	m_entity_manager(resource_path, m_system_manager, &m_texture_manager),
 	m_map_manager(resource_path, &m_tileset_manager, &m_entity_manager),
-	m_gui_manager(resource_path, &m_event_manager, this),
+	m_gui_manager(resource_path, &m_event_manager, this, &m_particle_system),
 	m_string_manager(resource_path),
 	m_window(&m_event_manager, &m_gui_manager),
 	m_particle_system(resource_path, &m_texture_manager)

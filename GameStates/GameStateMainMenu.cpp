@@ -30,15 +30,17 @@ void GameStateMainMenu::mt_OnEntry(void)
 
 	l_environement->m_event_manager.mt_Add_Callback(GameStateType::MainMenu, "GAME_KEYBOARD_MainMenuToGame", &GameStateMainMenu::mt_Play, this);
 	l_environement->m_event_manager.mt_Add_Callback(GameStateType::MainMenu, "GAME_GUI_MainMenuToGame", &GameStateMainMenu::mt_Play, this);
-	l_environement->m_event_manager.mt_Add_Callback(GameStateType::MainMenu, "GAME_GUI_MainMenuQuit", &GameStateMainMenu::mt_Quit, this);
+	l_environement->m_event_manager.mt_Add_Callback(GameStateType::MainMenu, "GAME_GUI_MainMenuQuit", &GameStateMainMenu::mt_Quit, this); 
 
 	l_environement->m_sound_system.mt_Play_Music(m_music_id);
 
 	auto l_window_size = l_environement->m_window.mt_Get_Renderer_Window()->getSize();
-	for (std::size_t ii = 0; ii < l_window_size.x; ii += 20)
+	for (std::size_t ii = 0; ii < l_window_size.x; ii += 100)
 	{
 		l_environement->m_particle_system.mt_Add_Emitter(GameStateType::MainMenu, "Intro", { static_cast<float>(ii), static_cast<float>(l_window_size.y + 15), 0}, 5, -1);
 	}
+
+	l_environement->m_window.mt_Get_Renderer_Window()->setMouseCursorVisible(false);
 }
 
 void GameStateMainMenu::mt_OnExit(void)
@@ -55,6 +57,8 @@ void GameStateMainMenu::mt_OnExit(void)
 	}
 
 	l_environement->m_sound_system.mt_Stop_Music(m_music_id);
+
+	l_environement->m_window.mt_Get_Renderer_Window()->setMouseCursorVisible(true);
 }
 
 void GameStateMainMenu::mt_Update(float update_data)
@@ -108,7 +112,7 @@ void GameStateMainMenu::mt_Draw(void)
 	}*/
 
 	l_renderer->draw(m_state_data[static_cast<std::size_t>(m_current_state)].m_sprite);
-	m_state_manager->mt_GetEnvironment()->m_particle_system.mt_Draw(*(m_state_manager->mt_GetEnvironment()->m_window.mt_Get_Renderer_Window()), 0);
+	m_state_manager->mt_GetEnvironment()->m_particle_system.mt_Draw(*l_renderer, 0);
 }
 
 void GameStateMainMenu::mt_Play(EventDetails* detail)

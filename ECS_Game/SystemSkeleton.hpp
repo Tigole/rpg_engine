@@ -3,6 +3,8 @@
 
 #include "ECS_Core/ECS_System.hpp"
 
+struct SkeletonData;
+
 class SystemSkeleton : public ECS_System
 {
 public:
@@ -13,6 +15,7 @@ public:
 	virtual void mt_Handle_Event(const ECS_EntityId& entity, const ECS_EntityEvent& event);
 
 protected:
+	sf::Transform mt_Get_Part_Transform(SkeletonData& part);
 };
 
 #endif // !_SYSTEM_SKELETON_HPP

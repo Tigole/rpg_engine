@@ -6,6 +6,8 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 
+class ParticleEmitter;
+
 enum class GameStateMainMenu_States
 {
 	Main,

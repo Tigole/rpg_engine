@@ -3,12 +3,12 @@
 
 #include "FSM/FSM.hpp"
 
-class IAnimation : public fsm::SequentialFSM
+class IAnimation// : public fsm::SequentialFSM
 {
 public:
 	virtual ~IAnimation(){}
 
-	virtual bool mt_Reset(void);
+	//virtual bool mt_Reset(void);
 
 	virtual void mt_Update(float delta_time_ms) = 0;
 	virtual void mt_Play(void) = 0;

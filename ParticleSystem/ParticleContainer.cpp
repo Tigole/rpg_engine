@@ -56,6 +56,7 @@ void ParticleContainer::mt_Reset(void)
 	{
 		mt_Reset_Particle(ii);
 	}
+	m_Alive_Count = 0;
 }
 
 void ParticleContainer::mt_Active(std::size_t index)
@@ -121,11 +122,12 @@ void ParticleContainer::mt_Reset_Particle(std::size_t index)
 		m_Start_Color[index] = sf::Color::Transparent;
 		m_Current_Color[index] = sf::Color::Transparent;
 		m_Final_Color[index] = sf::Color::Transparent;
+		m_Drawable[index].setTexture(nullptr);
 		if (m_Texture[index].empty() == false)
 		{
 			m_Texture_Manager->mt_Release_Resource(m_Texture[index]);
+			m_Texture[index] = "";
 		}
-		m_Drawable[index].setTexture(nullptr);
 		m_Start_Rotation[index] = 0.0f;
 		m_Current_Rotation[index] = 0.0f;
 		m_Final_Rotation[index] = 0.0f;

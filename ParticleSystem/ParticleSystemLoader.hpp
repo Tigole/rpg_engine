@@ -14,6 +14,7 @@ protected:
 	//bool mt_Load_Generator(const XML_Element& rccl_Element);
 	bool mt_Load_Texture(const XML_Element& rccl_Element);
 	bool mt_Load_AreaPosition(const XML_Element& rccl_Element);
+	bool mt_Load_PointPosition(const XML_Element& rccl_Element);
 	bool mt_Load_RangeColor(const XML_Element& rccl_Element);
 	bool mt_Load_RandomColor(const XML_Element& rccl_Element);
 	bool mt_Load_RandomVelocity(const XML_Element& rccl_Element);

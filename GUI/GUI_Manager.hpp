@@ -12,6 +12,8 @@
 class EventManager;
 class XML_Element;
 struct EventDetails;
+class ParticleSystem;
+class ParticleEmitter;
 
 using Events = std::unordered_map<GameStateType, std::stack<EventDataGUI>>;
 
@@ -26,9 +28,11 @@ using InterfacePath = std::unordered_map<GameStateType, std::unordered_map<std::
 class GUI_Manager : public StateDependent<GameStateType>
 {
 public:
-	GUI_Manager(const std::string& resource_path, EventManager* event_manager, Environment* environment);
+	GUI_Manager(const std::string& resource_path, EventManager* event_manager, Environment* environment, ParticleSystem* particle_system);
 
-	void mt_OnEntry(const GameStateType& state);
+	void mt_Show_Mouse(bool show);
+
+	virtual void mt_OnEntry(const GameStateType& state);
 
 	void mt_Add_Style(const std::string& style_id, const GUI_Element_State& state, const GUI_Style& style);
 	const Style* mt_Get_Style(const std::string& style_id) const;
@@ -60,9 +64,15 @@ private:
 	InterfacePath m_paths;
 	EventManager* m_event_manager;
 	Environment* m_environment;
+	ParticleSystem* m_particle_system;
 	Events m_events;
 	InterfaceContainer m_interfaces;
 	StyleContainer m_styles;
+
+	ParticleEmitter* m_mouse_particle_generator;
+	bool m_show_mouse;
+
+	static int ms_mouse_elevation;
 };
 
 #endif // !_GUI_MANAGER_HPP
