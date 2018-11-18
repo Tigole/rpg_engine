@@ -23,10 +23,15 @@ void SystemSkeleton::mt_Update(float delta_time_ms)
 
 	for (auto& l_current_entity : m_entities)
 	{
-		/*l_entity_skeleton = l_entity_manager->mt_Get_Component<ComponentDrawableSkeleton>(l_current_entity, ECS_ComponentId::DRAW_SKELETON);
-		l_entity_skeleton->mt_Get_Animation();
-		l_entity_skeleton->mt_Update(delta_time_ms);*/
-
+		l_entity_skeleton = l_entity_manager->mt_Get_Component<ComponentDrawableSkeleton>(l_current_entity, ECS_ComponentId::DRAW_SKELETON);
+		auto l_animation_set = l_entity_skeleton->mt_Get_Animation();
+		if (l_animation_set != nullptr)
+		{
+			for (auto& l_anim : *l_animation_set)
+			{
+				l_anim.second->mt_Update(delta_time_ms);
+			}
+		}
 	}
 }
 

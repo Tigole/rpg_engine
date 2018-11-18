@@ -44,7 +44,7 @@ void ParticleEmitter::mt_Update(float delta_time_s, ParticleContainer& particles
 		if (particles.mt_Is_Full() == false)
 		{
 			l_from = particles.mt_Get_Alive_Count();
-			l_to = std::min(l_from + l_particle_count, particles.mt_Get_Size()) - 1;
+			l_to = std::min(l_from + l_particle_count, particles.mt_Get_Size() - 1);
 
 			for (auto& l_generator : *l_generator_list)
 			{

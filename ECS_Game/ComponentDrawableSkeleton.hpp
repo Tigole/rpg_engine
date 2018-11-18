@@ -17,9 +17,12 @@ struct SkeletonData
 	SkeletonData* m_parent;
 };
 
-using AnimationSet = std::unordered_map<std::string, std::unique_ptr<SkeletonAnimation>>;
-using AnimationContainer = std::unordered_map<std::string, AnimationSet>;
-using SkeletonParts = std::unordered_map<std::string, SkeletonData>;
+using PartId = std::string;
+using AnimId = std::string;
+
+using AnimationSet = std::unordered_map<PartId, std::unique_ptr<SkeletonAnimation>>;
+using AnimationContainer = std::unordered_map<AnimId, AnimationSet>;
+using SkeletonParts = std::unordered_map<PartId, SkeletonData>;
 
 class ComponentDrawableSkeleton : public ComponentDrawable
 {
@@ -33,9 +36,9 @@ public:
 	void mt_Add_Part(const std::string& id, sf::Texture* texture, float x_offset, float y_offset);
 	void mt_Add_Animation(const std::string& part_id, std::unique_ptr<SkeletonAnimation>& animation);
 	SkeletonData* mt_Get_Part(const std::string& part_id);
-	AnimationSet* mt_Get_Animation(const std::string& part_id);
+	AnimationSet* mt_Get_Animation(void);
 
-	void mt_Set_Animation(const std::string& anim_id, bool play, bool loop);
+	void mt_Set_Animation(const AnimId& anim_id, bool play, bool loop);
 
 protected:
 	sf::RectangleShape l_Bounds;

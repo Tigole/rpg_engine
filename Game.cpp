@@ -4,6 +4,7 @@
 #include "GameStates/GameStateIntro.hpp"
 #include "GameStates/GameStateGame.hpp"
 #include "GameStates/GameStateMainMenu.hpp"
+#include "GameStates/GameStateDbg.hpp"
 
 #include <iostream>
 
@@ -94,6 +95,7 @@ void Game::mt_Setup_States(void)
 
 	m_game_states.emplace(GameStateType::MainMenu, std::make_unique<GameStateMainMenu>(m_State_Manager.get()));
 	m_game_states.emplace(GameStateType::Game, std::make_unique<GameStateGame>(m_State_Manager.get()));
+	m_game_states.emplace(GameStateType::Dbg, std::make_unique<GameStateDbg>(m_State_Manager.get()));
 
 	for (auto& l_game_state : m_game_states)
 	{

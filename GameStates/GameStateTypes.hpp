@@ -10,6 +10,10 @@ enum class GameStateType
 	MainMenu,
 	Game,
 
+
+
+	Dbg,
+
 	COUNT
 };
 

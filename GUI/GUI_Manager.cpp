@@ -9,7 +9,7 @@
 
 #include "Window/Window.hpp"
 
-int GUI_Manager::ms_mouse_elevation = 50;
+int GUI_Manager::ms_mouse_elevation = 5000;
 
 GUI_Manager::GUI_Manager(const std::string& resource_path, EventManager* event_manager, Environment* environment, ParticleSystem* particle_system)
 	:m_event_manager(event_manager), m_environment(environment), m_resource_path(resource_path + "Data/"), m_particle_system(particle_system), m_show_mouse(true)
@@ -177,8 +177,6 @@ void GUI_Manager::mt_On_MouseMove(EventDetails* details)
 	{
 		m_particle_system->mt_Remove_Emitter(m_mouse_particle_generator);
 		m_mouse_particle_generator = m_particle_system->mt_Add_Emitter(m_current_state, "Mouse", sf::Vector3f(details->m_position.x, details->m_position.y, ms_mouse_elevation), 100, -1);
-
-		std::cout << "{ " << details->m_position.x << ", " << details->m_position.y << " }\n";
 	}
 
 	if (l_state != m_interfaces.end())

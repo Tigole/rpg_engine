@@ -11,11 +11,6 @@ void ParticleUpdaterDrawable::mt_Update(float delta_time_s, ParticleContainer& p
 
 	for (std::size_t ii = 0; ii < particles.mt_Get_Alive_Count(); ii++)
 	{
-		l_Drawable[ii].setOrigin(l_Drawable[ii].getLocalBounds().width / 2, l_Drawable[ii].getLocalBounds().height / 2);
-	}
-
-	for (std::size_t ii = 0; ii < particles.mt_Get_Alive_Count(); ii++)
-	{
 		l_Drawable[ii].setPosition(l_Position[ii].x, l_Position[ii].y);
 	}
 
@@ -32,5 +27,10 @@ void ParticleUpdaterDrawable::mt_Update(float delta_time_s, ParticleContainer& p
 	for (std::size_t ii = 0; ii < particles.mt_Get_Alive_Count(); ii++)
 	{
 		l_Drawable[ii].setRotation(l_Rotation[ii]);
+	}
+
+	for (std::size_t ii = 0; ii < particles.mt_Get_Alive_Count(); ii++)
+	{
+		l_Drawable[ii].setOrigin(l_Drawable[ii].getLocalBounds().width / 2, l_Drawable[ii].getLocalBounds().height / 2);
 	}
 }

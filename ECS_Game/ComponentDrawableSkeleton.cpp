@@ -66,6 +66,11 @@ void ComponentDrawableSkeleton::mt_Add_Part(const std::string& id, sf::Texture* 
 	fn_Set_Part(m_position, *l_sprite, id, x_offset, y_offset);
 }
 
+AnimationSet* ComponentDrawableSkeleton::mt_Get_Animation(void)
+{
+	return m_current_animation;
+}
+
 SkeletonData* ComponentDrawableSkeleton::mt_Get_Part(const std::string& part_id)
 {
 	SkeletonData* l_Ret(nullptr);

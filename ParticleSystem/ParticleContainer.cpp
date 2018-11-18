@@ -106,7 +106,7 @@ void ParticleContainer::mt_Swap(std::size_t ii, std::size_t jj)
 		std::swap(m_Final_Rotation[ii], m_Final_Rotation[jj]);
 		std::swap(m_Lifespan[ii], m_Lifespan[jj]);
 		std::swap(m_Max_Lifespan[ii], m_Max_Lifespan[jj]);
-		std::swap(m_Alive[ii], m_Alive[jj]); 
+		std::swap(m_Alive[ii], m_Alive[jj]);
 	}
 }
 

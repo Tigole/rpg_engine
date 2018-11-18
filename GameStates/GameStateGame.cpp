@@ -16,6 +16,8 @@ void GameStateGame::mt_OnEntry(void)
 {
 	Environment* l_environment(m_state_manager->mt_GetEnvironment());
 
+	std::cout << "GameStateGame::mt_OnEntry\n";
+
 	l_environment->m_event_manager.mt_Add_Callback(GameStateType::Game, "GAME_KEYBOARD_GameToMainMenu", &GameStateGame::mt_Exit, this);
 	l_environment->m_event_manager.mt_Add_Callback(GameStateType::Game, "PLAYER_DOWN", &GameStateGame::mt_PlayerMove, this);
 	l_environment->m_event_manager.mt_Add_Callback(GameStateType::Game, "PLAYER_UP", &GameStateGame::mt_PlayerMove, this);
@@ -32,6 +34,7 @@ void GameStateGame::mt_OnEntry(void)
 	m_map = l_environment->m_map_manager.mt_Get_Resource("GeneratedMap");
 	l_environment->m_sound_system.mt_Play_Music(m_map->mt_Get_Ambiant_Music_Id());
 	l_environment->m_system_manager.mt_Get_System<SystemMovement>(ECS_SystemId::MOVEMENT)->mt_Set_Map(m_map);
+	std::cout << "~GameStateGame::mt_OnEntry\n";
 }
 
 void GameStateGame::mt_OnExit(void)

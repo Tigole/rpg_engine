@@ -50,6 +50,7 @@ bool Window::mt_Is_Done(void) const
 {
 	return m_is_done;
 }
+
 void Window::mt_Update(void)
 {
 	EventDataGUI l_gui_event;
